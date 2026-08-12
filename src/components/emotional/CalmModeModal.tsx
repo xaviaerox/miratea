@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, Heart } from 'lucide-react';
+import { X, Sparkles, Heart, Clock, Wind } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 interface CalmModeModalProps {
@@ -170,9 +170,9 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
           </div>
 
           {/* Timer & Cycle Counter */}
-          <div className="flex items-center justify-between text-xs text-teal-400/80 border-t border-teal-500/20 pt-4 font-mono">
-            <span>⏱️ {secondsLeft}s restantes</span>
-            <span>🫁 {cycleCount} respiraciones completadas</span>
+          <div className="flex items-center justify-between text-xs text-teal-400/80 border-t border-teal-500/20 pt-4 font-body">
+            <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-teal-400" /> {secondsLeft}s restantes</span>
+            <span className="flex items-center gap-1.5"><Wind className="w-3.5 h-3.5 text-teal-400" /> {cycleCount} respiraciones</span>
           </div>
 
           {/* Exit / Done Button */}

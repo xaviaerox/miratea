@@ -306,17 +306,35 @@ DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.s
   - **Alternativas descartadas**: Requerir autenticación obligatoria y base de datos activa para todas las vistas.
   - **Consecuencias**: Capacidad de ejecutar el producto 100% offline o en modo demo local sin fricción.
 
-* **2026-08-12 — Restricción de Acceso al Brand Book (Privacidad Institucional)**:
-  - **Descripción**: Eliminación del enlace público al Brand Book en la pantalla de autenticación (`/miratea/login`). La ruta `/miratea/brandbook` queda restringida a uso interno corporativo y no es accesible para clientes finales.
-  - **Motivo**: Proteger los activos de marca e identidad corporativa de Solutech frente al acceso no autorizado de usuarios finales.
-  - **Alternativas descartadas**: Mantener el Brand Book visible en el pie de la pantalla de login para cualquier usuario.
-  - **Consecuencias**: Mayor privacidad de los recursos de diseño de la empresa y pantalla de login limpia y enfocada en la autenticación.
+* **2026-08-12 — Rediseño Sensorial y Pasos Dinámicos en el Panel de Sugerencia de Aventuras (`GoalProposalModal`)**:
+  - **Descripción**: Rediseño integral de `GoalProposalModal.tsx` adaptándolo a la paleta cálida y sensorial de MIRATEA (`#FAF9F7`, bordes suaves, sombras `shadow-2xl`, botones Warm Bloom y tipografía `font-display`). Incorporación de selector de número de pasos (`2..6`), botón interactivo `+ Añadir otro paso` para ampliación dinámica y eliminación individual de micropasos.
+  - **Motivo**: Eliminar la desalineación estética del modo oscuro estricto anterior y la restricción rígida a 3 pasos fijos que limitaba las aventuras propuestas por los niños.
+  - **Alternativas descartadas**: Mantener modales oscuros desacoplados del sistema de diseño o limitar los micropasos a arreglos de longitud fija sin interacción del usuario.
+  - **Consecuencias**: Experiencia de propuesta de metas coherente, flexible y altamente accesible tanto para niños como para padres.
+
+* **2026-08-12 — Flujo Parental de Aprobación de Premios y Asignación de Sparks en 1-Clic**:
+  - **Descripción**: Rediseño del flujo de peticiones de recompensas en `RewardsDashboardPage.tsx` y `useRewardRequests.ts`, implementando un modal interactivo de aprobación de 1-clic (`ApprovalModal`) donde los padres asignan o editan el coste exacto en Sparks directamente al aprobar la propuesta, añadiéndola al catálogo activo y deduciendo los Sparks sin borrar ni recrear el premio.
+  - **Motivo**: Corregir la fricción anterior donde los premios propuestos por los niños se creaban automáticamente con un coste fijo mínimo o forzaban al padre a borrar y recrear la recompensa.
+  - **Alternativas descartadas**: Permitir que las propuestas de los niños fijen costes definitivos sin supervisión o forzar la recreación manual del premio.
+  - **Consecuencias**: Gestión de recompensas fluida, colaborativa y transparente entre padres e hijos.
 
 * **2026-08-12 — Reubicación de Ajustes Globales (Fuente de Lectura & Menos Efectos) y Estandarización de Sparks ✦**:
   - **Descripción**: Migración de la opción de fuente adaptada para dislexia (`OpenDyslexic`) desde la pantalla de respiración (`CalmModeModal`) a la pestaña general de Ajustes (`Tab 5 / profile`). Eliminación del botón "Menos efectos" de la barra superior derecha del header e integración en la pestaña de Ajustes. Estandarización obligatoria del término **Sparks ✦** como moneda principal del sistema (reemplazando cualquier mención a "chispas").
   - **Motivo**: Centralizar todas las preferencias globales de accesibilidad y personalización visual en una única sección de Ajustes clara, manteniendo la barra superior limpia y el vocabulario unificado.
   - **Alternativas descartadas**: Dispersar ajustes de accesibilidad en modales de respiración o mantener controles duplicados en el header principal.
   - **Consecuencias**: Interfaz más limpia, consistencia terminológica absoluta y experiencia de configuración accesible centralizada.
+
+* **2026-08-12 — Restricción de Acceso al Brand Book (Privacidad Institucional)**:
+  - **Descripción**: Eliminación del enlace público al Brand Book en la pantalla de autenticación (`/miratea/login`). La ruta `/miratea/brandbook` queda restringida a uso interno corporativo y no es accesible para clientes finales.
+  - **Motivo**: Proteger los activos de marca e identidad corporativa de Solutech frente al acceso no autorizado de usuarios finales.
+  - **Alternativas descartadas**: Mantener el Brand Book visible en el pie de la pantalla de login para cualquier usuario.
+  - **Consecuencias**: Mayor privacidad de los recursos de diseño de la empresa y pantalla de login limpia y enfocada en la autenticación.
+
+* **2026-08-12 — Actualización de Iconografía Profesional (`lucide-react`)**:
+  - **Descripción**: Reemplazo de emojis planos y símbolos de texto en la barra de navegación inferior, el header, la pestaña de Ajustes, los botones de acción rápida y los modales de respiración por iconos vectoriales profesionales y sobrios de la librería `lucide-react` (`Home`, `CheckCircle2`, `Compass`, `Heart`, `Settings`, `Gift`, `BookOpen`, `MessageSquare`, `Award`, `Clock`, `Wind`, `Mic`, `Palette`).
+  - **Motivo**: Elevar la calidad estética y coherencia visual del infoproducto a un estándar profesional idéntico al del catálogo de premios y paneles de administración, reduciendo el desorden sensorial que generaba el uso masivo de emojis de texto.
+  - **Alternativas descartadas**: Mantener caracteres unicode o emojis genéricos en la interfaz principal.
+  - **Consecuencias**: Aspecto mucho más pulido, elegante, accesible e integrado con el sistema de diseño de MIRATEA.
 
 ---
 

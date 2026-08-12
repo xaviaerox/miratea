@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CompanionBlob } from './CompanionBlob';
 import { Button } from '@/components/ui/Button';
+import { Mic, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { CompanionDisplayState } from '@/types';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
@@ -296,7 +297,7 @@ export function CompanionChatModal({
                 className="w-8 h-8 rounded-full border border-stone-200 dark:border-stone-700 flex items-center justify-center text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 text-sm cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 aria-label="Cerrar chat"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -372,7 +373,7 @@ export function CompanionChatModal({
                       : "bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700"
                   )}
                 >
-                  🎙️
+                  <Mic className="w-4 h-4" />
                 </button>
               )}
               <input

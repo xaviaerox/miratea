@@ -10,6 +10,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { ChildAvatar } from '@/components/ui/ChildAvatar';
 import { Button } from '@/components/ui/Button';
+import {
+  Gift,
+  Award,
+  BookOpen,
+  MessageSquare,
+  Sparkles,
+  Compass,
+  Clock,
+  Plus,
+  Heart,
+  Settings,
+  Home,
+  CheckCircle2,
+  LogOut,
+  Palette,
+} from 'lucide-react';
 
 const CustomizationModal = dynamic(
   () => import('@/components/companion/CustomizationModal').then((mod) => mod.CustomizationModal),
@@ -312,7 +328,7 @@ export default function HomePage() {
             className="text-xs font-bold px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-stone-200/80 hover:border-amber-300 text-stone-700 hover:bg-white shadow-soft transition-all hover:scale-[1.02] active:scale-95 cursor-pointer flex items-center gap-1.5"
             title="Catálogo de Premios y Recompensas"
           >
-            <span>🎁</span>
+            <Gift className="w-3.5 h-3.5 text-amber-600" />
             <span>Canjear</span>
           </button>
           <SparkBadge count={sparkBalance} size="md" />
@@ -423,21 +439,21 @@ export default function HomePage() {
                   onClick={() => setShowMemoriesModal(true)}
                   className="text-xs font-bold px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-md border border-stone-200/80 hover:border-amber-300 text-stone-700 hover:bg-white shadow-soft transition-all hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-1.5"
                 >
-                  <span>🎖️</span>
+                  <Award className="w-3.5 h-3.5 text-stone-600" />
                   <span>Recuerdos</span>
                 </button>
                 <button
                   onClick={handleOpenStory}
                   className="text-xs font-bold px-3.5 py-2 rounded-full bg-amber-500/15 backdrop-blur-md border border-amber-300/80 text-amber-900 hover:bg-amber-500/25 shadow-soft transition-all hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-1.5"
                 >
-                  <span>📖</span>
+                  <BookOpen className="w-3.5 h-3.5 text-amber-700" />
                   <span>Cuento con {display?.name ?? 'Lumi'}</span>
                 </button>
                 <button
                   onClick={() => setShowChatModal(true)}
                   className="text-xs font-bold px-4 py-2 rounded-full bg-bloom-50/90 backdrop-blur-md hover:bg-bloom-100 border border-bloom-200/90 text-bloom-700 shadow-soft transition-all hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-1.5"
                 >
-                  <span>💬</span>
+                  <MessageSquare className="w-3.5 h-3.5 text-bloom-600" />
                   <span>Hablar con {display?.name ?? 'Lumi'}</span>
                 </button>
               </div>
@@ -499,7 +515,7 @@ export default function HomePage() {
                   onClick={() => setIsProposingGoal(true)}
                   className="text-xs font-bold px-3.5 py-2 rounded-full bg-amber-500/15 backdrop-blur-md text-amber-950 border border-amber-300/90 hover:bg-amber-500/25 shadow-soft transition-all hover:scale-[1.03] active:scale-95 cursor-pointer whitespace-nowrap flex items-center gap-1.5"
                 >
-                  <span>💡</span>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
                   <span>Sugerir Meta</span>
                 </button>
               </div>
@@ -509,7 +525,7 @@ export default function HomePage() {
                   {proposedGoals.map(p => (
                     <div key={p.id} className="bg-amber-50/80 border border-amber-200/80 rounded-3xl p-4 shadow-soft flex items-start justify-between gap-3">
                       <div className="flex items-start gap-3">
-                        <span className="text-2xl mt-0.5">⏳</span>
+                        <Clock className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                         <div>
                           <div className="flex items-center gap-2">
                             <h4 className="font-display font-semibold text-stone-800 text-sm">{p.title}</h4>
@@ -549,8 +565,10 @@ export default function HomePage() {
                   ))}
                 </div>
               ) : proposedGoals.length === 0 ? (
-                <div className="bg-white rounded-3xl p-6 border border-stone-150 shadow-soft text-center flex flex-col gap-4 max-w-sm mx-auto w-full mt-2">
-                  <span className="text-3xl">🗺️</span>
+                <div className="bg-white rounded-3xl p-6 border border-stone-150 shadow-soft text-center flex flex-col items-center gap-4 max-w-sm mx-auto w-full mt-2">
+                  <div className="p-3.5 bg-amber-50 text-amber-600 rounded-2xl border border-amber-100/80">
+                    <Compass className="w-8 h-8 stroke-[1.75]" />
+                  </div>
                   <div className="flex flex-col gap-1.5">
                     <h3 className="font-display font-semibold text-stone-700 text-base">¿Tienes una aventura en mente?</h3>
                     <p className="text-xs text-stone-450 font-body leading-relaxed">
@@ -564,7 +582,7 @@ export default function HomePage() {
                     }}
                     className="w-full text-xs font-bold py-2.5 rounded-2xl bg-bloom-50 text-bloom-600 border border-bloom-100 hover:bg-bloom-100 transition-colors shadow-soft flex items-center justify-center gap-1.5 cursor-pointer font-body"
                   >
-                    <span>◈</span> Proponer una aventura
+                    <Plus className="w-4 h-4 text-bloom-600" /> Proponer una aventura
                   </button>
                 </div>
               ) : null}
@@ -591,7 +609,9 @@ export default function HomePage() {
               {/* Rincón de Calma Access */}
               <div className="p-3.5 bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-200/80 rounded-3xl flex items-center justify-between shadow-soft my-1">
                 <div className="flex items-center gap-3 text-left">
-                  <span className="text-2xl">🌸</span>
+                  <div className="p-2 rounded-2xl bg-teal-100/80 text-teal-700 border border-teal-200/60">
+                    <Heart className="w-5 h-5" />
+                  </div>
                   <div>
                     <h3 className="text-xs font-bold text-teal-900 font-display">Rincón de Calma</h3>
                     <p className="text-[11px] text-teal-700/80 font-body">Respiración guiada (4-4-4-4) para autoregularte</p>
@@ -981,9 +1001,10 @@ export default function HomePage() {
                 </div>
                 <button
                   onClick={() => setShowCustomization(true)}
-                  className="px-3.5 py-2 rounded-2xl bg-amber-500/15 text-amber-900 border border-amber-300 text-xs font-bold hover:bg-amber-500/25 transition-all cursor-pointer flex items-center gap-1"
+                  className="px-3.5 py-2 rounded-2xl bg-amber-500/15 text-amber-900 border border-amber-300 text-xs font-bold hover:bg-amber-500/25 transition-all cursor-pointer flex items-center gap-1.5"
                 >
-                  🎨 Armario
+                  <Palette className="w-3.5 h-3.5 text-amber-700" />
+                  Armario
                 </button>
               </div>
 
@@ -1010,7 +1031,9 @@ export default function HomePage() {
                   className="p-4 bg-white/90 rounded-2xl border border-stone-200 flex items-center justify-between shadow-soft hover:bg-white transition-all cursor-pointer text-left"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">🎁</span>
+                    <div className="p-2 rounded-2xl bg-amber-100/80 text-amber-700 border border-amber-200/60">
+                      <Gift className="w-5 h-5" />
+                    </div>
                     <div>
                       <p className="text-xs font-bold text-stone-700">Catálogo de Premios</p>
                       <p className="text-xs text-stone-500">Canjear Sparks ✦ acumuladas ({sparkBalance} Sparks ✦)</p>
@@ -1022,7 +1045,9 @@ export default function HomePage() {
                 {/* Accessibility / Dyslexia Reading Font */}
                 <div className="p-4 bg-white/90 backdrop-blur-md rounded-2xl border border-stone-200/80 flex items-center justify-between shadow-soft text-left">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">📖</span>
+                    <div className="p-2 rounded-2xl bg-teal-100/80 text-teal-700 border border-teal-200/60">
+                      <BookOpen className="w-5 h-5" />
+                    </div>
                     <div>
                       <p className="text-xs font-bold text-stone-700">Fuente de Lectura Adaptada</p>
                       <p className="text-xs text-stone-500">Tipografía facilitada para dislexia (OpenDyslexic)</p>
@@ -1041,7 +1066,9 @@ export default function HomePage() {
                 {/* Accessibility / Silent Mode (Menos Efectos) */}
                 <div className="p-4 bg-white/90 backdrop-blur-md rounded-2xl border border-stone-200/80 flex items-center justify-between shadow-soft text-left">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{silentMode ? '🌙' : '✨'}</span>
+                    <div className="p-2 rounded-2xl bg-amber-100/80 text-amber-700 border border-amber-200/60">
+                      <Sparkles className="w-5 h-5" />
+                    </div>
                     <div>
                       <p className="text-xs font-bold text-stone-700">Menos Efectos y Animaciones</p>
                       <p className="text-xs text-stone-500">Baja estimulación visual y movimiento reducido</p>
@@ -1063,7 +1090,9 @@ export default function HomePage() {
                   className="p-4 bg-white/90 backdrop-blur-md rounded-2xl border border-stone-200/80 flex items-center justify-between shadow-soft hover:bg-white hover:border-rose-300 transition-all hover:scale-[1.01] active:scale-98 cursor-pointer text-left"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">💬</span>
+                    <div className="p-2 rounded-2xl bg-rose-100/80 text-rose-700 border border-rose-200/60">
+                      <MessageSquare className="w-5 h-5" />
+                    </div>
                     <div>
                       <p className="text-xs font-bold text-stone-700">Sugerencia o Ticket de Soporte</p>
                       <p className="text-xs text-stone-500">¿Tienes una idea o algo no funciona bien?</p>
@@ -1082,7 +1111,8 @@ export default function HomePage() {
                   }}
                   className="p-4 bg-rose-500/10 rounded-2xl border border-rose-200/80 flex items-center justify-center gap-2 text-rose-700 text-xs font-bold hover:bg-rose-500/20 transition-all cursor-pointer mt-2"
                 >
-                  🚪 Cerrar Sesión
+                  <LogOut className="w-4 h-4 text-rose-600" />
+                  Cerrar Sesión
                 </button>
               </div>
             </motion.div>
@@ -1099,26 +1129,27 @@ export default function HomePage() {
       >
         <div className="flex justify-around max-w-md mx-auto">
           {[
-            { tab: 'hogar', label: 'Inicio', icon: '⌂' },
-            { tab: 'routines', label: 'Rutinas', icon: '◎' },
-            { tab: 'goals', label: 'Objetivo', icon: '◈' },
-            { tab: 'checkin', label: 'Cómo estoy', icon: '♡' },
-            { tab: 'profile', label: 'Ajustes', icon: '⚙' },
+            { tab: 'hogar', label: 'Inicio', Icon: Home },
+            { tab: 'routines', label: 'Rutinas', Icon: CheckCircle2 },
+            { tab: 'goals', label: 'Objetivo', Icon: Compass },
+            { tab: 'checkin', label: 'Cómo estoy', Icon: Heart },
+            { tab: 'profile', label: 'Ajustes', Icon: Settings },
           ].map(item => {
             const isActive = activeTab === item.tab;
+            const IconComponent = item.Icon;
             return (
               <button
                 key={item.tab}
                 onClick={() => setActiveTab(item.tab as 'hogar' | 'routines' | 'goals' | 'checkin' | 'profile')}
                 className={`
-                  flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-2xl transition-all cursor-pointer
+                  flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all cursor-pointer
                   ${isActive
                     ? 'text-bloom-600 bg-bloom-50 font-bold'
                     : 'text-stone-400 hover:text-stone-600'
                   }
                 `}
               >
-                <span className="text-lg" aria-hidden="true">{item.icon}</span>
+                <IconComponent className={`w-5 h-5 ${isActive ? 'stroke-[2.2]' : 'stroke-[1.6]'}`} aria-hidden="true" />
                 <span className="text-[10px] font-medium">{item.label}</span>
               </button>
             );
