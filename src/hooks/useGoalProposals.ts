@@ -10,9 +10,7 @@ export function useGoalProposals(familyId?: string, childId?: string, onSubmitte
   const [isProposingGoal, setIsProposingGoal] = useState(false);
   const [goalPropTitle, setGoalPropTitle] = useState('');
   const [goalPropWhy, setGoalPropWhy] = useState('');
-  const [goalPropStep1, setGoalPropStep1] = useState('');
-  const [goalPropStep2, setGoalPropStep2] = useState('');
-  const [goalPropStep3, setGoalPropStep3] = useState('');
+  const [goalPropSteps, setGoalPropSteps] = useState<string[]>(['', '', '']);
   const [goalPropSubmitting, setGoalPropSubmitting] = useState(false);
   const [goalPropError, setGoalPropError] = useState('');
   const [isGeneratingAIDecompose, setIsGeneratingAIDecompose] = useState(false);
@@ -20,22 +18,57 @@ export function useGoalProposals(familyId?: string, childId?: string, onSubmitte
   const resetGoalProposalForm = () => {
     setGoalPropTitle('');
     setGoalPropWhy('');
-    setGoalPropStep1('');
-    setGoalPropStep2('');
-    setGoalPropStep3('');
+    setGoalPropSteps(['', '', '']);
     setGoalPropError('');
     setGoalPropSubmitting(false);
     setIsGeneratingAIDecompose(false);
   };
 
+  const setGoalPropStepValue = (index: number, value: string) => {
+    setGoalPropSteps((prev) => {
+      const next = [...prev];
+      if (index >= next.length) {
+        while (next.length <= index) next.push('');
+      }
+      next[index] = value;
+      return next;
+    });
+  };
+
+  const addGoalPropStep = () => {
+    setGoalPropSteps((prev) => [...prev, '']);
+  };
+
+  const removeGoalPropStep = (index: number) => {
+    setGoalPropSteps((prev) => {
+      if (prev.length <= 1) return prev;
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const setTargetStepCount = (count: number) => {
+    const validCount = Math.max(1, Math.min(10, count));
+    setGoalPropSteps((prev) => {
+      if (prev.length === validCount) return prev;
+      if (prev.length < validCount) {
+        const next = [...prev];
+        while (next.length < validCount) next.push('');
+        return next;
+      }
+      return prev.slice(0, validCount);
+    });
+  };
+
   const handleAIDecomposeInModal = async () => {
     if (!goalPropTitle.trim()) return;
     setIsGeneratingAIDecompose(true);
-    const result = await decomposeGoalWithAI(goalPropTitle);
+    const targetCount = goalPropSteps.length > 0 ? goalPropSteps.length : 3;
+    const result = await decomposeGoalWithAI(goalPropTitle, targetCount);
     setIsGeneratingAIDecompose(false);
-    if (result.microtasks.length >= 1 && result.microtasks[0]) setGoalPropStep1(result.microtasks[0].title);
-    if (result.microtasks.length >= 2 && result.microtasks[1]) setGoalPropStep2(result.microtasks[1].title);
-    if (result.microtasks.length >= 3 && result.microtasks[2]) setGoalPropStep3(result.microtasks[2].title);
+
+    if (result.microtasks.length > 0) {
+      setGoalPropSteps(result.microtasks.map((m) => m.title));
+    }
   };
 
   const handleProposeGoalSubmit = async (e: React.FormEvent) => {
@@ -52,7 +85,7 @@ export function useGoalProposals(familyId?: string, childId?: string, onSubmitte
     setGoalPropSubmitting(true);
     setGoalPropError('');
 
-    const rawSteps = [goalPropStep1, goalPropStep2, goalPropStep3].map((s) => s.trim()).filter(Boolean);
+    const rawSteps = goalPropSteps.map((s) => s.trim()).filter(Boolean);
     const stepsToUse =
       rawSteps.length > 0
         ? rawSteps
@@ -76,7 +109,7 @@ export function useGoalProposals(familyId?: string, childId?: string, onSubmitte
         position: idx + 1,
         spark_value: (idx + 1) * 2,
         value_dimensions: ['autonomy'],
-        effort_level: idx === 0 ? 'easy' : idx === 1 ? 'medium' : 'stretch',
+        effort_level: idx === 0 ? 'easy' : idx === stepsToUse.length - 1 ? 'stretch' : 'medium',
       })),
     });
 
@@ -102,12 +135,19 @@ export function useGoalProposals(familyId?: string, childId?: string, onSubmitte
     setGoalPropTitle,
     goalPropWhy,
     setGoalPropWhy,
-    goalPropStep1,
-    setGoalPropStep1,
-    goalPropStep2,
-    setGoalPropStep2,
-    goalPropStep3,
-    setGoalPropStep3,
+    goalPropSteps,
+    setGoalPropSteps,
+    setGoalPropStepValue,
+    addGoalPropStep,
+    removeGoalPropStep,
+    setTargetStepCount,
+    // Legacy getters/setters for backwards compatibility
+    goalPropStep1: goalPropSteps[0] || '',
+    setGoalPropStep1: (v: string) => setGoalPropStepValue(0, v),
+    goalPropStep2: goalPropSteps[1] || '',
+    setGoalPropStep2: (v: string) => setGoalPropStepValue(1, v),
+    goalPropStep3: goalPropSteps[2] || '',
+    setGoalPropStep3: (v: string) => setGoalPropStepValue(2, v),
     goalPropSubmitting,
     setGoalPropSubmitting,
     goalPropError,

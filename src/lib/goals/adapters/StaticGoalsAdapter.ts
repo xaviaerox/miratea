@@ -56,7 +56,7 @@ const STATIC_GOALS: GoalWithMicrotasks[] = [
     child_id: 'static-child-2',
     title: 'Ordenar mis juguetes antes de cenar',
     description: 'Guardar todo en sus cajones',
-    why: 'Para mantener mi habitación limpia y ganar chispas',
+    why: 'Para mantener mi habitación limpia y ganar Sparks ✦',
     status: 'active',
     value_dimensions: ['autonomy'],
     total_sparks: 6,

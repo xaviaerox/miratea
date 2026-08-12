@@ -211,12 +211,16 @@ miratea-app/
 
 ---
 
-# Reglas de Negocio
+# Reglas de Negocio e Inmutabilidad de Interfaz
 
 1. **Cero Rachas (No Streaks)**: Prohibido cualquier contador de días consecutivos o penalización por inactividad.
 2. **Inmutabilidad del Compañero**: La mascota *Lumi* jamás pierde experiencia o nivel.
 3. **Privacidad PII**: Todos los nombres propios deben anonimizarse mediante `PiiSanitizer` antes de procesarse con modelos de lenguaje externos.
 4. **Control Parental**: Operaciones críticas o de exportación de informes requieren la validación de un PIN de 4 dígitos.
+5. **Denominación Oficial de Moneda**: La moneda principal se denomina exclusivamente **Sparks** (o **Sparks ✦**). NUNCA usar la palabra "chispas".
+6. **Propuestas de Premios y Aprobación Parental**: Los niños proponen con o sin estimación opcional de Sparks. Los padres aprueban y asignan/editan la cantidad exacta de Sparks directamente en un modal interactivo en 1-clic sin borrar ni recrear la recompensa.
+7. **Modales de Aventuras y Metas**: Los modales de propuesta de aventuras (`GoalProposalModal`) utilizan obligatoriamente el diseño cálido sensorial de MIRATEA (`#FAF9F7`, bordes suaves, sombras `shadow-2xl`, botones Warm Bloom), permitiendo la selección de 2..6 pasos, botón `+ Añadir otro paso` dinámico y desintegrador de IA con Lumi.
+8. **Organización Centralizada de Ajustes**: Los ajustes globales de accesibilidad (Fuente de Lectura Adaptada OpenDyslexic y Menos Efectos y Animaciones) residen de forma unificada en la Pestaña de Ajustes (`Tab 5 / profile`). La barra superior del header se mantiene limpia y libre de botones duplicados.
 
 ---
 
@@ -302,11 +306,17 @@ DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.s
   - **Alternativas descartadas**: Requerir autenticación obligatoria y base de datos activa para todas las vistas.
   - **Consecuencias**: Capacidad de ejecutar el producto 100% offline o en modo demo local sin fricción.
 
-* **2026-07-31 — Evolución Acumulativa v1.3.0 (Sub-Stores Modulares, CSP & NER PII)**:
-  - **Descripción**: Refactorización de la capa de estado en sub-stores modulares (`routineStore.ts`, `goalStore.ts`), inserción de cabeceras Content Security Policy (CSP), extensión del reconocedor NER en `PiiSanitizer` y accesibilidad WAI-ARIA.
-  - **Motivo**: Desacoplar el hook monolítico `useHomeState`, mejorar la protección infantil COPPA/GDPR-K y blindar la aplicación frente a vulnerabilidades Web.
-  - **Alternativas descartadas**: Mantener toda la lógica de negocio acumulada dentro de un único hook masivo de React.
-  - **Consecuencias**: Código modular, escalable, cero advertencias de linter y registro de evolución acumulativo garantizado.
+* **2026-08-12 — Restricción de Acceso al Brand Book (Privacidad Institucional)**:
+  - **Descripción**: Eliminación del enlace público al Brand Book en la pantalla de autenticación (`/miratea/login`). La ruta `/miratea/brandbook` queda restringida a uso interno corporativo y no es accesible para clientes finales.
+  - **Motivo**: Proteger los activos de marca e identidad corporativa de Solutech frente al acceso no autorizado de usuarios finales.
+  - **Alternativas descartadas**: Mantener el Brand Book visible en el pie de la pantalla de login para cualquier usuario.
+  - **Consecuencias**: Mayor privacidad de los recursos de diseño de la empresa y pantalla de login limpia y enfocada en la autenticación.
+
+* **2026-08-12 — Reubicación de Ajustes Globales (Fuente de Lectura & Menos Efectos) y Estandarización de Sparks ✦**:
+  - **Descripción**: Migración de la opción de fuente adaptada para dislexia (`OpenDyslexic`) desde la pantalla de respiración (`CalmModeModal`) a la pestaña general de Ajustes (`Tab 5 / profile`). Eliminación del botón "Menos efectos" de la barra superior derecha del header e integración en la pestaña de Ajustes. Estandarización obligatoria del término **Sparks ✦** como moneda principal del sistema (reemplazando cualquier mención a "chispas").
+  - **Motivo**: Centralizar todas las preferencias globales de accesibilidad y personalización visual en una única sección de Ajustes clara, manteniendo la barra superior limpia y el vocabulario unificado.
+  - **Alternativas descartadas**: Dispersar ajustes de accesibilidad en modales de respiración o mantener controles duplicados en el header principal.
+  - **Consecuencias**: Interfaz más limpia, consistencia terminológica absoluta y experiencia de configuración accesible centralizada.
 
 ---
 

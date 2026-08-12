@@ -217,7 +217,7 @@ export function CompanionChatModal({
             fallbackReply = `¡Proponer y avanzar en tus propias aventuras es maravilloso! Puedes elegir una meta que te inspire en la pestaña de Objetivos.`;
           }
         } else if (inputClean.includes('chispa') || inputClean.includes('estrella') || inputClean.includes('premio') || inputClean.includes('armario')) {
-          fallbackReply = `¡Cada esfuerzo tuyo suma chispas de luz! Puedes usarlas en el Armario para personalizarme o pedir premios a tus padres. ✨`;
+          fallbackReply = `¡Cada esfuerzo tuyo suma Sparks ✦ de luz! Puedes usarlas en el Armario para personalizarme o pedir premios a tus padres. ✨`;
         } else if (inputClean.includes('hola') || inputClean.includes('buenos dias') || inputClean.includes('buenas tardes') || inputClean.includes('buenas noches')) {
           fallbackReply = `¡Hola ${childName}! Qué lindo saludarte. ¿Cómo te sientes en este momento o qué te gustaría explorar hoy?`;
         } else if (inputClean.includes('quien eres') || inputClean.includes('tu nombre') || inputClean.includes('que haces')) {

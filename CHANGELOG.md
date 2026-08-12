@@ -1,8 +1,46 @@
-# Changelog
+# Changelog — MIRATEA by Solutech
 
-All notable changes to the MIRA project are documented in this file.
+All notable changes to the **MIRATEA** project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.4.0] - 2026-08-12
+
+### Added
+- **Centralized Settings & Accessibility Panel (`Tab 5 / profile`)**: Integrated generic **Fuente de Lectura Adaptada (OpenDyslexic)** and **Menos Efectos y Animaciones** toggles directly into the Settings tab in `src/app/home/page.tsx`, storing state in `localStorage` (`mira_font`) and applying `data-font="dyslexic"` globally.
+- **Dynamic Step Count Selector in Adventure Proposals (`GoalProposalModal`)**: Added dynamic step count pills (`2..6` steps) and a `+ Añadir otro paso` button allowing children and parents to dynamically expand or trim microtasks when proposing new goals.
+- **Dynamic AI Decomposition**: Updated `decomposeGoalWithAI` in `src/lib/goals/decomposeAI.ts` to accept a dynamic `targetCount` parameter and generate the exact number of steps requested by the user.
+
+### Changed
+- **Sparks Terminology Standardization**: Enforced the official system currency name **Sparks** (or **Sparks ✦**) across all UI components, modals, catalog cards, companion chat responses, and static adapters, completely eliminating the legacy term "chispas".
+- **Header Cleanliness**: Removed the top-right "Menos efectos" toggle button from the main header in `src/app/home/page.tsx`, leaving a clean, uncluttered top bar with avatar, greeting, rewards button, and `SparkBadge`.
+- **Breathing Modal Simplification**: Removed the duplicate font toggle button from `CalmModeModal.tsx` in favor of the unified setting in the Settings tab.
+- **Login Privacy Protection**: Removed the public Brandbook link from `src/app/(auth)/login/page.tsx` to keep internal brand assets restricted from client user access.
+
+---
+
+## [1.3.2] - 2026-07-31
+
+### Added
+- **Parent 1-Click Reward Approval Modal (`RewardsDashboardPage`)**: Implemented an interactive `ApprovalModal` on `/dashboard/rewards` allowing parents to review child proposals, set/edit the exact spark cost in 1 click, save to the catalog, and deduct sparks immediately without needing to delete and recreate rewards.
+- **Child Suggested Cost Field**: Updated `useRewardRequests.ts` and the "Proponer un premio" modal in `home/page.tsx` to allow children to optionally suggest a spark amount while clearly explaining that parents set the final cost.
+
+### Fixed
+- **Fixed Reward Cost Lock**: Eliminated default 10-spark fallback locking on pending proposals, preventing parent frustration and unnecessary reward deletion.
+
+---
+
+## [1.3.1] - 2026-07-30
+
+### Added
+- **Sensory Audio Autoplay & Harmonic Oscillator (`useSensoryAudio`)**: Integrated user-gesture initialization (`initAudio()`), raised peak gain to `0.25`, added a 216Hz sub-octave harmonic to 432Hz sine synthesis, and added a completion chime in `CalmCornerModal.tsx`.
+
+### Fixed
+- **Autoplay Policy Audio Blocking**: Resolved Chrome/Edge/Safari browser autoplay policy blocking by binding `AudioContext` resume calls directly to user click gestures upon opening the Calm Corner modal.
+
+---
 
 ## [1.3.0] - 2026-07-31
 

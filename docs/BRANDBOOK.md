@@ -204,4 +204,13 @@ Cerebro ético de la plataforma. Integra desintegración automática de objetivo
 * **Repositorio oficial**: `xaviaerox/mira-app`
 
 ---
+
+# 13. Directrices Inmutables de UI, Accesibilidad y Terminología
+
+1. **Denominación Oficial de Moneda**: La unidad principal del sistema se denomina siempre **Sparks** (o **Sparks ✦**). Prohibido el uso del término "chispas" en cualquier interfaz, diálogo del compañero Lumi o documentación del producto.
+2. **Propuestas de Premios y Aprobación Parental**: Los niños pueden sugerir premios con o sin indicación de coste opcional. Los padres aprueban y asignan/editan el coste exacto en Sparks directamente en un modal interactivo en 1-clic sin borrar ni recrear el premio.
+3. **Modales de Aventuras y Metas**: Los modales de propuesta de aventuras (`GoalProposalModal`) deben usar el diseño sensorial cálido de MIRATEA (`#FAF9F7`, bordes suaves, sombras `shadow-2xl`, botones Warm Bloom), permitir la selección de 2..6 pasos, incluir el botón `+ Añadir otro paso` dinámico y desintegrador de IA con Lumi.
+4. **Organización Centralizada de Ajustes**: Los ajustes globales de accesibilidad (Fuente de Lectura Adaptada OpenDyslexic y Menos Efectos y Animaciones) residen de forma unificada en la Pestaña de Ajustes (`Tab 5 / profile`). La barra superior del header se mantiene limpia y libre de botones duplicados.
+
+---
 *Brandbook oficial generado y validado para la fase de expansión comercial e institucional de Solutech y MIRATEA.*

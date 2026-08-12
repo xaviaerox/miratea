@@ -1,6 +1,6 @@
-# MIRA — Developer & AI Agent Guidelines
+# MIRATEA — Developer & AI Agent Guidelines
 
-MIRA is a neurodiversity-affirming growth platform for children and families.
+MIRATEA by Solutech is a neurodiversity-affirming growth and self-regulation platform for children and families.
 
 ## Build & Verification Commands
 - **Dev Server**: `npm run dev`
@@ -9,9 +9,13 @@ MIRA is a neurodiversity-affirming growth platform for children and families.
 - **Test Suite**: `npm run test -- --run` (`vitest run --run`)
 - **Build**: `npm run build`
 
-## Code & Architecture Principles
-1. **Neurodivergent First**: Avoid punitive mechanics (streaks loss, comparison, shaming). Use non-punitive language and celebration overlays.
-2. **PII Protection**: Always pass external LLM prompts through `PiiSanitizer` (`src/lib/security/PiiSanitizer.ts`).
-3. **Adapter Architecture**: Use adapter interfaces in `src/lib/adapters/` to support both `static` and `supabase` data sources seamlessly.
-4. **State Separation**: Keep presentation components clean; encapsulate complex page state inside custom hooks (e.g. `useHomeState.ts`).
-5. **Zero Lint Tolerations**: All code edits must maintain 0 ESLint errors and 0 warnings.
+## Directrices Inmutables y Reglas de Negocio
+1. **SSOT Rule (`PROJECT_CONTEXT.md`)**: `PROJECT_CONTEXT.md` en la raíz es la Fuente Única de Verdad (Single Source of Truth) y DEBE actualizarse tras cualquier cambio o refactorización antes de dar por terminada cualquier tarea.
+2. **Denominación de la Moneda Principal**: La moneda del sistema se llama SIEMPRE **Sparks** (o **Sparks ✦**). Prohibido usar la palabra "chispas" en interfaces, respuestas del compañero Lumi, catálogos o código.
+3. **Flujo de Premios y Aprobación Parental**: Los niños sugieren premios (con o sin estimación opcional de Sparks). Los padres aprueban y asignan/editan la cantidad exacta de Sparks directamente en un modal interactivo de 1-clic sin borrar ni recrear el premio.
+4. **Modales de Aventuras y Metas**: Los modales de propuesta de aventuras (`GoalProposalModal`) deben usar el diseño sensorial cálido de MIRATEA (`#FAF9F7`, bordes suaves, sombras `shadow-2xl`, botones Warm Bloom), permitir la selección de 2..6 pasos, incluir el botón `+ Añadir otro paso` dinámico y desintegrador de IA con Lumi.
+5. **Sección de Ajustes Centralizada**: Los ajustes globales de accesibilidad (Fuente de Lectura Adaptada OpenDyslexic y Menos Efectos y Animaciones) viven unificados en la Pestaña de Ajustes (`Tab 5 / profile`). La barra superior del header se mantiene limpia sin botones duplicados.
+6. **Protección PII**: Pasa siempre los prompts de LLM externos por `PiiSanitizer` (`src/lib/security/PiiSanitizer.ts`).
+7. **Neurodivergent First**: Prohibido usar mecánicas punitivas, contadores de racha que se pierden o juicio social. El compañero Lumi jamás involuciona de fase.
+8. **Arquitectura Dual-Adapter**: Mantén la interfaz `DataService` en `src/lib/adapters/` compatible tanto con `static` (demo en memoria) como con `supabase` (producción).
+9. **Cero Tolerancia a Errores de Lint**: Mantén 0 errores y 0 advertencias de ESLint en todo momento.

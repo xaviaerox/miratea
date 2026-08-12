@@ -18,30 +18,12 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
   const [phase, setPhase] = useState<Phase>('inhale');
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [cycleCount, setCycleCount] = useState(0);
-  const [isDyslexicFont, setIsDyslexicFont] = useState(() =>
-    typeof document !== 'undefined' && document.body.getAttribute('data-font') === 'dyslexic'
-  );
-
   const handleFinish = useCallback(() => {
     if (cycleCount > 0 || secondsLeft < 55 || secondsLeft === 0) {
       onComplete?.();
     }
     onClose();
   }, [cycleCount, secondsLeft, onComplete, onClose]);
-
-  const toggleDyslexicFont = () => {
-    const next = !isDyslexicFont;
-    setIsDyslexicFont(next);
-    if (typeof window !== 'undefined') {
-      if (next) {
-        document.body.setAttribute('data-font', 'dyslexic');
-        localStorage.setItem('mira_font', 'dyslexic');
-      } else {
-        document.body.removeAttribute('data-font');
-        localStorage.setItem('mira_font', 'standard');
-      }
-    }
-  };
 
   // Keyboard accessibility (Escape key to dismiss)
   useEffect(() => {
@@ -136,21 +118,6 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
           exit={{ opacity: 0, scale: 0.9 }}
           className="relative w-full max-w-lg bg-gradient-to-b from-teal-900/90 via-slate-900/95 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-teal-500/30 overflow-hidden text-center space-y-6"
         >
-          {/* Accessibility font toggle */}
-          <div className="absolute top-4 left-4 flex items-center gap-2">
-            <button
-              onClick={toggleDyslexicFont}
-              className={`px-3 py-1 text-[11px] font-semibold rounded-full border transition-all cursor-pointer ${
-                isDyslexicFont
-                  ? 'bg-teal-400 text-teal-950 border-teal-300'
-                  : 'bg-teal-500/20 text-teal-300 border-teal-500/40 hover:bg-teal-500/30'
-              }`}
-              title="Activar/Desactivar fuente adaptada para dislexia"
-            >
-              {isDyslexicFont ? '📖 Fuente Lectura ✓' : '📖 Fuente Lectura'}
-            </button>
-          </div>
-
           {/* Close Button */}
           <button
             onClick={handleFinish}

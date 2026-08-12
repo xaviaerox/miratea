@@ -104,13 +104,6 @@ export default function LoginPage() {
           >
             ✨ Explorar Modo Demo al Instante (Sin Registro)
           </Button>
-
-          <Link
-            href="/brandbook"
-            className="text-xs text-sky-700 hover:text-sky-900 hover:underline font-medium pt-1 text-center block"
-          >
-            📖 Explorar Brand Book Oficial (Solutech · MIRATEA)
-          </Link>
         </div>
       </div>
     </Card>

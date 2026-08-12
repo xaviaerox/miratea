@@ -179,15 +179,13 @@ export default function HomePage() {
     setGoalPropTitle,
     goalPropWhy,
     setGoalPropWhy,
-    goalPropStep1,
-    setGoalPropStep1,
-    goalPropStep2,
-    setGoalPropStep2,
-    goalPropStep3,
-    setGoalPropStep3,
+    goalPropSteps,
+    setGoalPropStepValue,
+    addGoalPropStep,
+    removeGoalPropStep,
+    setTargetStepCount,
     goalPropSubmitting,
     goalPropError,
-    setGoalPropError,
     isGeneratingAIDecompose,
     handleAIDecomposeInModal,
     handleProposeGoalSubmit,
@@ -234,6 +232,24 @@ export default function HomePage() {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [showStoryModal, setShowStoryModal] = useState(false);
   const [activeStory, setActiveStory] = useState<MicroStory | null>(null);
+
+  const [isDyslexicFont, setIsDyslexicFont] = useState(() =>
+    typeof document !== 'undefined' && document.body.getAttribute('data-font') === 'dyslexic'
+  );
+
+  const toggleDyslexicFont = () => {
+    const next = !isDyslexicFont;
+    setIsDyslexicFont(next);
+    if (typeof window !== 'undefined') {
+      if (next) {
+        document.body.setAttribute('data-font', 'dyslexic');
+        localStorage.setItem('mira_font', 'dyslexic');
+      } else {
+        document.body.removeAttribute('data-font');
+        localStorage.setItem('mira_font', 'standard');
+      }
+    }
+  };
 
   const handleOpenStory = () => {
     const story = generateMicroStory({
@@ -298,17 +314,6 @@ export default function HomePage() {
           >
             <span>🎁</span>
             <span>Canjear</span>
-          </button>
-          <button
-            onClick={toggleSilentMode}
-            className={`p-1.5 px-2.5 rounded-full border backdrop-blur-md transition-all shadow-soft cursor-pointer text-xs font-semibold flex items-center gap-1 hover:scale-[1.02] active:scale-95 ${
-              silentMode
-                ? 'bg-amber-100/90 text-amber-900 border-amber-300'
-                : 'bg-white/90 text-stone-600 border-stone-200/80 hover:bg-white'
-            }`}
-            title={silentMode ? 'Modo Calma activado (menos animaciones)' : 'Activar Modo Calma'}
-          >
-            <span>{silentMode ? '🌙' : '✨'}</span>
           </button>
           <SparkBadge count={sparkBalance} size="md" />
         </div>
@@ -556,12 +561,6 @@ export default function HomePage() {
                     type="button"
                     onClick={() => {
                       setIsProposingGoal(true);
-                      setGoalPropTitle('');
-                      setGoalPropWhy('');
-                      setGoalPropStep1('');
-                      setGoalPropStep2('');
-                      setGoalPropStep3('');
-                      setGoalPropError('');
                     }}
                     className="w-full text-xs font-bold py-2.5 rounded-2xl bg-bloom-50 text-bloom-600 border border-bloom-100 hover:bg-bloom-100 transition-colors shadow-soft flex items-center justify-center gap-1.5 cursor-pointer font-body"
                   >
@@ -1014,19 +1013,38 @@ export default function HomePage() {
                     <span className="text-2xl">🎁</span>
                     <div>
                       <p className="text-xs font-bold text-stone-700">Catálogo de Premios</p>
-                      <p className="text-xs text-stone-500">Canjear chispas acumuladas ({sparkBalance} ⚡)</p>
+                      <p className="text-xs text-stone-500">Canjear Sparks ✦ acumuladas ({sparkBalance} Sparks ✦)</p>
                     </div>
                   </div>
                   <span className="text-xs text-stone-400 font-semibold">Ver Premios ›</span>
                 </button>
 
-                {/* Accessibility / Silent Mode */}
+                {/* Accessibility / Dyslexia Reading Font */}
+                <div className="p-4 bg-white/90 backdrop-blur-md rounded-2xl border border-stone-200/80 flex items-center justify-between shadow-soft text-left">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">📖</span>
+                    <div>
+                      <p className="text-xs font-bold text-stone-700">Fuente de Lectura Adaptada</p>
+                      <p className="text-xs text-stone-500">Tipografía facilitada para dislexia (OpenDyslexic)</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={toggleDyslexicFont}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer hover:scale-105 active:scale-95 ${
+                      isDyslexicFont ? 'bg-amber-500 text-slate-950 shadow-soft' : 'bg-stone-100 text-stone-600'
+                    }`}
+                  >
+                    {isDyslexicFont ? 'Activada ✓' : 'Estándar'}
+                  </button>
+                </div>
+
+                {/* Accessibility / Silent Mode (Menos Efectos) */}
                 <div className="p-4 bg-white/90 backdrop-blur-md rounded-2xl border border-stone-200/80 flex items-center justify-between shadow-soft text-left">
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">{silentMode ? '🌙' : '✨'}</span>
                     <div>
-                      <p className="text-xs font-bold text-stone-700">Modo Menos Animaciones</p>
-                      <p className="text-xs text-stone-500">Entorno visual de baja estimulación</p>
+                      <p className="text-xs font-bold text-stone-700">Menos Efectos y Animaciones</p>
+                      <p className="text-xs text-stone-500">Baja estimulación visual y movimiento reducido</p>
                     </div>
                   </div>
                   <button
@@ -1341,7 +1359,7 @@ export default function HomePage() {
 
                     <label className="flex flex-col gap-1.5 font-body">
                       <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider font-body">
-                        Sugerir chispas (Opcional)
+                        Sugerir Sparks ✦ (Opcional)
                       </span>
                       <input
                         type="number"
@@ -1510,142 +1528,24 @@ export default function HomePage() {
       </AnimatePresence>
  
       {/* PROPOSE GOAL MODAL */}
-      <AnimatePresence>
-        {isProposingGoal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsProposingGoal(false)}
-              className="absolute inset-0 bg-stone-900/40 backdrop-blur-sm"
-            />
-
-            {/* Card */}
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 15 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 15 }}
-              transition={{ type: 'spring', duration: 0.5 }}
-              className="relative bg-white rounded-3xl p-6 shadow-card border border-stone-100 max-w-sm w-full flex flex-col gap-4 max-h-[85vh] overflow-y-auto"
-            >
-              <form
-                onSubmit={handleProposeGoalSubmit}
-                className="flex flex-col gap-4"
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="font-display text-xl text-stone-850 flex items-center gap-2">
-                    <span>◈</span> Proponer Aventura
-                  </h3>
-                  <button
-                    type="button"
-                    onClick={() => setIsProposingGoal(false)}
-                    className="text-stone-400 hover:text-stone-600 text-lg leading-none cursor-pointer"
-                  >
-                    ×
-                  </button>
-                </div>
-
-                <p className="text-xs text-stone-500 font-body">
-                  Escribe qué aventura te gustaría realizar y los pasos para lograrla.
-                </p>
-
-                {goalPropError && (
-                  <div className="text-xs text-red-500 bg-red-50 p-2.5 rounded-xl border border-red-100 font-body">
-                    {goalPropError}
-                  </div>
-                )}
-
-                <div className="flex flex-col gap-3 font-body">
-                  <label className="flex flex-col gap-1 text-left">
-                    <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider font-body">
-                      Nombre de la aventura *
-                    </span>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Ej. Aprender a ir en bici sin rueditas"
-                      value={goalPropTitle}
-                      onChange={e => setGoalPropTitle(e.target.value)}
-                      className="w-full px-3.5 py-2 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-bloom-300 text-xs font-body text-stone-750"
-                    />
-                  </label>
-
-                  <label className="flex flex-col gap-1 text-left">
-                    <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider font-body">
-                      ¿Por qué quieres lograr esto?
-                    </span>
-                    <textarea
-                      placeholder="Ej. Para ir al parque pedaleando con mis amigos"
-                      value={goalPropWhy}
-                      onChange={e => setGoalPropWhy(e.target.value)}
-                      rows={2}
-                      className="w-full px-3.5 py-2 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-bloom-300 text-xs font-body resize-none text-stone-750"
-                    />
-                  </label>
-
-                  <div className="flex flex-col gap-1.5 text-left">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider font-body">
-                        Pasos sugeridos (Capítulos)
-                      </span>
-                      <button
-                        type="button"
-                        onClick={handleAIDecomposeInModal}
-                        disabled={!goalPropTitle.trim() || isGeneratingAIDecompose}
-                        className="text-[11px] text-teal-600 font-semibold hover:underline disabled:opacity-50 cursor-pointer"
-                      >
-                        {isGeneratingAIDecompose ? 'Pensando pasos...' : '✨ Sugerir con Lumi'}
-                      </button>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Paso 1: Practicar equilibrio sentado (Fácil)"
-                      value={goalPropStep1}
-                      onChange={e => setGoalPropStep1(e.target.value)}
-                      className="w-full px-3.5 py-2 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-bloom-300 text-xs font-body text-stone-750"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Paso 2: Pedalear con ayuda de un adulto (Medio)"
-                      value={goalPropStep2}
-                      onChange={e => setGoalPropStep2(e.target.value)}
-                      className="w-full px-3.5 py-2 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-bloom-300 text-xs font-body text-stone-750"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Paso 3: Pedalear solo en línea recta (Desafío)"
-                      value={goalPropStep3}
-                      onChange={e => setGoalPropStep3(e.target.value)}
-                      className="w-full px-3.5 py-2 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-bloom-300 text-xs font-body text-stone-750"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex gap-2.5 mt-2">
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setIsProposingGoal(false)}
-                    className="flex-1 text-xs font-bold"
-                  >
-                    Cancelar
-                  </Button>
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    loading={goalPropSubmitting}
-                    className="flex-1 text-xs font-bold bg-bloom-500 hover:bg-bloom-600 text-white shadow-soft"
-                  >
-                    Enviar Propuesta
-                  </Button>
-                </div>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      <GoalProposalModal
+        isOpen={isProposingGoal}
+        onClose={() => setIsProposingGoal(false)}
+        title={goalPropTitle}
+        setTitle={setGoalPropTitle}
+        why={goalPropWhy}
+        setWhy={setGoalPropWhy}
+        steps={goalPropSteps}
+        setStepValue={setGoalPropStepValue}
+        addStep={addGoalPropStep}
+        removeStep={removeGoalPropStep}
+        setTargetStepCount={setTargetStepCount}
+        submitting={goalPropSubmitting}
+        error={goalPropError}
+        isGeneratingAI={isGeneratingAIDecompose}
+        onAIDecompose={handleAIDecomposeInModal}
+        onSubmit={handleProposeGoalSubmit}
+      />
 
       {/* WORLDS MODAL */}
       <AnimatePresence>
@@ -1841,12 +1741,11 @@ export default function HomePage() {
         setTitle={setGoalPropTitle}
         why={goalPropWhy}
         setWhy={setGoalPropWhy}
-        step1={goalPropStep1}
-        setStep1={setGoalPropStep1}
-        step2={goalPropStep2}
-        setStep2={setGoalPropStep2}
-        step3={goalPropStep3}
-        setStep3={setGoalPropStep3}
+        steps={goalPropSteps}
+        setStepValue={setGoalPropStepValue}
+        addStep={addGoalPropStep}
+        removeStep={removeGoalPropStep}
+        setTargetStepCount={setTargetStepCount}
         submitting={goalPropSubmitting}
         error={goalPropError}
         isGeneratingAI={isGeneratingAIDecompose}

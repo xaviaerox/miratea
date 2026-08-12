@@ -28,7 +28,7 @@ export default function ChildRewardsPage() {
           <Gift className="w-12 h-12 text-teal-600 mx-auto" />
           <h1 className="text-xl font-bold text-slate-800">Sección para Niños</h1>
           <p className="text-slate-600 text-sm">
-            Esta pantalla es para que los niños canjeen sus chispas por recompensas familiares.
+            Esta pantalla es para que los niños canjeen sus Sparks ✦ por recompensas familiares.
           </p>
           <Link href="/dashboard/rewards">
             <Button className="w-full">Ir a Gestión de Recompensas (Padres)</Button>
@@ -40,7 +40,7 @@ export default function ChildRewardsPage() {
 
   const handleRequest = async (reward: Reward) => {
     if (balance < reward.cost) {
-      setFeedback(`¡Necesitas ${reward.cost - balance} chispas más para esta recompensa! Sigue completando aventuras.`);
+      setFeedback(`¡Necesitas ${reward.cost - balance} Sparks ✦ más para esta recompensa! Sigue completando aventuras.`);
       setTimeout(() => setFeedback(null), 4000);
       return;
     }
@@ -80,7 +80,7 @@ export default function ChildRewardsPage() {
           </div>
           <h1 className="text-2xl font-bold text-slate-800">Cofre de Recompensas</h1>
           <p className="text-slate-600 max-w-md mx-auto text-sm">
-            Canjea tus chispas por actividades mágicas y momentos especiales con tu familia.
+            Canjea tus Sparks ✦ por actividades mágicas y momentos especiales con tu familia.
           </p>
         </Card>
 
@@ -125,7 +125,7 @@ export default function ChildRewardsPage() {
                       <div className="flex items-start justify-between">
                         <span className="text-4xl">{reward.emoji || '🎁'}</span>
                         <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">
-                          ✨ {reward.cost} chispas
+                          ✨ {reward.cost} Sparks
                         </div>
                       </div>
                       <h3 className="font-bold text-slate-800 text-lg leading-snug">{reward.title}</h3>
