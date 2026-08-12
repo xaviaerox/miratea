@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase';
 import { ChildAvatar } from '../ui/ChildAvatar';
 import { CompanionBlob } from './CompanionBlob';
 import { CUSTOMIZATION_ITEMS, type CustomizationItem } from '@/lib/customization/CustomizationItems';
+import { Palette, Sparkles, Smile } from 'lucide-react';
 import { getSparkAdapter, DATA_SOURCE } from '@/lib/adapters';
 
 interface CustomizationModalProps {
@@ -17,7 +18,7 @@ interface CustomizationModalProps {
   onPurchaseSuccess: () => void; // Callback to fetch new spark balance in parent
 }
 
-const EMOJI_OPTIONS = ['🦊', '🐼', '🐨', '🦁', '🐯', '🐸', '🐰', '🐙', '🦄', '🦖', '🐒', '🦉'];
+const EMOJI_OPTIONS = ['🦊', '🐼', '🐨', '🦁', '🐯', '🐸', '🐰', '🐙', '🦄', '🦖', '🐒', '🦉', '🤖', '🧙'];
 
 export function CustomizationModal({ isOpen, onClose, sparkBalance, onPurchaseSuccess }: CustomizationModalProps) {
   const { profile, updateProfile } = useAuth();
@@ -200,46 +201,53 @@ export function CustomizationModal({ isOpen, onClose, sparkBalance, onPurchaseSu
           >
             {/* Header */}
             <div className="p-5 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between bg-stone-50/50 dark:bg-stone-850/50">
-              <div>
-                <h2 id="customization-modal-title" className="font-display text-xl text-stone-800 dark:text-stone-100">
-                  🎨 Mi Armario de Estrellas
-                </h2>
-                <p className="text-xs text-stone-400 mt-0.5">
-                  Personaliza tu perfil y el de tu compañero
-                </p>
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200/80">
+                  <Palette className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 id="customization-modal-title" className="font-display text-xl font-bold text-stone-850 dark:text-stone-100">
+                    Armario de Estrellas
+                  </h2>
+                  <p className="text-xs text-stone-400 mt-0.5 font-body">
+                    Personaliza tu personaje y el aspecto de tu compañero
+                  </p>
+                </div>
               </div>
               <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 px-3.5 py-1.5 rounded-2xl shadow-soft">
-                <span className="text-sm font-extrabold text-amber-600 dark:text-amber-500">
+                <span className="text-sm font-extrabold text-amber-700 dark:text-amber-400 font-body">
                   {sparkBalance} Sparks ✦
                 </span>
               </div>
             </div>
 
             {/* TAB SELECTOR */}
-            <div className="flex border-b border-stone-100 dark:border-stone-800 text-sm font-bold" role="tablist">
+            <div className="flex border-b border-stone-100 dark:border-stone-800 text-xs font-bold font-display uppercase tracking-wider" role="tablist">
               <button
                 role="tab"
                 aria-selected={activeTab === 'avatar'}
                 onClick={() => setActiveTab('avatar')}
-                className={`flex-1 py-3 text-center transition-colors border-b-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-bloom-300 ${
+                className={`flex-1 py-3 text-center transition-all border-b-2 flex items-center justify-center gap-2 cursor-pointer focus:outline-none ${
                   activeTab === 'avatar'
-                    ? 'border-bloom-500 text-bloom-600 dark:text-bloom-400'
+                    ? 'border-bloom-500 text-bloom-600 dark:text-bloom-400 bg-bloom-50/40 dark:bg-bloom-950/20'
                     : 'border-transparent text-stone-400 hover:text-stone-600'
                 }`}
               >
-                🦊 Mi Avatar
+                <Smile className="w-4 h-4 text-bloom-500" />
+                <span>Mi Personaje</span>
               </button>
               <button
                 role="tab"
                 aria-selected={activeTab === 'companion'}
                 onClick={() => setActiveTab('companion')}
-                className={`flex-1 py-3 text-center transition-colors border-b-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-bloom-300 ${
+                className={`flex-1 py-3 text-center transition-all border-b-2 flex items-center justify-center gap-2 cursor-pointer focus:outline-none ${
                   activeTab === 'companion'
-                    ? 'border-bloom-500 text-bloom-600 dark:text-bloom-400'
+                    ? 'border-bloom-500 text-bloom-600 dark:text-bloom-400 bg-bloom-50/40 dark:bg-bloom-950/20'
                     : 'border-transparent text-stone-400 hover:text-stone-600'
                 }`}
               >
-                🌟 Mi Compañero
+                <Sparkles className="w-4 h-4 text-amber-500" />
+                <span>Mi Compañero</span>
               </button>
             </div>
 
@@ -248,38 +256,41 @@ export function CustomizationModal({ isOpen, onClose, sparkBalance, onPurchaseSu
               {/* TAB 1: AVATAR */}
               {activeTab === 'avatar' && (
                 <>
-                  {/* PREVIEW */}
-                  <div className="flex flex-col items-center justify-center p-4 bg-stone-50 dark:bg-stone-850 rounded-2xl border border-stone-150 dark:border-stone-800">
+                  {/* PREVIEW CARD */}
+                  <div className="flex flex-col items-center justify-center p-6 bg-gradient-to-b from-amber-500/10 via-amber-50/40 to-white dark:from-stone-850 dark:to-stone-900 rounded-3xl border border-amber-200/70 dark:border-stone-800 shadow-soft relative overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.12),transparent_70%)] pointer-events-none" />
                     <ChildAvatar
                       baseEmoji={currentAvatarEmoji}
                       accessory={currentAvatarAcc}
-                      size="lg"
+                      size="xl"
+                      className="shadow-md"
                     />
-                    <span className="text-xs text-stone-400 font-semibold mt-3">
+                    <span className="text-xs text-stone-500 font-bold mt-3 font-display tracking-wide">
                       Vista previa de tu avatar
                     </span>
                   </div>
 
-                  {/* BASE EMOJI SELECTION */}
+                  {/* BASE VECTOR AVATAR SELECTION */}
                   <div className="space-y-2">
-                    <h3 className="text-xs font-bold text-stone-400 uppercase tracking-widest">
+                    <h3 className="text-xs font-bold text-stone-400 uppercase tracking-widest font-display">
                       Elige tu personaje base (Gratis)
                     </h3>
-                    <div className="grid grid-cols-6 gap-2">
+                    <div className="grid grid-cols-4 sm:grid-cols-7 gap-2.5">
                       {EMOJI_OPTIONS.map(emoji => (
                         <button
                           key={emoji}
+                          type="button"
                           onClick={() => handleSelectEmoji(emoji)}
                           className={`
-                            text-2xl p-2.5 rounded-xl border transition-all active:scale-[0.92] cursor-pointer
+                            p-1.5 rounded-2xl border transition-all active:scale-[0.92] cursor-pointer flex items-center justify-center
                             ${
                               currentAvatarEmoji === emoji
-                                ? 'bg-bloom-50 border-bloom-400 shadow-soft scale-110'
-                                : 'bg-white dark:bg-stone-800 border-stone-200 dark:border-stone-700 hover:bg-stone-50'
+                                ? 'bg-amber-100/80 border-amber-400 shadow-soft scale-105 ring-2 ring-amber-300/60'
+                                : 'bg-white dark:bg-stone-800 border-stone-200 dark:border-stone-700 hover:bg-amber-50/50'
                             }
                           `}
                         >
-                          {emoji}
+                          <ChildAvatar baseEmoji={emoji} size="sm" interactive={false} />
                         </button>
                       ))}
                     </div>

@@ -336,6 +336,30 @@ DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.s
   - **Alternativas descartadas**: Mantener caracteres unicode o emojis genéricos en la interfaz principal.
   - **Consecuencias**: Aspecto mucho más pulido, elegante, accesible e integrado con el sistema de diseño de MIRATEA.
 
+* **2026-08-12 — Sistema de Anclajes Anatómicos y Rediseño Sensorial del Armario de Avatares**:
+  - **Descripción**: Implementación de una matriz de anclajes anatómicos (`ANCHOR_MAP`) en `ChildAvatar.tsx` calibrada por par de `(baseEmoji, accessory)` para posicionar exactamente los auriculares, coronas, gafas y sombreros sobre la cabeza, ojos y orejas de cada uno de los 12 animales base (`🐒`, `🦊`, `🐼`, `🐨`, `🦁`, `🐯`, `🐸`, `🐰`, `🐙`, `🦄`, `🦖`, `🦉`). Rediseño del modal del Armario (`CustomizationModal.tsx`) con previsualizador radial animado, tarjeta de vista previa flotante con auras de luz y reajuste de la escala de accesorios de Lumi (`CompanionBlob.tsx`) por etapa de crecimiento.
+  - **Motivo**: Eliminar los fallos de superposición donde los accesorios flotaban fuera de la cabeza o cubrían la cara de los animales (ej. mono con auriculares en el cuello) y ofrecer una experiencia lúdica, estimulante y divertida para los niños.
+  - **Alternativas descartadas**: Mantener posiciones CSS porcentuales genéricas idénticas para animales con diferentes formas de cabeza.
+  - **Consecuencias**: Alineación anatómica perfecta en cualquier sistema operativo, estética enriquecida y mayor interacción lúdica infantil.
+
+* **2026-08-12 — Inmutabilidad Constitucional del Ícono Oficial de MIRATEA y Presencia Global**:
+  - **Descripción**: Definición como regla inmutable del proyecto de que el icono oficial de MIRATEA (`public/icon.svg`, `public/favicon.ico`, `public/icon-192x192.png`, `public/icon-512x512.png`, `src/components/ui/MiraLogo.tsx`) es **definitivo, permanente e inalterable** salvo indicación explícita del usuario. Configuración obligatoria como Favicon universal, icono de app instalable PWA (`manifest.ts`) e insignia visual institucional en pantallas de autenticación y navegadores.
+  - **Motivo**: Consolidar la identidad visual del producto, evitar alteraciones accidentales del logo por parte de futuros agentes/refactorizaciones y garantizar coherencia total en todas las plataformas.
+  - **Alternativas descartadas**: Permitir la generación o sustitución automatizada del logo institucional.
+  - **Consecuencias**: Protección absoluta del activo de marca principal de MIRATEA y presencia visual estandarizada en todos los entornos.
+
+* **2026-08-12 — Catálogo Ilustrado y Selector Categorizado de Iconos de Recompensas (`RewardIconPicker`)**:
+  - **Descripción**: Sustitución de los símbolos monocromáticos rígidos (`☆`, `✈`, `☘`, `✎`) por un catálogo estructurado de emojis expresivos y coloridos clasificados en 3 categorías temáticas en `RewardIcons.ts` (`Salidas y Comida 🍦`, `Juegos y Tiempo Libre 🎮`, `Premios y Privilegios ⭐`). Creación del componente `RewardIconPicker.tsx` con filtros por categoría, tarjeta de vista previa flotante en tiempo real y compatibilidad con emojis personalizados.
+  - **Motivo**: Eliminar la baja calidad visual de los símbolos monocromáticos anteriores y ofrecer una representación altamente motivadora y clara de los premios reales en la dinámica familiar.
+  - **Alternativas descartadas**: Mantener caracteres de texto planos monocromáticos.
+  - **Consecuencias**: Creación y edición de recompensas mucho más visual, atractiva, motivadora e intuitiva tanto para niños como para padres.
+
+* **2026-08-12 — Fase 2: Motor Abierto de Avatares Vectoriales Gamificados (`@dicebear/core` + `@dicebear/collection`)**:
+  - **Descripción**: Integración de las librerías open-source `@dicebear/core` y `@dicebear/collection` en `ChildAvatar.tsx` y `CustomizationModal.tsx`, sustituyendo los emojis planos por **ilustraciones vectoriales SVG dinámicas** (`adventurer`, `bottts`, `funEmoji`, `lorelei`). Creación de 14 configuraciones de personajes gamificados (`Zorro Felix`, `Panda Max`, `LumiBot 3000`, `Mago de la Calma`, `Dino Hero`, `Espacial`, etc.) con renders vectoriales fluidos y superposición precisa de accesorios.
+  - **Motivo**: Cumplir con la Fase 2 del plan de mejora reemplazando completamente los emojis de texto por una biblioteca gráfica gamificada, interactiva y divertida que no aburra a los niños.
+  - **Alternativas descartadas**: Depender de emojis del sistema operativo.
+  - **Consecuencias**: Estética de videojuego infantil de alta gama, renderizado SVG 100% vectorial nítido en cualquier resolución y cero problemas de desalineación.
+
 ---
 
 # Problemas Conocidos

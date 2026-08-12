@@ -10,4 +10,5 @@ This version of Next.js has breaking changes — APIs, conventions, and file str
 4. **Metas y Aventuras**: Modales sensoriales cálidos (`#FAF9F7`) con selector dinámico de pasos (`2..6`), botón `+ Añadir otro paso` dinámico y desintegrador de IA con Lumi.
 5. **Ajustes Centralizados**: La Fuente de Lectura Adaptada (OpenDyslexic) y la opción "Menos Efectos y Animaciones" residen de forma unificada en la Pestaña de Ajustes (`Tab 5 / profile`). La barra superior del header se mantiene limpia sin botones redundantes.
 6. **Sin Punición**: Prohibido usar contadores de rachas destructivos. El compañero Lumi jamás pierde nivel.
+7. **Inmutabilidad del Ícono de MIRATEA**: El icono oficial de MIRATEA (`icon.svg` / `icon-192x192.png` / `icon-512x512.png` / `favicon.ico`) es inmutable y definitivo. Queda estrictamente prohibido modificarlo o sustituirlo a menos que el usuario lo exija explícitamente. Forma parte integral del Favicon, PWA e identidad de la app.
 <!-- END:nextjs-agent-rules -->

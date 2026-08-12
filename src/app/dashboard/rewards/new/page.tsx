@@ -7,11 +7,9 @@ import { getRewardsAdapter } from '@/lib/adapters';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { cn } from '@/lib/utils';
+import { RewardIconPicker } from '@/components/rewards/RewardIconPicker';
 
 const rewardsAdapter = getRewardsAdapter();
-
-const SUGGESTED_EMOJIS = ['☆', '✧', '✦', '♡', '☼', '☾', '⚡', '☕', '⚙', '✈', '☘', '⚓', '♫', '✎', '✉'];
 
 function NewRewardForm() {
   const router = useRouter();
@@ -19,7 +17,7 @@ function NewRewardForm() {
   const { family } = useFamily();
 
   const paramTitle = searchParams.get('title') || '';
-  const paramEmoji = searchParams.get('emoji') || '☆';
+  const paramEmoji = searchParams.get('emoji') || '🎁';
   const paramRequestId = searchParams.get('request_id') || '';
 
   const [title, setTitle] = useState(paramTitle);
@@ -119,36 +117,10 @@ function NewRewardForm() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
-            Icono representativo
-          </label>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={emoji}
-              onChange={e => setEmoji(e.target.value)}
-              maxLength={4}
-              className="w-12 text-center text-xl p-2 rounded-2xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-bloom-200"
-              placeholder="☆"
-            />
-            <div className="flex-1 flex flex-wrap gap-1 items-center bg-stone-50 p-2 rounded-2xl border border-stone-100">
-              {SUGGESTED_EMOJIS.map(item => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setEmoji(item)}
-                  className={cn(
-                    'w-7 h-7 flex items-center justify-center text-sm rounded-lg hover:bg-stone-200 transition-all cursor-pointer',
-                    emoji === item && 'bg-bloom-100 border border-bloom-300'
-                  )}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+        <RewardIconPicker
+          value={emoji}
+          onChange={setEmoji}
+        />
 
         {error && (
           <p className="text-sm text-red-600 text-center animate-fade-in" role="alert">

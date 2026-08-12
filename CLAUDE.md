@@ -19,3 +19,4 @@ MIRATEA by Solutech is a neurodiversity-affirming growth and self-regulation pla
 7. **Neurodivergent First**: Prohibido usar mecánicas punitivas, contadores de racha que se pierden o juicio social. El compañero Lumi jamás involuciona de fase.
 8. **Arquitectura Dual-Adapter**: Mantén la interfaz `DataService` en `src/lib/adapters/` compatible tanto con `static` (demo en memoria) como con `supabase` (producción).
 9. **Cero Tolerancia a Errores de Lint**: Mantén 0 errores y 0 advertencias de ESLint en todo momento.
+10. **Inmutabilidad del Ícono de MIRATEA**: El icono oficial de MIRATEA (`icon.svg` / `icon-192x192.png` / `icon-512x512.png` / `favicon.ico` / `MiraLogo.tsx`) es inmutable y definitivo. Queda estrictamente prohibido modificarlo o sustituirlo a menos que el usuario lo exija explícitamente. Forma parte integral del Favicon, PWA e identidad visual de la app.

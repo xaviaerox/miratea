@@ -17,7 +17,7 @@ interface CompanionBlobProps {
   silentMode?: boolean;
 }
 
-function getAccessoryStyle(emoji: string, px: number) {
+function getAccessoryStyle(emoji: string, px: number, stage?: CompanionStage) {
   let fontSize = px * 0.45;
   let top = '0%';
   let left = '50%';
@@ -31,30 +31,33 @@ function getAccessoryStyle(emoji: string, px: number) {
   const hasRibbon = emoji.includes('🎀');
   const hasHeadphones = emoji.includes('🎧');
 
+  // Stage vertical adjustments (egg is shorter, radiant is taller)
+  const isEgg = stage === 'egg';
+
   if (hasSunglasses) {
-    fontSize = px * 0.46;
-    top = '22%';
+    fontSize = px * 0.42;
+    top = isEgg ? '34%' : '30%';
   } else if (hasCrown) {
-    fontSize = px * 0.48;
-    top = '-33%';
+    fontSize = px * 0.45;
+    top = isEgg ? '-14%' : '-20%';
     transform = 'translateX(-50%) rotate(-8deg)';
   } else if (hasTopHat) {
-    fontSize = px * 0.52;
-    top = '-37%';
+    fontSize = px * 0.48;
+    top = isEgg ? '-20%' : '-26%';
     transform = 'translateX(-50%) rotate(-4deg)';
   } else if (hasGradCap) {
-    fontSize = px * 0.52;
-    top = '-36%';
+    fontSize = px * 0.48;
+    top = isEgg ? '-18%' : '-24%';
     transform = 'translateX(-50%) rotate(-6deg)';
   } else if (hasRibbon) {
-    fontSize = px * 0.38;
-    top = '12%';
+    fontSize = px * 0.36;
+    top = isEgg ? '14%' : '8%';
     left = 'auto';
     right = '12%';
     transform = 'rotate(15deg)';
   } else if (hasHeadphones) {
-    fontSize = px * 0.65;
-    top = '12.5%';
+    fontSize = px * 0.72;
+    top = isEgg ? '0%' : '-6%';
   } else {
     top = '-10%';
   }
@@ -316,7 +319,7 @@ export const CompanionBlob = memo(function CompanionBlob({
       </svg>
 
       {customAccessory && (() => {
-        const style = getAccessoryStyle(customAccessory, px);
+        const style = getAccessoryStyle(customAccessory, px, stage);
         return (
           <div
             className="absolute pointer-events-none select-none flex items-center justify-center"
