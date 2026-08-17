@@ -57,8 +57,6 @@ export default function NewGoalPage() {
     try {
       const prompt = buildDecompositionPrompt({ goalTitle: title, goalWhy: why, childAge, numTasks, sparkValue });
       let textResponse = '';
-      let fetchSuccess = false;
-
       try {
         const res = await fetch('/api/decompose', {
           method: 'POST',
@@ -69,56 +67,9 @@ export default function NewGoalPage() {
         if (res.ok) {
           const data = await res.json();
           textResponse = data.text;
-          fetchSuccess = true;
         }
       } catch (fetchErr) {
-        console.warn('[new/page] API route fetch failed, trying client fallback...', fetchErr);
-      }
-
-      if (!fetchSuccess) {
-        const clientGroqKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
-        const clientGeminiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-
-        if (clientGroqKey) {
-          const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${clientGroqKey}`
-            },
-            body: JSON.stringify({
-              model: 'llama-3.1-8b-instant',
-              messages: [{ role: 'user', content: prompt }],
-              max_tokens: 1024,
-              temperature: 0.3,
-              response_format: { type: 'json_object' }
-            }),
-          });
-          if (groqRes.ok) {
-            const data = await groqRes.json();
-            textResponse = data.choices?.[0]?.message?.content || '';
-          }
-        } else if (clientGeminiKey) {
-          const geminiRes = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${clientGeminiKey}`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                generationConfig: {
-                  maxOutputTokens: 1024,
-                  temperature: 0.3,
-                  responseMimeType: 'application/json'
-                }
-              })
-            }
-          );
-          if (geminiRes.ok) {
-            const data = await geminiRes.json();
-            textResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          }
-        }
+        console.warn('[new/page] API route fetch failed:', fetchErr);
       }
 
       if (textResponse) {

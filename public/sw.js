@@ -1,5 +1,5 @@
 // Service Worker for MIRA App (PWA Offline Capability & Static Cache)
-const CACHE_NAME = 'mira-v1';
+const CACHE_NAME = 'mira-v1.4.0';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',

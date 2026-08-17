@@ -12,12 +12,12 @@
   1. **Familias y Cuidadores**: Gestión del hogar, seguimiento diario y dinámicas de autorregulación.
   2. **Niños y Menores**: Entorno lúdico y tranquilo con apoyo de la mascota inmutable *Lumi*.
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
-  4. **Administración de Centros**: Gobernanza, gestión de permisos y roles sociosanitarios.
-* **Estado del proyecto**: Producción / Gold Release v1.0 (Producto Comercial Privado).
-* **Nivel de madurez**: Alto (9.8/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint y suite de pruebas unitarias 50/50 pasadas.
+  4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
+* **Estado del proyecto**: Producción / Accessibility & Settings Release v1.4.0.
+* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, auditoría de seguridad completada y suite de pruebas unitarias pasadas.
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
-* **Versión actual**: `1.3.0` (Enterprise Release v1.3).
-* **Última actualización**: 2026-07-31.
+* **Versión actual**: `1.4.0` (Accessibility & Settings Release v1.4.0).
+* **Última actualización**: 2026-08-17.
 
 ---
 
@@ -27,10 +27,10 @@ MIRATEA es una aplicación web progresiva (PWA) de arquitectura full-stack desar
 
 ### Cómo funciona
 1. **Acceso y Perfiles**: Los usuarios acceden mediante autenticación basada en Supabase Auth o mediante el *Modo Demo 1-Clic* (que utiliza un adaptador de memoria/estático instantáneo sin latencia).
-2. **Navegación por Módulos**: Dependiendo del rol activo (Familia, Terapeuta, Administrador), la interfaz adapta sus componentes.
+2. **Navegación y Aislamiento por Roles**: Aislamiento estricto por cuenta y rol (`parent` vs `child`). Los padres acceden a su panel privado de gestión (`/dashboard`) y los menores a su vista adaptada (`/home`).
 3. **Núcleo de Autorregulación**: Disponible en 1-clic, el *Rincón de Calma* ofrece dinámicas de respiración guiada (*Box Breathing 4-4-4-4*) acompañadas de sonido sintetizado mediante la Web Audio API a 432Hz.
-4. **Inteligencia Adaptativa Local**: El sistema de desintegración de objetivos complejos descompone metas en 3 microcapítulos mediante llamadas a LLMs anonimizadas mediante el middleware `PiiSanitizer`.
-5. **Seguimiento Clínico y Portabilidad**: Generación automática de informes emocionales y conductuales exportables en formato PDF, JSON y CSV.
+4. **Inteligencia Adaptativa Local**: El sistema de desintegración de objetivos complejos descompone metas en micropasos mediante llamadas a LLMs anonimizadas mediante el middleware `PiiSanitizer`.
+5. **Seguimiento Clínico y Portabilidad**: Generación automática de informes emocionales y conductuales exportables en formato PDF, JSON y CSV desde el rol parental.
 
 ### Qué hace
 * Gestión de rutinas visuales sin penalizaciones por incumplimiento.
@@ -216,7 +216,7 @@ miratea-app/
 1. **Cero Rachas (No Streaks)**: Prohibido cualquier contador de días consecutivos o penalización por inactividad.
 2. **Inmutabilidad del Compañero**: La mascota *Lumi* jamás pierde experiencia o nivel.
 3. **Privacidad PII**: Todos los nombres propios deben anonimizarse mediante `PiiSanitizer` antes de procesarse con modelos de lenguaje externos.
-4. **Control Parental**: Operaciones críticas o de exportación de informes requieren la validación de un PIN de 4 dígitos.
+4. **Control Parental e Aislamiento por Roles**: Aislamiento por Autenticación de Rol (`parent` vs `child`). Las operaciones de gestión del hogar, aprobación de premios y exportación de informes clínicos quedan restringidas al perfil parental (`role: 'parent'`).
 5. **Denominación Oficial de Moneda**: La moneda principal se denomina exclusivamente **Sparks** (o **Sparks ✦**). NUNCA usar la palabra "chispas".
 6. **Propuestas de Premios y Aprobación Parental**: Los niños proponen con o sin estimación opcional de Sparks. Los padres aprueban y asignan/editan la cantidad exacta de Sparks directamente en un modal interactivo en 1-clic sin borrar ni recrear la recompensa.
 7. **Modales de Aventuras y Metas**: Los modales de propuesta de aventuras (`GoalProposalModal`) utilizan obligatoriamente el diseño cálido sensorial de MIRATEA (`#FAF9F7`, bordes suaves, sombras `shadow-2xl`, botones Warm Bloom), permitiendo la selección de 2..6 pasos, botón `+ Añadir otro paso` dinámico y desintegrador de IA con Lumi.
@@ -360,6 +360,16 @@ DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.s
   - **Alternativas descartadas**: Depender de emojis del sistema operativo.
   - **Consecuencias**: Estética de videojuego infantil de alta gama, renderizado SVG 100% vectorial nítido en cualquier resolución y cero problemas de desalineación.
 
+* **2026-08-17 — Auditoría de Seguridad Pre-Inversores, Hardening de Privacidad PII y Sincronización Runtime**:
+  - **Descripción**: Confirmación del modelo de Aislamiento por Autenticación de Rol (`parent` vs `child`) eliminando el componente flotante `ParentPinModal`. Eliminación de fallbacks cliente que exponían llaves `NEXT_PUBLIC_GROQ_API_KEY` en el navegador en la creación/edición de metas. Anonimización total mediante `PiiSanitizer` de mensajes e historial de usuarios en `/api/companion/chat`. Integración del listener de sincronización offline `OfflineSyncListener` en `RootLayout`. Estandarización de la denominación oficial **Sparks ✦** y refactorización del tipo interno `routine_streak_milestone` a `routine_constancy_milestone`.
+  - **Motivo**: Corregir vulnerabilidades de seguridad crítica, filtración de llaves secretas y datos PII identificados en la auditoría senior pre-inversores.
+  - **Alternativas descartadas**: Forzar modales de PIN redundantes sobre usuarios ya autenticados en su rol parental o permitir peticiones IA directas desde el frontend cliente.
+* **2026-08-17 — Gobernanza Permanente de Versionado y Release & Sincronización Canónica v1.4.0**:
+  - **Descripción**: Formulación e integración de la política inmutable de **Gobernanza de Versionado y Release** en `AGENTS.md`. Auditoría de consistencia de versionado y corrección de la discrepancia identificada entre `package.json` (`0.1.0`), `PROJECT_CONTEXT.md` (`1.3.1`) y `CHANGELOG.md` (`1.4.0`). Sincronización de la versión canónica técnica a `1.4.0` en `package.json` y actualización del identificador de caché del Service Worker a `mira-v1.4.0` en `public/sw.js`.
+  - **Motivo**: Establecer una capa permanente de integridad de versión, trazabilidad de releases y control determinista de cachés PWA para evitar inconsistencias entre agentes e invalidación de cachés offline.
+  - **Alternativas descartadas**: Mantener versiones divergentes en múltiples archivos o editar manualmente la documentación sin corregir la fuente técnica canónica (`package.json`).
+  - **Consecuencias**: Repositorio con fuente de verdad técnica única (SemVer), trazabilidad 100% verificable y reglas de gobernanza persistentes activas para todas las sesiones asistidas por IA.
+
 ---
 
 # Problemas Conocidos
@@ -390,7 +400,7 @@ DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.s
   - Generador de relatos e historias interactivas de calma (*StoryGenerator*).
 * **Fase 5 (Informes Terapéuticos & Portabilidad GDPR)**:
   - Desarrollo del motor de exportación de informes emocionales en PDF (`jspdf`), CSV y JSON.
-  - Implementación del PIN parental de 4 dígitos para proteger acciones parentales sensibles.
+  - Aislamiento y protección mediante Autenticación de Rol Parental (`role: 'parent'`).
   - Cumplimiento de portabilidad total según GDPR Art. 20.
 * **Fase 6 (Gold Release v1.0 & Rebranding MIRATEA by Solutech)**:
   - Evolución estratégica global a **MIRATEA by Solutech**.

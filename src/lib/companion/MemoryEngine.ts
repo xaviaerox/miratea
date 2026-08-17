@@ -24,7 +24,7 @@ export function selectMemoryDialogue(
 
   let text = '';
   switch (latest.memory_type) {
-    case 'routine_streak_milestone': {
+    case 'routine_constancy_milestone': {
       const rTitle = latest.metadata.routine_title ?? 'tu rutina';
       text = `He estado pensando en lo constante que has sido con la rutina de "${rTitle}". ¡Eso es genial!`;
       break;
@@ -105,7 +105,7 @@ export async function searchSemanticMemories(
     .filter(m => m.is_active)
     .map(m => {
       let content = '';
-      if (m.memory_type === 'routine_streak_milestone') {
+      if (m.memory_type === 'routine_constancy_milestone') {
         content = `Constancia en rutina ${m.metadata.routine_title || ''}`;
       } else if (m.memory_type === 'adventure_complete') {
         content = `Completó aventura ${m.metadata.adventure_title || ''}`;

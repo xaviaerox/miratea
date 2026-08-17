@@ -50,7 +50,7 @@ interface CompanionContextValue {
 
   /** Create a new memory dynamically */
   createMemory: (
-    type: 'routine_streak_milestone' | 'difficult_checkin' | 'adventure_complete' | 'parent_badge_award',
+    type: 'routine_constancy_milestone' | 'difficult_checkin' | 'adventure_complete' | 'parent_badge_award',
     metadata: Record<string, unknown>
   ) => Promise<boolean>;
 
@@ -138,7 +138,7 @@ export function CompanionProvider({ adapter, children }: CompanionProviderProps)
   }, [adapter, companion, childId]);
 
   const createMemory = useCallback(async (
-    type: 'routine_streak_milestone' | 'difficult_checkin' | 'adventure_complete' | 'parent_badge_award',
+    type: 'routine_constancy_milestone' | 'difficult_checkin' | 'adventure_complete' | 'parent_badge_award',
     metadata: Record<string, unknown>
   ): Promise<boolean> => {
     if (!companion || !childId) return false;

@@ -1261,7 +1261,7 @@ export default function HomePage() {
                           </span>
                           
                           <div className="font-semibold text-stone-700 mt-0.5">
-                            {mem.memory_type === 'routine_streak_milestone' && `Completada rutina de ${mem.metadata.routine_title}`}
+                            {mem.memory_type === 'routine_constancy_milestone' && `Completada rutina de ${mem.metadata.routine_title}`}
                             {mem.memory_type === 'difficult_checkin' && `Superaste un momento difícil`}
                             {mem.memory_type === 'adventure_complete' && `Completada aventura: ${mem.metadata.adventure_title}`}
                             {mem.memory_type === 'parent_badge_award' && (

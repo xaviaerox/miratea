@@ -272,7 +272,7 @@ export async function POST(req: NextRequest) {
         const task = g.nextTask || (g.microtasks ? g.microtasks.find((t) => t.status === 'pending') : null);
         if (task) {
           const taskTitle = sanitizePromptText(task.title || 'Paso');
-          text += ` Siguiente paso: "${taskTitle}" (Recompensa: ${task.spark_value || 1} chispas).`;
+          text += ` Siguiente paso: "${taskTitle}" (Recompensa: ${task.spark_value || 1} Sparks ✦).`;
           if (task.isStuck) {
             text += ` Nota: El niño lleva más de 48 horas sin completar este paso. Dale apoyo específico.`;
           }
@@ -379,16 +379,25 @@ Responde en español de forma natural y cariñosa.`;
 
     const piiSanitization = sanitizePii(rawSystemPrompt, safeChildName);
     const systemPrompt = piiSanitization.sanitizedText;
-    const piiReplacements = piiSanitization.replacements;
+    let piiReplacements = piiSanitization.replacements;
+
+    // Sanitize user message and history before sending to external LLM
+    const sanitizedUserResult = sanitizePii(cleanUserMsg, safeChildName);
+    const sanitizedUserMsg = sanitizedUserResult.sanitizedText;
+    piiReplacements = { ...piiReplacements, ...sanitizedUserResult.replacements };
+
+    const messagesPayload = [
+      ...history.map((h) => {
+        const sanitizedHist = sanitizePii(sanitizePromptText(h.content), safeChildName);
+        piiReplacements = { ...piiReplacements, ...sanitizedHist.replacements };
+        return { role: h.role, content: sanitizedHist.sanitizedText };
+      }),
+      { role: 'user' as const, content: sanitizedUserMsg },
+    ];
 
     const groqKey = process.env.GROQ_API_KEY;
     const geminiKey = process.env.GEMINI_API_KEY;
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
-
-    const messagesPayload = [
-      ...history.map((h) => ({ role: h.role, content: sanitizePromptText(h.content) })),
-      { role: 'user' as const, content: cleanUserMsg },
-    ];
 
     // ─────────────────────────────────────────────────────────────────────────
     // STREAMING PATH: pipe LLM tokens directly to client

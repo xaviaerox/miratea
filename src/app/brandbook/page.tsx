@@ -69,7 +69,7 @@ const COLOR_TOKENS: ColorToken[] = [
     hex: '#DF6B28',
     rgb: 'rgb(223, 107, 40)',
     tailwind: 'bg-bloom-500',
-    useCase: 'Chispas de avance, refuerzo positivo, botones principales y energía humana.',
+    useCase: 'Sparks ✦ de avance, refuerzo positivo, botones principales y energía humana.',
     bgClass: 'bg-[#DF6B28]',
     textClass: 'text-[#DF6B28]',
     borderClass: 'border-[#DF6B28]'
@@ -130,7 +130,7 @@ const MIRATEA_MODULES: ModuleItem[] = [
     badge: 'Hogar & Cuidadores',
     description: 'Espacio dedicado para familias. Centraliza agendas visuales de rutinas, check-ins emocionales y registro de micro-logros sin presión.',
     targetUser: 'Madres, padres, tutores y cuidadores directos.',
-    keyFeatures: ['Agendas visuales amables', 'Respiración guiada 1-clic', 'Multi-hijo con PIN parental', 'Exportación de históricos familiares'],
+    keyFeatures: ['Agendas visuales amables', 'Respiración guiada 1-clic', 'Multi-hijo con perfiles de rol', 'Exportación de históricos familiares'],
     status: 'Producción v1.0',
     colorTheme: 'from-amber-500/10 to-orange-500/10 border-orange-200 text-orange-800'
   },
@@ -150,7 +150,7 @@ const MIRATEA_MODULES: ModuleItem[] = [
     badge: 'Gobernanza & Privacidad',
     description: 'Gestión de accesos, permisos multi-rol y control estricto de gobernanza de datos para instituciones y asociaciones.',
     targetUser: 'Directores de centros, administradores de red y asociaciones TEA.',
-    keyFeatures: ['Cumplimiento GDPR Art. 20', 'Seguridad con PIN de 4 dígitos', 'Gestión de roles y consentimiento', 'Sin rastreadores ni terceros'],
+    keyFeatures: ['Cumplimiento GDPR Art. 20', 'Aislamiento por Autenticación de Rol', 'Gestión de roles y consentimiento', 'Sin rastreadores ni terceros'],
     status: 'Producción v1.0',
     colorTheme: 'from-purple-500/10 to-violet-500/10 border-purple-200 text-purple-800'
   },
@@ -187,7 +187,7 @@ interface PrincipleRule {
 const PRINCIPLE_RULES: PrincipleRule[] = [
   {
     title: 'Contadores y Rachas (Streaks)',
-    allowed: 'Refuerzo acumulativo de chispas de valentía (cada paso suma y permanece).',
+    allowed: 'Refuerzo acumulativo de Sparks ✦ de valentía (cada paso suma y permanece).',
     prohibited: 'Rachas de días consecutivos ("¡Llevas 5 días, no pierdas la racha!").',
     rationale: 'Las rachas rotas causan espirales de culpa, vergüenza y abandono catastrófico en personas neurodivergentes.'
   },

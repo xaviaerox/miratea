@@ -124,7 +124,7 @@ export class StaticCompanionAdapter implements ICompanionAdapter {
       id: 'mem-1',
       child_id: 'static-child-id',
       companion_id: 'companion-1',
-      memory_type: 'routine_streak_milestone',
+      memory_type: 'routine_constancy_milestone',
       metadata: { routine_title: 'Mañana' },
       is_active: true,
       created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
@@ -147,7 +147,7 @@ export class StaticCompanionAdapter implements ICompanionAdapter {
   async createMemory(
     childId: string,
     companionId: string,
-    type: 'routine_streak_milestone' | 'difficult_checkin' | 'adventure_complete' | 'parent_badge_award',
+    type: 'routine_constancy_milestone' | 'difficult_checkin' | 'adventure_complete' | 'parent_badge_award',
     metadata: Record<string, unknown>
   ): Promise<Result<CompanionMemory>> {
     const memory: CompanionMemory = {

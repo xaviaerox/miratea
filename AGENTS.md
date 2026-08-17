@@ -11,4 +11,14 @@ This version of Next.js has breaking changes — APIs, conventions, and file str
 5. **Ajustes Centralizados**: La Fuente de Lectura Adaptada (OpenDyslexic) y la opción "Menos Efectos y Animaciones" residen de forma unificada en la Pestaña de Ajustes (`Tab 5 / profile`). La barra superior del header se mantiene limpia sin botones redundantes.
 6. **Sin Punición**: Prohibido usar contadores de rachas destructivos. El compañero Lumi jamás pierde nivel.
 7. **Inmutabilidad del Ícono de MIRATEA**: El icono oficial de MIRATEA (`icon.svg` / `icon-192x192.png` / `icon-512x512.png` / `favicon.ico`) es inmutable y definitivo. Queda estrictamente prohibido modificarlo o sustituirlo a menos que el usuario lo exija explícitamente. Forma parte integral del Favicon, PWA e identidad de la app.
+
+## Gobernanza Permanente de Versionado y Release
+1. **Fuente Única Técnica de Versionado**: `package.json` es la ÚNICA fuente técnica canónica de la versión de la aplicación. `PROJECT_CONTEXT.md` refleja el estado contextual pero NO sustituye la fuente técnica.
+2. **Control Semántico Obligatorio (SemVer)**:
+   - `PATCH` (x.y.Z): Correcciones de bugs, retoques visuales, refactorizaciones internas y optimizaciones.
+   - `MINOR` (x.Y.0): Nuevas funcionalidades compatibles para usuarios o APIs.
+   - `MAJOR` (X.0.0): Breaking changes, migraciones incompatibles de datos, contratos o APIs.
+3. **Inviolabilidad de Historia**: La versión jamás debe retroceder durante el desarrollo normal.
+4. **Cadena Completa PWA & Cachés**: En cada release o cambio relevante de PWA, la versión de la app, el Service Worker (`public/sw.js`) y el identificador de caché (`CACHE_NAME`) deben actualizarse de forma determinista para forzar la invalidación limpia en los clientes instalados.
+5. **Verificación Obligatoria de Integridad (VERSION INTEGRITY CHECK)**: Toda tarea significativa debe finalizar verificando la consistencia entre `package.json`, `PROJECT_CONTEXT.md`, `CHANGELOG.md`, `public/sw.js` y el repositorio.
 <!-- END:nextjs-agent-rules -->

@@ -439,7 +439,7 @@ export interface CompanionMemory {
   id: string;
   child_id: string;
   companion_id: string;
-  memory_type: 'routine_streak_milestone' | 'difficult_checkin' | 'adventure_complete' | 'parent_badge_award';
+  memory_type: 'routine_constancy_milestone' | 'difficult_checkin' | 'adventure_complete' | 'parent_badge_award';
   metadata: {
     routine_title?: string;
     emotion_word?: string;

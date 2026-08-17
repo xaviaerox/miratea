@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Providers } from '@/components/Providers';
 import { PwaUpdater } from '@/components/PwaUpdater';
+import { OfflineSyncListener } from '@/components/offline/OfflineSyncListener';
 
 export const metadata: Metadata = {
   title: 'MIRATEA 🌟 — Autonomía y Autorregulación para Familias Neurodivergentes',
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           {children}
         </Providers>
+        <OfflineSyncListener />
         <PwaUpdater />
       </body>
     </html>

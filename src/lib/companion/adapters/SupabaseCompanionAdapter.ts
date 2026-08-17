@@ -153,7 +153,7 @@ export class SupabaseCompanionAdapter implements ICompanionAdapter {
   async createMemory(
     childId: string,
     companionId: string,
-    type: 'routine_streak_milestone' | 'difficult_checkin' | 'adventure_complete' | 'parent_badge_award',
+    type: 'routine_constancy_milestone' | 'difficult_checkin' | 'adventure_complete' | 'parent_badge_award',
     metadata: Record<string, unknown>
   ): Promise<Result<CompanionMemory>> {
     const { data, error } = await this.client
