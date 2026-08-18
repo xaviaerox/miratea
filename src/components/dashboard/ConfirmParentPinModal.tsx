@@ -5,6 +5,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { getApiUrl } from '@/lib/utils';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { supabase } from '@/lib/supabase';
+import { isUseSupabase } from '@/lib/adapters';
 
 interface ConfirmParentPinModalProps {
   isOpen: boolean;
@@ -94,23 +96,28 @@ export function ConfirmParentPinModal({
     setResetMsg(null);
 
     try {
-      const res = await fetch(getApiUrl('/api/auth/reset-pin'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'request_reset', email: targetEmail }),
-      });
-      const data = await res.json().catch(() => null);
-      if (res.ok && data?.ok) {
-        setResetMsg(data.message);
-      } else if (data?.error) {
-        setError(data.error);
+      if (isUseSupabase()) {
+        const origin = typeof window !== 'undefined' ? window.location.origin : 'https://xaviaerox.github.io';
+        const { error: resetErr } = await supabase.auth.resetPasswordForEmail(targetEmail, {
+          redirectTo: `${origin}/miratea/dashboard/family`,
+        });
+
+        if (resetErr) {
+          setError(resetErr.message);
+        } else {
+          setResetMsg(`Hemos enviado un enlace de recuperación seguro (válido durante 15 minutos) a ${targetEmail}. Revisa tu bandeja de entrada.`);
+        }
       } else {
-        // Static/demo mode fallback
-        setResetMsg(`Hemos enviado un enlace de recuperación seguro (válido durante 15 minutos) a ${targetEmail}. Revisa tu bandeja de entrada.`);
+        const res = await fetch(getApiUrl('/api/auth/reset-pin'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'request_reset', email: targetEmail }),
+        }).catch(() => null);
+        const data = await res?.json().catch(() => null);
+        setResetMsg(data?.message || `[Modo Demo / Estático]: Solicitud procesada para ${targetEmail}.`);
       }
     } catch {
-      // Static/demo mode fallback
-      setResetMsg(`Hemos enviado un enlace de recuperación seguro (válido durante 15 minutos) a ${targetEmail}. Revisa tu bandeja de entrada.`);
+      setResetMsg(`[Modo Demo / Estático]: Solicitud procesada para ${targetEmail}.`);
     } finally {
       setLoading(false);
     }

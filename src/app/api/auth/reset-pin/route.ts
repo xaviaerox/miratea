@@ -90,6 +90,11 @@ export async function POST(req: NextRequest) {
           await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: `${origin}/miratea/dashboard/family?token=${token}`,
           });
+
+          return NextResponse.json({
+            ok: true,
+            message: `Hemos enviado un enlace de recuperación seguro (válido durante 15 minutos) a ${email}. Revisa tu bandeja de entrada.`,
+          });
         } catch (err) {
           console.warn('[reset-pin] Supabase reset request error:', err);
         }
@@ -99,7 +104,7 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json({
         ok: true,
-        message: `Hemos enviado un enlace de recuperación seguro (válido durante 15 minutos) a ${email}. Revisa tu correo.`,
+        message: `[Modo Demo / Estático]: Solicitud procesada para ${email}. Para recibir correos reales, activa NEXT_PUBLIC_DATA_SOURCE=supabase y tus credenciales en .env.local.`,
       });
     }
 
