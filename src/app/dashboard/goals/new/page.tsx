@@ -9,7 +9,7 @@ import { buildDecompositionPrompt, parseDecompositionResponse, fallbackDecomposi
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { cn } from '@/lib/utils';
+import { cn, getApiUrl } from '@/lib/utils';
 import type { ParsedMicrotask } from '@/types';
 
 const goalsAdapter = getGoalsAdapter();
@@ -58,7 +58,7 @@ export default function NewGoalPage() {
       const prompt = buildDecompositionPrompt({ goalTitle: title, goalWhy: why, childAge, numTasks, sparkValue });
       let textResponse = '';
       try {
-        const res = await fetch('/api/decompose', {
+        const res = await fetch(getApiUrl('/api/decompose'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ prompt }),

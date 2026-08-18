@@ -17,6 +17,7 @@ import type {
 } from '@/types';
 import type { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { getApiUrl } from '@/lib/utils';
 
 import { useGoalProposals } from '@/hooks/useGoalProposals';
 import { useRewardRequests } from '@/hooks/useRewardRequests';
@@ -179,7 +180,7 @@ export function useHomeState() {
       const activeWorldScore = scores[navigation.selectedWorld.dimension] || 0;
       const activeWorldPhase = getWorldPhase(activeWorldScore);
 
-      const res = await fetch('/api/companion/chat', {
+      const res = await fetch(getApiUrl('/api/companion/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

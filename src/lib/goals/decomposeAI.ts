@@ -1,5 +1,6 @@
 import type { EffortLevel } from '@/types';
 import { supabase } from '@/lib/supabase';
+import { getApiUrl } from '../utils';
 
 export interface AIMicrotaskSuggestion {
   title: string;
@@ -36,7 +37,7 @@ Responde ÚNICAMENTE con un JSON válido con este formato:
   try {
     let rawText = '';
 
-    const res = await fetch('/api/decompose', {
+    const res = await fetch(getApiUrl('/api/decompose'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt }),

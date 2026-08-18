@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { getApiUrl } from '@/lib/utils';
 
 interface ConfirmParentPinModalProps {
   isOpen: boolean;
@@ -59,7 +60,7 @@ export function ConfirmParentPinModal({
     setResetMsg(null);
 
     try {
-      const res = await fetch('/api/auth/verify-pin', {
+      const res = await fetch(getApiUrl('/api/auth/verify-pin'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pin: fullPin }),
@@ -84,7 +85,7 @@ export function ConfirmParentPinModal({
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/auth/reset-pin', {
+      const res = await fetch(getApiUrl('/api/auth/reset-pin'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'request_reset', email: 'padre@mira.app' }),

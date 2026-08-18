@@ -22,3 +22,10 @@ export function currentYear(): number {
 export function ageFromBirthYear(birthYear: number): number {
   return currentYear() - birthYear;
 }
+
+export function getApiUrl(path: string): string {
+  const basePath = '/miratea';
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  if (cleanPath.startsWith(basePath)) return cleanPath;
+  return `${basePath}${cleanPath}`;
+}

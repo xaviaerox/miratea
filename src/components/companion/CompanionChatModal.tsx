@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CompanionBlob } from './CompanionBlob';
 import { Button } from '@/components/ui/Button';
 import { Mic, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, getApiUrl } from '@/lib/utils';
 import type { CompanionDisplayState } from '@/types';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
 
@@ -158,7 +158,7 @@ export function CompanionChatModal({
       let fetchSuccess = false;
 
       try {
-        const res = await fetch('/api/companion/chat', {
+        const res = await fetch(getApiUrl('/api/companion/chat'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)

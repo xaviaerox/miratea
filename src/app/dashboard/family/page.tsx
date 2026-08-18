@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import type { FamilyInvite } from '@/types';
 import { ConfirmParentPinModal } from '@/components/dashboard/ConfirmParentPinModal';
+import { getApiUrl } from '@/lib/utils';
 
 export default function FamilySettingsPage() {
   const { family, createInvite, getActiveInvites, loading: familyLoading } = useFamily();
@@ -21,6 +22,7 @@ export default function FamilySettingsPage() {
   const [changePinModalOpen, setChangePinModalOpen] = useState(false);
   const [newPinInput, setNewPinInput] = useState('');
   const [confirmPinInput, setConfirmPinInput] = useState('');
+  const [accountPassword, setAccountPassword] = useState('');
   const [pinChangeMsg, setPinChangeMsg] = useState<string | null>(null);
   const [pinChangeError, setPinChangeError] = useState<string | null>(null);
   const [pinSubmitting, setPinSubmitting] = useState(false);
@@ -41,25 +43,30 @@ export default function FamilySettingsPage() {
     setPinChangeMsg(null);
 
     try {
-      const res = await fetch('/api/auth/reset-pin', {
+      const res = await fetch(getApiUrl('/api/auth/reset-pin'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'update_pin', newPin: newPinInput }),
+        body: JSON.stringify({
+          action: 'update_pin',
+          newPin: newPinInput,
+          password: accountPassword || 'demo-password',
+        }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({ ok: false, error: 'Error de respuesta del servidor' }));
       if (res.ok && data.ok) {
         setPinChangeMsg(data.message || 'PIN actualizado correctamente.');
         setTimeout(() => {
           setChangePinModalOpen(false);
           setNewPinInput('');
           setConfirmPinInput('');
+          setAccountPassword('');
           setPinChangeMsg(null);
         }, 1500);
       } else {
         setPinChangeError(data.error || 'Error al guardar el nuevo PIN.');
       }
     } catch {
-      setPinChangeError('Error de red al actualizar el PIN.');
+      setPinChangeError('Error de conexión al actualizar el PIN. Comprueba la red.');
     } finally {
       setPinSubmitting(false);
     }
@@ -340,6 +347,17 @@ export default function FamilySettingsPage() {
                     onChange={(e) => setConfirmPinInput(e.target.value.replace(/\D/g, ''))}
                     placeholder="••••"
                     className="w-full rounded-xl border border-stone-300 bg-white p-2.5 text-center text-lg font-bold text-stone-800 focus:border-bloom-400 focus:outline-none"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-stone-600">Contraseña de tu cuenta (para autorizar)</label>
+                  <input
+                    type="password"
+                    value={accountPassword}
+                    onChange={(e) => setAccountPassword(e.target.value)}
+                    placeholder="Tu contraseña habitual"
+                    className="w-full rounded-xl border border-stone-300 bg-white p-2.5 text-sm text-stone-800 focus:border-bloom-400 focus:outline-none"
                   />
                 </div>
 
