@@ -63,6 +63,7 @@ export default function FamilySettingsPage() {
       if (res.ok && data?.ok) {
         setPinChangeMsg(data.message || 'PIN actualizado correctamente.');
         setTimeout(() => {
+          if (typeof window !== 'undefined') sessionStorage.removeItem('mira_pin_recovery');
           setChangePinModalOpen(false);
           setIsRecoveryFlow(false);
           setNewPinInput('');
@@ -74,6 +75,7 @@ export default function FamilySettingsPage() {
         // Fallback for static/demo environment or recovery flow
         setPinChangeMsg('PIN parental actualizado correctamente.');
         setTimeout(() => {
+          if (typeof window !== 'undefined') sessionStorage.removeItem('mira_pin_recovery');
           setChangePinModalOpen(false);
           setIsRecoveryFlow(false);
           setNewPinInput('');
@@ -86,6 +88,7 @@ export default function FamilySettingsPage() {
       // Fallback for static/demo environment
       setPinChangeMsg('PIN parental actualizado correctamente.');
       setTimeout(() => {
+        if (typeof window !== 'undefined') sessionStorage.removeItem('mira_pin_recovery');
         setChangePinModalOpen(false);
         setIsRecoveryFlow(false);
         setNewPinInput('');
@@ -120,28 +123,49 @@ export default function FamilySettingsPage() {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const hash = window.location.hash;
-      if (
+      const code = params.get('code');
+      const isRecovery =
+        params.has('code') ||
         params.has('token') ||
         hash.includes('type=recovery') ||
         hash.includes('access_token') ||
-        params.get('type') === 'recovery'
+        params.get('type') === 'recovery' ||
+        sessionStorage.getItem('mira_pin_recovery') === 'true';
+
+      if (isRecovery) {
+        sessionStorage.setItem('mira_pin_recovery', 'true');
+        setTimeout(() => {
+          setIsRecoveryFlow(true);
+          setChangePinModalOpen(true);
+        }, 0);
+
+        if (code && isUseSupabase()) {
+          supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+            if (!error) {
+              setTimeout(() => {
+                setIsRecoveryFlow(true);
+                setChangePinModalOpen(true);
+              }, 0);
+            }
+          });
+        }
+      }
+    }
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (
+        event === 'PASSWORD_RECOVERY' ||
+        (event === 'SIGNED_IN' && sessionStorage.getItem('mira_pin_recovery') === 'true')
       ) {
         setTimeout(() => {
           setIsRecoveryFlow(true);
           setChangePinModalOpen(true);
         }, 0);
       }
-    }
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setTimeout(() => {
-          setIsRecoveryFlow(true);
-          setChangePinModalOpen(true);
-        }, 0);
-      }
     });
+
     return () => subscription?.unsubscribe();
   }, []);
 
