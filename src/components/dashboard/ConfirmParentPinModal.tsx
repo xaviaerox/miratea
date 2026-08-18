@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { getApiUrl } from '@/lib/utils';
+import { useAuth } from '@/lib/auth/AuthProvider';
 
 interface ConfirmParentPinModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ export function ConfirmParentPinModal({
   onSuccess,
   onCancel,
 }: ConfirmParentPinModalProps) {
+  const { session, profile } = useAuth();
   const [pin, setPin] = useState(['', '', '', '']);
   const [error, setError] = useState<string | null>(null);
   const [resetMsg, setResetMsg] = useState<string | null>(null);
@@ -86,6 +88,7 @@ export function ConfirmParentPinModal({
   };
 
   const handleForgotPassword = async () => {
+    const targetEmail = session?.email || 'padre@mira.app';
     setLoading(true);
     setError(null);
     setResetMsg(null);
@@ -94,7 +97,7 @@ export function ConfirmParentPinModal({
       const res = await fetch(getApiUrl('/api/auth/reset-pin'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'request_reset', email: 'padre@mira.app' }),
+        body: JSON.stringify({ action: 'request_reset', email: targetEmail }),
       });
       const data = await res.json().catch(() => null);
       if (res.ok && data?.ok) {
@@ -103,11 +106,11 @@ export function ConfirmParentPinModal({
         setError(data.error);
       } else {
         // Static/demo mode fallback
-        setResetMsg('Hemos enviado un enlace de recuperación seguro (válido durante 15 minutos) a tu correo. Revisa tu bandeja de entrada.');
+        setResetMsg(`Hemos enviado un enlace de recuperación seguro (válido durante 15 minutos) a ${targetEmail}. Revisa tu bandeja de entrada.`);
       }
     } catch {
       // Static/demo mode fallback
-      setResetMsg('Hemos enviado un enlace de recuperación seguro (válido durante 15 minutos) a tu correo. Revisa tu bandeja de entrada.');
+      setResetMsg(`Hemos enviado un enlace de recuperación seguro (válido durante 15 minutos) a ${targetEmail}. Revisa tu bandeja de entrada.`);
     } finally {
       setLoading(false);
     }
