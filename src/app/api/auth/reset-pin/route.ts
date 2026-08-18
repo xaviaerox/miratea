@@ -86,8 +86,9 @@ export async function POST(req: NextRequest) {
             })
             .eq('email', email);
 
+          const origin = req.nextUrl?.origin || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
           await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `http://localhost:3000/miratea/dashboard/family?token=${token}`,
+            redirectTo: `${origin}/miratea/dashboard/family?token=${token}`,
           });
         } catch (err) {
           console.warn('[reset-pin] Supabase reset request error:', err);
