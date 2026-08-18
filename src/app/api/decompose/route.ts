@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { checkRateLimit } from '@/lib/security/RateLimiter';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 
+export const dynamic = 'force-static';
+
 import { sanitizePii, restorePii } from '@/lib/security/PiiSanitizer';
 
 const DecomposeSchema = z.object({

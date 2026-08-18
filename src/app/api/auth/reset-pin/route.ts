@@ -3,6 +3,8 @@ import { createHash, randomBytes } from 'crypto';
 import { z } from 'zod';
 import { checkRateLimit } from '@/lib/security/RateLimiter';
 
+export const dynamic = 'force-static';
+
 const RequestResetSchema = z.object({
   action: z.literal('request_reset'),
   email: z.string().email('Correo electrónico no válido'),

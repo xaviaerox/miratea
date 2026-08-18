@@ -4,6 +4,8 @@ import { checkRateLimit } from '@/lib/security/RateLimiter';
 import { createServerSupabaseClient } from '@/lib/supabaseServer';
 import { sanitizePii, restorePii } from '@/lib/security/PiiSanitizer';
 
+export const dynamic = 'force-static';
+
 function sanitizePromptText(input?: string): string {
   if (!input) return '';
   return input

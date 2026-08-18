@@ -3,6 +3,8 @@ import { createHash } from 'crypto';
 import { z } from 'zod';
 import { checkRateLimit } from '@/lib/security/RateLimiter';
 
+export const dynamic = 'force-static';
+
 const VerifyPinSchema = z.object({
   pin: z.string().length(4, 'El PIN debe tener exactamente 4 dígitos').regex(/^\d+$/, 'El PIN debe ser numérico'),
 });
