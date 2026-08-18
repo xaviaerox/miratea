@@ -13,11 +13,11 @@
   2. **Niños y Menores**: Entorno lúdico y tranquilo con apoyo de la mascota inmutable *Lumi*.
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
   4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
-* **Estado del proyecto**: Producción / Accessibility & Settings Release v1.4.0.
+* **Estado del proyecto**: Producción / Commercial Release v1.0.
 * **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, auditoría de seguridad completada y suite de pruebas unitarias pasadas.
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
-* **Versión actual**: `1.4.0` (Accessibility & Settings Release v1.4.0).
-* **Última actualización**: 2026-08-17.
+* **Versión actual**: `1.0.0` (Commercial Release v1.0).
+* **Última actualización**: 2026-08-18.
 
 ---
 
@@ -215,12 +215,13 @@ miratea-app/
 
 1. **Cero Rachas (No Streaks)**: Prohibido cualquier contador de días consecutivos o penalización por inactividad.
 2. **Inmutabilidad del Compañero**: La mascota *Lumi* jamás pierde experiencia o nivel.
-3. **Privacidad PII**: Todos los nombres propios deben anonimizarse mediante `PiiSanitizer` antes de procesarse con modelos de lenguaje externos.
-4. **Control Parental e Aislamiento por Roles**: Aislamiento por Autenticación de Rol (`parent` vs `child`). Las operaciones de gestión del hogar, aprobación de premios y exportación de informes clínicos quedan restringidas al perfil parental (`role: 'parent'`).
+3. **Privacidad PII Defendible**: Sistema de anonimización de identificadores directos (nombres registrados, email, teléfono, DNI) mediante `PiiSanitizer` previo a llamadas a LLMs externos, con roadmap hacia NER para entidades contextuales.
+4. **Control Parental e Aislamiento por Roles**: Aislamiento por Autenticación de Rol (`parent` vs `child`). Las operaciones de gestión del hogar, aprobación de premios y exportación de informes clínicos quedan restringidas al perfil parental (`role: 'parent'`) con re-autenticación ligera opcional mediante PIN hashed server-side (`/api/auth/verify-pin`).
 5. **Denominación Oficial de Moneda**: La moneda principal se denomina exclusivamente **Sparks** (o **Sparks ✦**). NUNCA usar la palabra "chispas".
 6. **Propuestas de Premios y Aprobación Parental**: Los niños proponen con o sin estimación opcional de Sparks. Los padres aprueban y asignan/editan la cantidad exacta de Sparks directamente en un modal interactivo en 1-clic sin borrar ni recrear la recompensa.
 7. **Modales de Aventuras y Metas**: Los modales de propuesta de aventuras (`GoalProposalModal`) utilizan obligatoriamente el diseño cálido sensorial de MIRATEA (`#FAF9F7`, bordes suaves, sombras `shadow-2xl`, botones Warm Bloom), permitiendo la selección de 2..6 pasos, botón `+ Añadir otro paso` dinámico y desintegrador de IA con Lumi.
 8. **Organización Centralizada de Ajustes**: Los ajustes globales de accesibilidad (Fuente de Lectura Adaptada OpenDyslexic y Menos Efectos y Animaciones) residen de forma unificada en la Pestaña de Ajustes (`Tab 5 / profile`). La barra superior del header se mantiene limpia y libre de botones duplicados.
+9. **Deducción de Sparks Anti-Abuso (SQL Trigger)**: La deducción de Sparks al desmarcar o borrar un registro de rutina completada es una medida de seguridad anti-abuso deliberada ejecutada en base de datos (`on_routine_deletion()`), que revierte la transacción en el libro contable de la familia para evitar la generación ilimitada de moneda por marcado/desmarcado repetitivo.
 
 ---
 
