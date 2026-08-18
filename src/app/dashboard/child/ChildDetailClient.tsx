@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import type { EmotionalWeeklySummary, GoalWithMicrotasks, Reward, RewardRequest, ChildBadge, ValueDimensionId } from '@/types';
 import { supabase } from '@/lib/supabase';
 import { generateEmotionalReportPrintout } from '@/lib/pdf/EmotionalReportPdf';
+import { ConfirmParentPinModal } from '@/components/dashboard/ConfirmParentPinModal';
 
 const emotionalAdapter = getEmotionalAdapter();
 const goalsAdapter     = getGoalsAdapter();
@@ -66,6 +67,16 @@ export default function ChildDetailClient() {
   const { profile: parentProfile } = useAuth();
   const childId      = params.get('id') ?? children[0]?.id ?? '';
   const child        = children.find(c => c.id === childId);
+
+  const [pinModalOpen, setPinModalOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+  const [pinActionTitle, setPinActionTitle] = useState('Confirmación Parental Requerida');
+
+  const triggerProtectedAction = (title: string, action: () => void) => {
+    setPinActionTitle(title);
+    setPendingAction(() => action);
+    setPinModalOpen(true);
+  };
 
   const [summaries,    setSummaries]    = useState<EmotionalWeeklySummary[]>([]);
   const [goals,        setGoals]        = useState<GoalWithMicrotasks[]>([]);
@@ -368,13 +379,15 @@ export default function ChildDetailClient() {
             variant="ghost"
             size="sm"
             onClick={() => {
-              generateEmotionalReportPrintout({
-                child,
-                familyName: family?.name || 'Familia',
-                weeklySummary: summaries[0] ?? null,
-                valueScores: valueScores || {},
-                totalSparks: sparkBalance,
-                completedRoutinesCount: activities.filter(a => a.source_type === 'routine_complete').length,
+              triggerProtectedAction('Exportar Informe Clínico PDF', () => {
+                generateEmotionalReportPrintout({
+                  child,
+                  familyName: family?.name || 'Familia',
+                  weeklySummary: summaries[0] ?? null,
+                  valueScores: valueScores || {},
+                  totalSparks: sparkBalance,
+                  completedRoutinesCount: activities.filter(a => a.source_type === 'routine_complete').length,
+                });
               });
             }}
             className="text-xs font-semibold text-moss-700 bg-moss-50 hover:bg-moss-100 border border-moss-200 rounded-xl"
@@ -425,7 +438,11 @@ export default function ChildDetailClient() {
                           variant="primary"
                           size="sm"
                           disabled={submittingAction || !canAfford}
-                          onClick={() => handleRequestStatus(req.id, 'approved', cost, req.title)}
+                          onClick={() => {
+                            triggerProtectedAction('Aprobar Recompensa', () => {
+                              handleRequestStatus(req.id, 'approved', cost, req.title);
+                            });
+                          }}
                           className="bg-amber-500 hover:bg-amber-600 font-bold text-white shadow-soft"
                         >
                           {canAfford ? 'Aprobar y Cobrar' : 'Faltan Sparks'}
@@ -877,6 +894,22 @@ export default function ChildDetailClient() {
           )}
         </>
       )}
+
+      <ConfirmParentPinModal
+        isOpen={pinModalOpen}
+        actionTitle={pinActionTitle}
+        onSuccess={() => {
+          setPinModalOpen(false);
+          if (pendingAction) {
+            pendingAction();
+            setPendingAction(null);
+          }
+        }}
+        onCancel={() => {
+          setPinModalOpen(false);
+          setPendingAction(null);
+        }}
+      />
     </div>
   );
 }

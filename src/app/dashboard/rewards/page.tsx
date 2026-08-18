@@ -9,6 +9,7 @@ import Link from 'next/link';
 import type { Reward, RewardRequest } from '@/types';
 import { supabase } from '@/lib/supabase';
 import { Sparkles, Check, X, Edit2, Trash2, Plus, Gift } from 'lucide-react';
+import { ConfirmParentPinModal } from '@/components/dashboard/ConfirmParentPinModal';
 
 const rewardsAdapter = getRewardsAdapter();
 
@@ -33,6 +34,16 @@ export default function RewardsDashboardPage() {
   const [approvalCost, setApprovalCost] = useState<number>(10);
   const [addToCatalog, setAddToCatalog] = useState<boolean>(true);
   const [deductSparks, setDeductSparks] = useState<boolean>(false);
+
+  const [pinModalOpen, setPinModalOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+  const [pinActionTitle, setPinActionTitle] = useState('Confirmación Parental Requerida');
+
+  const triggerProtectedAction = (title: string, action: () => void) => {
+    setPinActionTitle(title);
+    setPendingAction(() => action);
+    setPinModalOpen(true);
+  };
 
   useEffect(() => {
     if (!family?.id) return;
@@ -477,7 +488,9 @@ export default function RewardsDashboardPage() {
               <Button
                 variant="primary"
                 size="md"
-                onClick={handleConfirmApproval}
+                onClick={() => {
+                  triggerProtectedAction('Aprobar Recompensa', handleConfirmApproval);
+                }}
                 loading={submittingAction}
                 className="flex-1 bg-amber-500 hover:bg-amber-600 font-bold text-white shadow-soft"
               >
@@ -487,6 +500,22 @@ export default function RewardsDashboardPage() {
           </div>
         </div>
       )}
+
+      <ConfirmParentPinModal
+        isOpen={pinModalOpen}
+        actionTitle={pinActionTitle}
+        onSuccess={() => {
+          setPinModalOpen(false);
+          if (pendingAction) {
+            pendingAction();
+            setPendingAction(null);
+          }
+        }}
+        onCancel={() => {
+          setPinModalOpen(false);
+          setPendingAction(null);
+        }}
+      />
     </div>
   );
 }

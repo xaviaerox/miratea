@@ -6,12 +6,64 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import type { FamilyInvite } from '@/types';
+import { ConfirmParentPinModal } from '@/components/dashboard/ConfirmParentPinModal';
 
 export default function FamilySettingsPage() {
   const { family, createInvite, getActiveInvites, loading: familyLoading } = useFamily();
   const [invites, setInvites] = useState<FamilyInvite[]>([]);
   const [invitesLoading, setInvitesLoading] = useState(true);
   const [generatingRole, setGeneratingRole] = useState<'parent' | 'child' | null>(null);
+
+  const [pinModalOpen, setPinModalOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+
+  // Custom PIN Setup State
+  const [changePinModalOpen, setChangePinModalOpen] = useState(false);
+  const [newPinInput, setNewPinInput] = useState('');
+  const [confirmPinInput, setConfirmPinInput] = useState('');
+  const [pinChangeMsg, setPinChangeMsg] = useState<string | null>(null);
+  const [pinChangeError, setPinChangeError] = useState<string | null>(null);
+  const [pinSubmitting, setPinSubmitting] = useState(false);
+
+  const handleSaveNewPin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPinInput.length !== 4 || !/^\d+$/.test(newPinInput)) {
+      setPinChangeError('El PIN debe constar de 4 dígitos numéricos.');
+      return;
+    }
+    if (newPinInput !== confirmPinInput) {
+      setPinChangeError('Los dos PINs introducidos no coinciden.');
+      return;
+    }
+
+    setPinSubmitting(true);
+    setPinChangeError(null);
+    setPinChangeMsg(null);
+
+    try {
+      const res = await fetch('/api/auth/reset-pin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'update_pin', newPin: newPinInput }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        setPinChangeMsg(data.message || 'PIN actualizado correctamente.');
+        setTimeout(() => {
+          setChangePinModalOpen(false);
+          setNewPinInput('');
+          setConfirmPinInput('');
+          setPinChangeMsg(null);
+        }, 1500);
+      } else {
+        setPinChangeError(data.error || 'Error al guardar el nuevo PIN.');
+      }
+    } catch {
+      setPinChangeError('Error de red al actualizar el PIN.');
+    } finally {
+      setPinSubmitting(false);
+    }
+  };
 
   const fetchInvites = useCallback(async () => {
     if (!family?.id) return;
@@ -30,6 +82,11 @@ export default function FamilySettingsPage() {
       Promise.resolve().then(() => fetchInvites());
     }
   }, [family?.id, fetchInvites]);
+
+  function requestInviteWithPin(role: 'parent' | 'child') {
+    setPendingAction(() => () => handleInvite(role));
+    setPinModalOpen(true);
+  }
 
   async function handleInvite(role: 'parent' | 'child') {
     if (!family?.id || generatingRole) return;
@@ -148,7 +205,7 @@ export default function FamilySettingsPage() {
               variant="secondary"
               size="md"
               className="mt-2 w-full"
-              onClick={() => handleInvite('parent')}
+              onClick={() => requestInviteWithPin('parent')}
               loading={generatingRole === 'parent'}
             >
               + Generar código para Adulto
@@ -164,7 +221,7 @@ export default function FamilySettingsPage() {
               variant="primary"
               size="md"
               className="mt-2 w-full"
-              onClick={() => handleInvite('child')}
+              onClick={() => requestInviteWithPin('child')}
               loading={generatingRole === 'child'}
             >
               + Generar código para Niño
@@ -214,6 +271,129 @@ export default function FamilySettingsPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Parental PIN Management Card */}
+      <Card variant="warm">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-stone-800">
+            <span>🔒</span> Seguridad Parental y PIN
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-col">
+            <span className="font-semibold text-stone-700 text-sm">Estado: PIN Parental Personalizable (••••)</span>
+            <p className="text-xs text-stone-400 mt-1 max-w-md">
+              El PIN nunca se muestra en pantalla. Re-introduce tu PIN para confirmar exportaciones de informes, aprobación de premios o cambios sensibles.
+            </p>
+          </div>
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={() => {
+              setPinChangeError(null);
+              setPinChangeMsg(null);
+              setChangePinModalOpen(true);
+            }}
+            className="border-stone-300 text-stone-700 hover:bg-stone-100"
+          >
+            Personalizar / Cambiar PIN
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Customize PIN Modal */}
+      {changePinModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/50 backdrop-blur-sm p-4 animate-fade-in">
+          <Card className="w-full max-w-sm border-bloom-200 bg-[#FAF9F7] shadow-2xl">
+            <CardHeader className="text-center pb-2">
+              <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-bloom-100 text-bloom-600">
+                <span>🔑</span>
+              </div>
+              <CardTitle className="text-lg text-stone-800 font-serif">Personalizar PIN Parental</CardTitle>
+              <p className="text-xs text-stone-500 mt-1">
+                Define un nuevo PIN de 4 dígitos. Por seguridad, el PIN antiguo no es visible.
+              </p>
+            </CardHeader>
+
+            <CardContent>
+              <form onSubmit={handleSaveNewPin} className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-stone-600">Nuevo PIN (4 dígitos)</label>
+                  <input
+                    type="password"
+                    inputMode="numeric"
+                    maxLength={4}
+                    value={newPinInput}
+                    onChange={(e) => setNewPinInput(e.target.value.replace(/\D/g, ''))}
+                    placeholder="••••"
+                    className="w-full rounded-xl border border-stone-300 bg-white p-2.5 text-center text-lg font-bold text-stone-800 focus:border-bloom-400 focus:outline-none"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-stone-600">Repetir nuevo PIN</label>
+                  <input
+                    type="password"
+                    inputMode="numeric"
+                    maxLength={4}
+                    value={confirmPinInput}
+                    onChange={(e) => setConfirmPinInput(e.target.value.replace(/\D/g, ''))}
+                    placeholder="••••"
+                    className="w-full rounded-xl border border-stone-300 bg-white p-2.5 text-center text-lg font-bold text-stone-800 focus:border-bloom-400 focus:outline-none"
+                  />
+                </div>
+
+                {pinChangeError && (
+                  <p className="text-center text-xs font-medium text-rose-600 animate-pulse">
+                    {pinChangeError}
+                  </p>
+                )}
+
+                {pinChangeMsg && (
+                  <p className="text-center text-xs font-medium text-emerald-600 bg-emerald-50 p-2 rounded-lg border border-emerald-200">
+                    {pinChangeMsg}
+                  </p>
+                )}
+
+                <div className="flex gap-2 pt-2">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => setChangePinModalOpen(false)}
+                    className="flex-1 border-stone-300 text-stone-600 hover:bg-stone-100"
+                    disabled={pinSubmitting}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="flex-1 bg-bloom-500 text-white hover:bg-bloom-600"
+                    disabled={pinSubmitting || newPinInput.length !== 4 || confirmPinInput.length !== 4}
+                  >
+                    {pinSubmitting ? 'Guardando...' : 'Guardar PIN'}
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      <ConfirmParentPinModal
+        isOpen={pinModalOpen}
+        actionTitle="Confirmar Acción de Administración Familiar"
+        onSuccess={() => {
+          setPinModalOpen(false);
+          if (pendingAction) {
+            pendingAction();
+            setPendingAction(null);
+          }
+        }}
+        onCancel={() => {
+          setPinModalOpen(false);
+          setPendingAction(null);
+        }}
+      />
     </div>
   );
 }

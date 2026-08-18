@@ -33,15 +33,28 @@ describe('Server Parent PIN Verification Endpoint (/api/auth/verify-pin)', () =>
     expect(data.error).toContain('PIN incorrecto');
   });
 
-  it('should reject malformed non-4-digit PIN with 400 Bad Request', async () => {
-    const req = new NextRequest('http://localhost:3000/api/auth/verify-pin', {
-      method: 'POST',
-      body: JSON.stringify({ pin: '12' }),
-    });
+  it('should lock out after 5 consecutive failed attempts with HTTP 429', async () => {
+    // Fire failed requests using unique mock IP header to test rate limiter
+    const headers = { 'x-forwarded-for': '192.168.1.100' };
 
-    const res = await POST(req);
-    expect(res.status).toBe(400);
-    const data = await res.json();
+    for (let i = 0; i < 5; i++) {
+      await POST(new NextRequest('http://localhost:3000/api/auth/verify-pin', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ pin: '9999' }),
+      }));
+    }
+
+    // 6th attempt should be blocked with 429
+    const blockedRes = await POST(new NextRequest('http://localhost:3000/api/auth/verify-pin', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ pin: '1234' }),
+    }));
+
+    expect(blockedRes.status).toBe(429);
+    const data = await blockedRes.json();
     expect(data.ok).toBe(false);
+    expect(data.error).toContain('Demasiados intentos fallidos');
   });
 });

@@ -19,6 +19,7 @@ export function ConfirmParentPinModal({
 }: ConfirmParentPinModalProps) {
   const [pin, setPin] = useState(['', '', '', '']);
   const [error, setError] = useState<string | null>(null);
+  const [resetMsg, setResetMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
@@ -29,6 +30,7 @@ export function ConfirmParentPinModal({
     newPin[index] = value.slice(-1);
     setPin(newPin);
     setError(null);
+    setResetMsg(null);
 
     // Auto-focus next field
     if (value && index < 3) {
@@ -54,6 +56,7 @@ export function ConfirmParentPinModal({
 
     setLoading(true);
     setError(null);
+    setResetMsg(null);
 
     try {
       const res = await fetch('/api/auth/verify-pin', {
@@ -72,6 +75,28 @@ export function ConfirmParentPinModal({
       }
     } catch {
       setError('Error al verificar el PIN parental. Revisa tu conexión.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/auth/reset-pin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'request_reset', email: 'padre@mira.app' }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        setResetMsg(data.message);
+      } else {
+        setError(data.error || 'No se pudo enviar el correo de recuperación.');
+      }
+    } catch {
+      setError('Error de conexión al solicitar restablecimiento.');
     } finally {
       setLoading(false);
     }
@@ -111,9 +136,26 @@ export function ConfirmParentPinModal({
               ))}
             </div>
 
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                className="text-[11px] font-semibold text-bloom-600 hover:text-bloom-700 underline underline-offset-2"
+                disabled={loading}
+              >
+                ¿Olvidaste tu PIN? Recibir correo de recuperación
+              </button>
+            </div>
+
             {error && (
               <p className="text-center text-xs font-medium text-rose-600 animate-pulse">
                 {error}
+              </p>
+            )}
+
+            {resetMsg && (
+              <p className="text-center text-xs font-medium text-emerald-600 bg-emerald-50 p-2 rounded-lg border border-emerald-200">
+                {resetMsg}
               </p>
             )}
 
