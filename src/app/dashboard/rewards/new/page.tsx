@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { RewardIconPicker } from '@/components/rewards/RewardIconPicker';
+import { ConfirmParentPinModal } from '@/components/dashboard/ConfirmParentPinModal';
 
 const rewardsAdapter = getRewardsAdapter();
 
@@ -27,8 +28,10 @@ function NewRewardForm() {
   const [cooldownUnit, setCooldownUnit] = useState<'hours' | 'days'>('hours');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [pinModalOpen, setPinModalOpen] = useState(false);
+  const [pendingSubmit, setPendingSubmit] = useState<(() => void) | null>(null);
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!family?.id) return;
     if (!title.trim()) {
@@ -40,28 +43,31 @@ function NewRewardForm() {
       return;
     }
 
-    setLoading(true);
-    setError('');
+    setPendingSubmit(() => async () => {
+      setLoading(true);
+      setError('');
 
-    const cooldown_hours = cooldownQty * (cooldownUnit === 'days' ? 24 : 1);
+      const cooldown_hours = cooldownQty * (cooldownUnit === 'days' ? 24 : 1);
 
-    const res = await rewardsAdapter.createReward(family.id, {
-      title: title.trim(),
-      cost,
-      emoji: emoji.trim() || '☆',
-      cooldown_hours,
-    });
+      const res = await rewardsAdapter.createReward(family.id, {
+        title: title.trim(),
+        cost,
+        emoji: emoji.trim() || '☆',
+        cooldown_hours,
+      });
 
-    if (res.ok) {
-      if (paramRequestId) {
-        await rewardsAdapter.updateRewardRequestStatus(paramRequestId, 'approved');
+      if (res.ok) {
+        if (paramRequestId) {
+          await rewardsAdapter.updateRewardRequestStatus(paramRequestId, 'approved');
+        }
+        setLoading(false);
+        router.push('/dashboard/rewards');
+      } else {
+        setLoading(false);
+        setError('Error al crear: ' + res.error.message);
       }
-      setLoading(false);
-      router.push('/dashboard/rewards');
-    } else {
-      setLoading(false);
-      setError('Error al crear: ' + res.error.message);
-    }
+    });
+    setPinModalOpen(true);
   }
 
   return (
@@ -138,6 +144,22 @@ function NewRewardForm() {
           Guardar Recompensa
         </Button>
       </form>
+
+      <ConfirmParentPinModal
+        isOpen={pinModalOpen}
+        actionTitle="Confirmación Parental: Crear Recompensa"
+        onSuccess={() => {
+          setPinModalOpen(false);
+          if (pendingSubmit) {
+            pendingSubmit();
+            setPendingSubmit(null);
+          }
+        }}
+        onCancel={() => {
+          setPinModalOpen(false);
+          setPendingSubmit(null);
+        }}
+      />
     </Card>
   );
 }

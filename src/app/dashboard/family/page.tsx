@@ -123,7 +123,6 @@ export default function FamilySettingsPage() {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const hash = window.location.hash;
-      const code = params.get('code');
       const isRecovery =
         params.has('code') ||
         params.has('token') ||
@@ -138,17 +137,6 @@ export default function FamilySettingsPage() {
           setIsRecoveryFlow(true);
           setChangePinModalOpen(true);
         }, 0);
-
-        if (code && isUseSupabase()) {
-          supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
-            if (!error) {
-              setTimeout(() => {
-                setIsRecoveryFlow(true);
-                setChangePinModalOpen(true);
-              }, 0);
-            }
-          });
-        }
       }
     }
 
@@ -157,7 +145,7 @@ export default function FamilySettingsPage() {
     } = supabase.auth.onAuthStateChange((event) => {
       if (
         event === 'PASSWORD_RECOVERY' ||
-        (event === 'SIGNED_IN' && sessionStorage.getItem('mira_pin_recovery') === 'true')
+        (event === 'SIGNED_IN' && typeof window !== 'undefined' && sessionStorage.getItem('mira_pin_recovery') === 'true')
       ) {
         setTimeout(() => {
           setIsRecoveryFlow(true);

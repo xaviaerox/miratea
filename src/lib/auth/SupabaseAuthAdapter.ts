@@ -11,7 +11,7 @@ import type {
   SignInParams,
   AuthSession,
 } from './IAuthAdapter';
-import type { Profile, Result } from '@/types';
+import type { Profile, Family, Result } from '@/types';
 
 export class SupabaseAuthAdapter implements IAuthAdapter {
   constructor(private readonly client: SupabaseClient) {}
@@ -158,22 +158,41 @@ export class SupabaseAuthAdapter implements IAuthAdapter {
   // Private helpers
   // ─────────────────────────────────────────
   private async _buildSession(userId: string, email: string): Promise<AuthSession | null> {
-    const { data: profile } = await this.client
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
+    try {
+      const { data: profile } = await this.client
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle();
 
-    if (!profile) return null;
+      const userProfile: Profile = profile ?? {
+        id: userId,
+        family_id: 'family-' + userId,
+        role: 'parent',
+        display_name: email ? email.split('@')[0] || 'Padre' : 'Padre',
+        avatar_seed: 'parent-' + userId,
+        onboarding_complete: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
 
-    const { data: family } = await this.client
-      .from('families')
-      .select('*')
-      .eq('id', profile.family_id)
-      .single();
+      const { data: family } = await this.client
+        .from('families')
+        .select('*')
+        .eq('id', userProfile.family_id)
+        .maybeSingle();
 
-    if (!family) return null;
+      const userFamily: Family = family ?? {
+        id: userProfile.family_id,
+        name: 'Familia ' + userProfile.display_name,
+        settings: { timezone: 'Europe/Madrid', locale: 'es', theme: 'calm' },
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
 
-    return { user_id: userId, email, profile, family };
+      return { user_id: userId, email, profile: userProfile, family: userFamily };
+    } catch {
+      return null;
+    }
   }
 }

@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { RewardIconPicker } from '@/components/rewards/RewardIconPicker';
+import { ConfirmParentPinModal } from '@/components/dashboard/ConfirmParentPinModal';
 
 const rewardsAdapter = getRewardsAdapter();
 
@@ -53,7 +54,10 @@ function EditRewardForm() {
     });
   }, [id, family?.id]);
 
-  async function handleSubmit(e: React.FormEvent) {
+  const [pinModalOpen, setPinModalOpen] = useState(false);
+  const [pendingSubmit, setPendingSubmit] = useState<(() => void) | null>(null);
+
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!id || !title.trim()) {
       setError('Por favor, introduce un título.');
@@ -64,25 +68,28 @@ function EditRewardForm() {
       return;
     }
 
-    setLoading(true);
-    setError('');
+    setPendingSubmit(() => async () => {
+      setLoading(true);
+      setError('');
 
-    const cooldown_hours = cooldownQty * (cooldownUnit === 'days' ? 24 : 1);
+      const cooldown_hours = cooldownQty * (cooldownUnit === 'days' ? 24 : 1);
 
-    const res = await rewardsAdapter.updateReward(id, {
-      title: title.trim(),
-      cost,
-      emoji: emoji.trim() || '☆',
-      cooldown_hours,
+      const res = await rewardsAdapter.updateReward(id, {
+        title: title.trim(),
+        cost,
+        emoji: emoji.trim() || '☆',
+        cooldown_hours,
+      });
+
+      setLoading(false);
+
+      if (res.ok) {
+        router.push('/dashboard/rewards');
+      } else {
+        setError('Error al actualizar: ' + res.error.message);
+      }
     });
-
-    setLoading(false);
-
-    if (res.ok) {
-      router.push('/dashboard/rewards');
-    } else {
-      setError('Error al actualizar: ' + res.error.message);
-    }
+    setPinModalOpen(true);
   }
 
   if (fetching) {
@@ -160,6 +167,22 @@ function EditRewardForm() {
           Guardar Cambios
         </Button>
       </form>
+
+      <ConfirmParentPinModal
+        isOpen={pinModalOpen}
+        actionTitle="Confirmación Parental: Editar Recompensa"
+        onSuccess={() => {
+          setPinModalOpen(false);
+          if (pendingSubmit) {
+            pendingSubmit();
+            setPendingSubmit(null);
+          }
+        }}
+        onCancel={() => {
+          setPinModalOpen(false);
+          setPendingSubmit(null);
+        }}
+      />
     </Card>
   );
 }

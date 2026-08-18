@@ -429,7 +429,11 @@ export default function ChildDetailClient() {
                           variant="ghost"
                           size="sm"
                           disabled={submittingAction}
-                          onClick={() => handleRequestStatus(req.id, 'rejected', cost, req.title)}
+                          onClick={() => {
+                            triggerProtectedAction('Rechazar Recompensa', () => {
+                              handleRequestStatus(req.id, 'rejected', cost, req.title);
+                            });
+                          }}
                           className="text-stone-400 hover:text-red-500 font-bold"
                         >
                           Rechazar

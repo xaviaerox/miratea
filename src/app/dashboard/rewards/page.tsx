@@ -191,24 +191,26 @@ export default function RewardsDashboardPage() {
     }
   }
 
-  async function handleRejectRequest(id: string) {
-    if (!confirm('¿Seguro que quieres rechazar esta petición?')) return;
-    const res = await rewardsAdapter.deleteRewardRequest(id);
-    if (res.ok) {
-      setRequests(prev => prev.filter(r => r.id !== id));
-    } else {
-      alert('Error al rechazar: ' + res.error.message);
-    }
+  function handleRejectRequest(id: string) {
+    triggerProtectedAction('Rechazar Propuesta de Premio', async () => {
+      const res = await rewardsAdapter.deleteRewardRequest(id);
+      if (res.ok) {
+        setRequests(prev => prev.filter(r => r.id !== id));
+      } else {
+        alert('Error al rechazar: ' + res.error.message);
+      }
+    });
   }
 
-  async function handleDelete(id: string) {
-    if (!confirm('¿Seguro que quieres eliminar esta recompensa del catálogo?')) return;
-    const res = await rewardsAdapter.deleteReward(id);
-    if (res.ok) {
-      setRewards(prev => prev.filter(r => r.id !== id));
-    } else {
-      alert('Error al eliminar: ' + res.error.message);
-    }
+  function handleDelete(id: string) {
+    triggerProtectedAction('Eliminar Recompensa', async () => {
+      const res = await rewardsAdapter.deleteReward(id);
+      if (res.ok) {
+        setRewards(prev => prev.filter(r => r.id !== id));
+      } else {
+        alert('Error al eliminar: ' + res.error.message);
+      }
+    });
   }
 
   async function handleLoadSuggestions() {
