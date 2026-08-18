@@ -24,8 +24,5 @@ export function ageFromBirthYear(birthYear: number): number {
 }
 
 export function getApiUrl(path: string): string {
-  const basePath = '/miratea';
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  if (cleanPath.startsWith(basePath)) return cleanPath;
-  return `${basePath}${cleanPath}`;
+  return path.startsWith('/') ? path : `/${path}`;
 }
