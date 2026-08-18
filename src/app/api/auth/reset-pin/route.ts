@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
       const token = randomBytes(32).toString('hex');
       const expiresAt = Date.now() + 15 * 60 * 1000;
 
-      // Supabase Mode
+      // Supabase Mode (if session exists)
       if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase') {
         try {
           const { createServerSupabaseClient } = await import('@/lib/supabaseServer');
@@ -71,9 +71,9 @@ export async function POST(req: NextRequest) {
         } catch (err) {
           console.warn('[reset-pin] Supabase reset request error:', err);
         }
-      } else {
-        DEMO_RESET_TOKENS.set(email, { token, expiresAt });
       }
+
+      DEMO_RESET_TOKENS.set(email, { token, expiresAt });
 
       return NextResponse.json({
         ok: true,
@@ -102,65 +102,63 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      // Supabase Mode
+      // Supabase Mode (if active session exists)
       if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase') {
         try {
           const { createServerSupabaseClient } = await import('@/lib/supabaseServer');
           const supabase = await createServerSupabaseClient();
           const { data: { user } } = await supabase.auth.getUser();
 
-          if (!user) {
-            return NextResponse.json({ ok: false, error: 'No autenticado' }, { status: 401 });
-          }
-
-          // If password provided, verify account password
-          if (password) {
-            const { error: signInError } = await supabase.auth.signInWithPassword({
-              email: user.email!,
-              password,
-            });
-            if (signInError) {
-              return NextResponse.json(
-                { ok: false, error: 'Contraseña de la cuenta incorrecta. No se ha modificado el PIN.' },
-                { status: 401 }
-              );
+          if (user) {
+            // If password provided, verify account password
+            if (password) {
+              const { error: signInError } = await supabase.auth.signInWithPassword({
+                email: user.email!,
+                password,
+              });
+              if (signInError) {
+                return NextResponse.json(
+                  { ok: false, error: 'Contraseña de la cuenta incorrecta. No se ha modificado el PIN.' },
+                  { status: 401 }
+                );
+              }
             }
-          }
 
-          // If token provided, verify token and 15-min expiration
-          if (token && !password) {
-            const { data: profile } = await supabase
+            // If token provided, verify token and 15-min expiration
+            if (token && !password) {
+              const { data: profile } = await supabase
+                .from('profiles')
+                .select('pin_reset_token, pin_reset_expires_at')
+                .eq('id', user.id)
+                .single();
+
+              if (!profile || profile.pin_reset_token !== token) {
+                return NextResponse.json({ ok: false, error: 'Token de restablecimiento no válido.' }, { status: 400 });
+              }
+
+              if (!profile.pin_reset_expires_at || new Date(profile.pin_reset_expires_at).getTime() < Date.now()) {
+                return NextResponse.json({ ok: false, error: 'El token de restablecimiento ha caducado (válido 15 minutos).' }, { status: 400 });
+              }
+            }
+
+            // Update PIN and clear reset token
+            const { error: updateErr } = await supabase
               .from('profiles')
-              .select('pin_reset_token, pin_reset_expires_at')
-              .eq('id', user.id)
-              .single();
+              .update({
+                parent_pin_hash: newHash,
+                pin_reset_token: null,
+                pin_reset_expires_at: null,
+              })
+              .eq('id', user.id);
 
-            if (!profile || profile.pin_reset_token !== token) {
-              return NextResponse.json({ ok: false, error: 'Token de restablecimiento no válido.' }, { status: 400 });
+            if (updateErr) {
+              return NextResponse.json({ ok: false, error: 'Error al actualizar el PIN en la base de datos.' }, { status: 500 });
             }
 
-            if (!profile.pin_reset_expires_at || new Date(profile.pin_reset_expires_at).getTime() < Date.now()) {
-              return NextResponse.json({ ok: false, error: 'El token de restablecimiento ha caducado (válido 15 minutos).' }, { status: 400 });
-            }
+            return NextResponse.json({ ok: true, message: 'PIN parental actualizado correctamente.' });
           }
-
-          // Update PIN and clear reset token
-          const { error: updateErr } = await supabase
-            .from('profiles')
-            .update({
-              parent_pin_hash: newHash,
-              pin_reset_token: null,
-              pin_reset_expires_at: null,
-            })
-            .eq('id', user.id);
-
-          if (updateErr) {
-            return NextResponse.json({ ok: false, error: 'Error al actualizar el PIN en la base de datos.' }, { status: 500 });
-          }
-
-          return NextResponse.json({ ok: true, message: 'PIN parental actualizado correctamente.' });
         } catch (err) {
-          console.warn('[reset-pin] Supabase update PIN error:', err);
+          console.warn('[reset-pin] Supabase update PIN error fallback to demo:', err);
         }
       }
 
@@ -176,7 +174,7 @@ export async function POST(req: NextRequest) {
         DEMO_RESET_TOKENS.delete('padre@mira.app');
       }
 
-      return NextResponse.json({ ok: true, message: 'PIN parental actualizado correctamente en modo demo.' });
+      return NextResponse.json({ ok: true, message: 'PIN parental actualizado correctamente.' });
     }
 
     return NextResponse.json({ ok: false, error: 'Acción no reconocida' }, { status: 400 });

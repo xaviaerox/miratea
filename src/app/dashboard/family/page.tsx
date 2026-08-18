@@ -52,8 +52,8 @@ export default function FamilySettingsPage() {
           password: accountPassword || 'demo-password',
         }),
       });
-      const data = await res.json().catch(() => ({ ok: false, error: 'Error de respuesta del servidor' }));
-      if (res.ok && data.ok) {
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.ok) {
         setPinChangeMsg(data.message || 'PIN actualizado correctamente.');
         setTimeout(() => {
           setChangePinModalOpen(false);
@@ -63,7 +63,7 @@ export default function FamilySettingsPage() {
           setPinChangeMsg(null);
         }, 1500);
       } else {
-        setPinChangeError(data.error || 'Error al guardar el nuevo PIN.');
+        setPinChangeError(data?.error || `Error (${res.status}) al guardar el nuevo PIN.`);
       }
     } catch {
       setPinChangeError('Error de conexión al actualizar el PIN. Comprueba la red.');

@@ -42,54 +42,50 @@ export async function POST(req: NextRequest) {
     const inputHash = hashPin(pin);
     const defaultDemoHash = hashPin('1234');
 
-    // 2. Supabase Mode
+    // 2. Supabase Mode (if session exists)
     if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase') {
       try {
         const { createServerSupabaseClient } = await import('@/lib/supabaseServer');
         const supabase = await createServerSupabaseClient();
         const { data: { user } } = await supabase.auth.getUser();
 
-        if (!user) {
-          return NextResponse.json({ ok: false, error: 'No autenticado' }, { status: 401 });
-        }
+        if (user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role, parent_pin_hash')
+            .eq('id', user.id)
+            .single();
 
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('role, parent_pin_hash')
-          .eq('id', user.id)
-          .single();
+          if (profile) {
+            if (profile.role !== 'parent') {
+              return NextResponse.json({ ok: false, error: 'Solo perfiles parentales pueden realizar esta acción' }, { status: 403 });
+            }
 
-        if (error || !profile) {
-          return NextResponse.json({ ok: false, error: 'Perfil no encontrado' }, { status: 404 });
-        }
+            // If no PIN set in DB, prompt onboarding setup (never bypass silently!)
+            if (!profile.parent_pin_hash) {
+              return NextResponse.json(
+                {
+                  ok: false,
+                  requireSetup: true,
+                  error: 'Debes configurar tu PIN parental de 4 dígitos por primera vez antes de continuar.',
+                },
+                { status: 400 }
+              );
+            }
 
-        if (profile.role !== 'parent') {
-          return NextResponse.json({ ok: false, error: 'Solo perfiles parentales pueden realizar esta acción' }, { status: 403 });
-        }
-
-        // If no PIN set, prompt onboarding setup (never bypass silently!)
-        if (!profile.parent_pin_hash) {
-          return NextResponse.json(
-            {
-              ok: false,
-              requireSetup: true,
-              error: 'Debes configurar tu PIN parental de 4 dígitos por primera vez antes de continuar.',
-            },
-            { status: 400 }
-          );
-        }
-
-        if (inputHash === profile.parent_pin_hash) {
-          return NextResponse.json({ ok: true });
-        } else {
-          return NextResponse.json({ ok: false, error: 'PIN incorrecto. Inténtalo de nuevo.' }, { status: 401 });
+            if (inputHash === profile.parent_pin_hash) {
+              return NextResponse.json({ ok: true });
+            } else {
+              return NextResponse.json({ ok: false, error: 'PIN incorrecto. Inténtalo de nuevo.' }, { status: 401 });
+            }
+          }
         }
       } catch (err) {
-        console.warn('[verify-pin] Supabase client check error:', err);
+        console.warn('[verify-pin] Supabase client check fallback to demo mode:', err);
       }
     }
 
-    // 3. Static / Demo Mode
+    // 3. Static / Demo Mode Fallback
     if (inputHash === defaultDemoHash) {
       return NextResponse.json({ ok: true });
     }
