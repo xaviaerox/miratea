@@ -12,6 +12,25 @@ export function hashPin(pin: string): string {
   return createHash('sha256').update(pin).digest('hex');
 }
 
+export async function GET() {
+  return NextResponse.json({ ok: true, message: 'Endpoint de verificación de PIN activo' });
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Allow': 'GET, POST, PUT, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
+}
+
+export async function PUT(req: NextRequest) {
+  return POST(req);
+}
+
 export async function POST(req: NextRequest) {
   try {
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'anonymous';
