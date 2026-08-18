@@ -5,7 +5,7 @@ import { NextRequest } from 'next/server';
 describe('HTTP Integration: /api/companion/chat/route.ts', () => {
   it('should sanitize PII in cleanUserMsg and history before sending payload', async () => {
     // Mock global fetch to capture LLM payload
-    let capturedBody: any = null;
+    let capturedBody: Record<string, unknown> | null = null;
     vi.stubGlobal('fetch', async (url: string, init?: RequestInit) => {
       if (url.includes('groq.com') || url.includes('googleapis') || url.includes('anthropic')) {
         capturedBody = JSON.parse((init?.body as string) || '{}');
@@ -39,9 +39,10 @@ describe('HTTP Integration: /api/companion/chat/route.ts', () => {
     expect(resData.text).toBeDefined();
 
     // Verify PII sanitization in captured LLM payload
-    if (capturedBody && capturedBody.messages) {
-      const userMessages = capturedBody.messages.filter((m: any) => m.role === 'user');
-      userMessages.forEach((m: any) => {
+    const body = capturedBody as { messages?: Array<{ role: string; content: string }> } | null;
+    if (body && Array.isArray(body.messages)) {
+      const userMessages = body.messages.filter((m) => m.role === 'user');
+      userMessages.forEach((m) => {
         expect(m.content).not.toContain('Alex');
         expect(m.content).not.toContain('alex@mira.app');
         expect(m.content).not.toContain('600-123-4567');

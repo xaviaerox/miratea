@@ -21,7 +21,7 @@ export function ConfirmParentPinModal({
   onSuccess,
   onCancel,
 }: ConfirmParentPinModalProps) {
-  const { session, profile } = useAuth();
+  const { session } = useAuth();
   const [pin, setPin] = useState(['', '', '', '']);
   const [error, setError] = useState<string | null>(null);
   const [resetMsg, setResetMsg] = useState<string | null>(null);

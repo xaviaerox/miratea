@@ -120,15 +120,26 @@ export default function FamilySettingsPage() {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const hash = window.location.hash;
-      if (params.has('token') || hash.includes('type=recovery') || hash.includes('access_token') || params.get('type') === 'recovery') {
-        setIsRecoveryFlow(true);
-        setChangePinModalOpen(true);
+      if (
+        params.has('token') ||
+        hash.includes('type=recovery') ||
+        hash.includes('access_token') ||
+        params.get('type') === 'recovery'
+      ) {
+        setTimeout(() => {
+          setIsRecoveryFlow(true);
+          setChangePinModalOpen(true);
+        }, 0);
       }
     }
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
-        setIsRecoveryFlow(true);
-        setChangePinModalOpen(true);
+        setTimeout(() => {
+          setIsRecoveryFlow(true);
+          setChangePinModalOpen(true);
+        }, 0);
       }
     });
     return () => subscription?.unsubscribe();

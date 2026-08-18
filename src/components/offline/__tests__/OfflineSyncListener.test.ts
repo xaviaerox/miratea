@@ -6,7 +6,7 @@ describe('OfflineSyncListener Logic', () => {
     const mockDrain = vi.fn().mockResolvedValue({ processed: 1, failed: 0 });
     const mockInit = vi.spyOn(OfflineQueueSyncModule, 'initOfflineQueueSync').mockReturnValue({
       drain: mockDrain,
-    } as any);
+    } as unknown as ReturnType<typeof OfflineQueueSyncModule.initOfflineQueueSync>);
 
     const queue = OfflineQueueSyncModule.initOfflineQueueSync();
     const result = await queue.drain();
