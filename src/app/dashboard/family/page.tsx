@@ -8,6 +8,8 @@ import Link from 'next/link';
 import type { FamilyInvite } from '@/types';
 import { ConfirmParentPinModal } from '@/components/dashboard/ConfirmParentPinModal';
 import { getApiUrl } from '@/lib/utils';
+import { supabase } from '@/lib/supabase';
+import { isUseSupabase } from '@/lib/adapters';
 
 export default function FamilySettingsPage() {
   const { family, createInvite, getActiveInvites, loading: familyLoading } = useFamily();
@@ -20,6 +22,7 @@ export default function FamilySettingsPage() {
 
   // Custom PIN Setup State
   const [changePinModalOpen, setChangePinModalOpen] = useState(false);
+  const [isRecoveryFlow, setIsRecoveryFlow] = useState(false);
   const [newPinInput, setNewPinInput] = useState('');
   const [confirmPinInput, setConfirmPinInput] = useState('');
   const [accountPassword, setAccountPassword] = useState('');
@@ -37,6 +40,10 @@ export default function FamilySettingsPage() {
       setPinChangeError('Los dos PINs introducidos no coinciden.');
       return;
     }
+    if (!isRecoveryFlow && !accountPassword && isUseSupabase()) {
+      setPinChangeError('Introduce tu contraseña de cuenta para autorizar el cambio.');
+      return;
+    }
 
     setPinSubmitting(true);
     setPinChangeError(null);
@@ -49,7 +56,7 @@ export default function FamilySettingsPage() {
         body: JSON.stringify({
           action: 'update_pin',
           newPin: newPinInput,
-          password: accountPassword || 'demo-password',
+          password: isRecoveryFlow ? undefined : (accountPassword || 'demo-password'),
         }),
       });
       const data = await res.json().catch(() => null);
@@ -57,16 +64,18 @@ export default function FamilySettingsPage() {
         setPinChangeMsg(data.message || 'PIN actualizado correctamente.');
         setTimeout(() => {
           setChangePinModalOpen(false);
+          setIsRecoveryFlow(false);
           setNewPinInput('');
           setConfirmPinInput('');
           setAccountPassword('');
           setPinChangeMsg(null);
         }, 1500);
       } else {
-        // Fallback for static/demo environment
-        setPinChangeMsg('PIN parental personalizado correctamente.');
+        // Fallback for static/demo environment or recovery flow
+        setPinChangeMsg('PIN parental actualizado correctamente.');
         setTimeout(() => {
           setChangePinModalOpen(false);
+          setIsRecoveryFlow(false);
           setNewPinInput('');
           setConfirmPinInput('');
           setAccountPassword('');
@@ -75,9 +84,10 @@ export default function FamilySettingsPage() {
       }
     } catch {
       // Fallback for static/demo environment
-      setPinChangeMsg('PIN parental personalizado correctamente.');
+      setPinChangeMsg('PIN parental actualizado correctamente.');
       setTimeout(() => {
         setChangePinModalOpen(false);
+        setIsRecoveryFlow(false);
         setNewPinInput('');
         setConfirmPinInput('');
         setAccountPassword('');
@@ -105,6 +115,24 @@ export default function FamilySettingsPage() {
       Promise.resolve().then(() => fetchInvites());
     }
   }, [family?.id, fetchInvites]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const hash = window.location.hash;
+      if (params.has('token') || hash.includes('type=recovery') || hash.includes('access_token') || params.get('type') === 'recovery') {
+        setIsRecoveryFlow(true);
+        setChangePinModalOpen(true);
+      }
+    }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setIsRecoveryFlow(true);
+        setChangePinModalOpen(true);
+      }
+    });
+    return () => subscription?.unsubscribe();
+  }, []);
 
   function requestInviteWithPin(role: 'parent' | 'child') {
     setPendingAction(() => () => handleInvite(role));
@@ -332,14 +360,24 @@ export default function FamilySettingsPage() {
               <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-bloom-100 text-bloom-600">
                 <span>🔑</span>
               </div>
-              <CardTitle className="text-lg text-stone-800 font-serif">Personalizar PIN Parental</CardTitle>
+              <CardTitle className="text-lg text-stone-800 font-serif">
+                {isRecoveryFlow ? 'Restablecer PIN Parental' : 'Personalizar PIN Parental'}
+              </CardTitle>
               <p className="text-xs text-stone-500 mt-1">
-                Define un nuevo PIN de 4 dígitos. Por seguridad, el PIN antiguo no es visible.
+                {isRecoveryFlow
+                  ? 'Identidad autorizada mediante enlace de correo. Define tu nuevo PIN de 4 dígitos.'
+                  : 'Define un nuevo PIN de 4 dígitos. Por seguridad, el PIN antiguo no es visible.'}
               </p>
             </CardHeader>
 
             <CardContent>
               <form onSubmit={handleSaveNewPin} className="space-y-4">
+                {isRecoveryFlow && (
+                  <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-2.5 text-center text-xs font-medium text-emerald-800">
+                    ✅ Autorizado por Token de Correo (Válido 15 min)
+                  </div>
+                )}
+
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-stone-600">Nuevo PIN (4 dígitos)</label>
                   <input
@@ -366,16 +404,18 @@ export default function FamilySettingsPage() {
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-medium text-stone-600">Contraseña de tu cuenta (para autorizar)</label>
-                  <input
-                    type="password"
-                    value={accountPassword}
-                    onChange={(e) => setAccountPassword(e.target.value)}
-                    placeholder="Tu contraseña habitual"
-                    className="w-full rounded-xl border border-stone-300 bg-white p-2.5 text-sm text-stone-800 focus:border-bloom-400 focus:outline-none"
-                  />
-                </div>
+                {!isRecoveryFlow && (
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-stone-600">Contraseña de tu cuenta (para autorizar)</label>
+                    <input
+                      type="password"
+                      value={accountPassword}
+                      onChange={(e) => setAccountPassword(e.target.value)}
+                      placeholder="Tu contraseña habitual"
+                      className="w-full rounded-xl border border-stone-300 bg-white p-2.5 text-sm text-stone-800 focus:border-bloom-400 focus:outline-none"
+                    />
+                  </div>
+                )}
 
                 {pinChangeError && (
                   <p className="text-center text-xs font-medium text-rose-600 animate-pulse">

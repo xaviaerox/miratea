@@ -407,6 +407,7 @@ DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.s
   - Evolución estratégica global a **MIRATEA by Solutech**.
   - Adopción del Isotipo Canónico Oficial **Beacon Star** (`public/icon.svg`).
   - Creación del Brand Book interactivo oficial en `/miratea/brandbook` y documento maestro `docs/BRANDBOOK.md`.
+  - Sistema de PIN parental personalizable con invisibilidad en pantalla, verificación de contraseña de cuenta, protección anti fuerza bruta (RateLimiter) y recuperación mediante token seguro por correo con auto-apertura de modal.
   - Auditoría integral de seguridad, eliminación de credenciales de prueba y formalización del licenciamiento comercial propietario.
 
 ---
