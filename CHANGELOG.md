@@ -4,9 +4,20 @@ All notable changes to the **MIRATEA** project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-08-21 (Commercial Product Release)
+
+### Added
+- **Commercialization Blueprint & Validation Kit Integration**: Embedded the complete operational commercial validation framework in `commercial-validation/` (`VALIDATION_PLAN.md`, `HYPOTHESES.md`, `METRICS.md`, `EXPERIMENTS.md`, `DECISIONS.md`, `CUSTOMER_INSIGHTS.md`, `INTERVIEWS/`, `COMMERCIAL/`).
+- **Commercial Landing Page (`/landing`)**: Built high-converting public landing page featuring "Menos recordatorios. Más autonomía.", three commercial pillars (Lumi Companion, Adaptive Routines, Sparks ✦), value cycle infographic, dual benefits, trust stack, pricing comparison, Early Families modal, and FAQ.
+- **Legal & Compliance Infrastructure**: Published `/privacy`, `/terms`, `/cookies` pages and integrated `LegalFooter.tsx` with medical disclaimer and GDPR/COPPA compliance notices.
+- **Product Analytics Telemetry (`src/lib/analytics/tracker.ts` & `useAnalytics.ts`)**: Built privacy-first event tracking for user activation, routines, goals, sparks, calm corner, and conversion funnels.
+- **In-App Onboarding & Value Loop Guide (`OnboardingGuide.tsx`)**: Added <10 minute activation checklist for new parent & child profiles.
+- **In-App Feedback & Value Survey Widget (`FeedbackWidget.tsx`)**: Created child sentiment check-in and parent D30 value evaluation forms.
+- **Supabase Commercial Migration (`20260821_commercial_validation_kit.sql`)**: Created tables for `analytics_events`, `early_family_leads`, and `feedback_responses` with RLS policies.
+
 ---
 
-## [1.4.0] - 2026-08-12
+## [1.0.0] - 2026-08-18 (Commercial Release Gold v1.0)
 
 ### Added
 - **Centralized Settings & Accessibility Panel (`Tab 5 / profile`)**: Integrated generic **Fuente de Lectura Adaptada (OpenDyslexic)** and **Menos Efectos y Animaciones** toggles directly into the Settings tab in `src/app/home/page.tsx`, storing state in `localStorage` (`mira_font`) and applying `data-font="dyslexic"` globally.

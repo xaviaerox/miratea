@@ -13,11 +13,11 @@
   2. **Niños y Menores**: Entorno lúdico y tranquilo con apoyo de la mascota inmutable *Lumi*.
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
   4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
-* **Estado del proyecto**: Producción / Commercial Release v1.0.
-* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, auditoría de seguridad completada y suite de pruebas unitarias pasadas.
+* **Estado del proyecto**: Producción / Commercial Product Release v1.1.0.
+* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, marco legal RGPD/COPPA integrado, Landing comercial en /landing y suite de pruebas unitarias completada.
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
-* **Versión actual**: `1.0.0` (Commercial Release v1.0).
-* **Última actualización**: 2026-08-18.
+* **Versión actual**: `1.1.0` (Commercial Product Release v1.1.0).
+* **Última actualización**: 2026-08-21.
 
 ---
 
@@ -365,11 +365,11 @@ DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.s
   - **Descripción**: Confirmación del modelo de Aislamiento por Autenticación de Rol (`parent` vs `child`) eliminando el componente flotante `ParentPinModal`. Eliminación de fallbacks cliente que exponían llaves `NEXT_PUBLIC_GROQ_API_KEY` en el navegador en la creación/edición de metas. Anonimización total mediante `PiiSanitizer` de mensajes e historial de usuarios en `/api/companion/chat`. Integración del listener de sincronización offline `OfflineSyncListener` en `RootLayout`. Estandarización de la denominación oficial **Sparks ✦** y refactorización del tipo interno `routine_streak_milestone` a `routine_constancy_milestone`.
   - **Motivo**: Corregir vulnerabilidades de seguridad crítica, filtración de llaves secretas y datos PII identificados en la auditoría senior pre-inversores.
   - **Alternativas descartadas**: Forzar modales de PIN redundantes sobre usuarios ya autenticados en su rol parental o permitir peticiones IA directas desde el frontend cliente.
-* **2026-08-18 — Release Comercial v1.0, Gestión de PIN Parental en Ajustes y Recuperación por Correo**:
-  - **Descripción**: Implementación del flujo completo de gestión y re-autenticación de PIN parental. Creación del endpoint `/api/auth/reset-pin` para solicitudes de recuperación por correo y actualización segura de hash SHA-256 (`parent_pin_hash`). Integración del enlace *¿Olvidaste tu PIN?* en `ConfirmParentPinModal.tsx`. Creación de la tarjeta *Seguridad Parental y PIN* en `dashboard/family` permitiendo personalizar el PIN sin mostrarlo en texto plano en pantalla. Parcheo completo de dependencias con `npm audit` resultando en **0 vulnerabilidades**. Sincronización de la versión comercial canónica a `1.0.0` en `package.json` y `PROJECT_CONTEXT.md`.
-  - **Motivo**: Proporcionar una capa de seguridad parental completa, personalizable y recuperable por correo sin revelar la clave en dispositivos compartidos, alcanzando 0 vulnerabilidades para el lanzamiento comercial v1.0.
-  - **Alternativas descartadas**: Mostrar el PIN en texto plano en ajustes o carecer de flujo de recuperación de clave parental.
-  - **Consecuencias**: Producto 100% verificado (64/64 tests pasados, 0 errores TypeScript, 0 vulnerabilidades en audit, build de producción Next.js 16.3.1 limpio).
+* **2026-08-21 — Commercial Product Release v1.1.0: Integración del Blueprint y Commercial Validation Kit**:
+  - **Descripción**: Integración de la arquitectura de validación comercial basada en `MIRATEA_COMMERCIALIZATION_BLUEPRINT_v0.1.md` y `MIRATEA_COMMERCIAL_VALIDATION_KIT_v0.1.md`. Creación de la carpeta `commercial-validation/` (`VALIDATION_PLAN.md`, `HYPOTHESES.md`, `METRICS.md`, `EXPERIMENTS.md`, `DECISIONS.md`, `CUSTOMER_INSIGHTS.md`, `INTERVIEWS/`, `COMMERCIAL/`). Desarrollo de la Landing Page pública en `/landing` ("Menos recordatorios. Más autonomía.", 3 pilares comerciales, ciclo de valor infográfico, tabla de pricing experimental 4,99€ / 7,99€ / 9,99€ y modal de captación Early Families). Publicación de páginas legales en `/privacy`, `/terms` y `/cookies` con `LegalFooter.tsx`. Implementación de analítica de telemetría (`tracker.ts`), guía de activación en <10 min (`OnboardingGuide.tsx`), widget de feedback familiar (`FeedbackWidget.tsx`) y migración SQL de Supabase. Sincronización de versión a `1.1.0` en `package.json`, `public/sw.js` y `CHANGELOG.md`.
+  - **Motivo**: Convertir la aplicación técnica MIRATEA en un infoproducto comercial estructurado y listo para mercado con evidencias empíricas de disposición a pago.
+  - **Alternativas descartadas**: Mantener la app sin landing comercial ni marco operativo de validación con familias externas.
+  - **Consecuencias**: Producto 100% preparado para la cohorte fundadora Early Families.
 
 ---
 

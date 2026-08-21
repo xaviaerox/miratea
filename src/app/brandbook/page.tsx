@@ -138,10 +138,10 @@ const MIRATEA_MODULES: ModuleItem[] = [
     id: 'professional',
     name: 'MIRATEA Professional',
     badge: 'Clínica & Gabinetes',
-    description: 'Panel para terapeutas ocupacionales, psicólogos y logopedas. Permite dar seguimiento cuantitativo al progreso del hogar.',
-    targetUser: 'Terapeutas, psicólogos/as, orientadores y centros de atención temprana.',
-    keyFeatures: ['Generación de Informes PDF/CSV', 'Métricas de 6 dimensiones emocionales', 'Sin burocracia de registro', 'Integración de planes de intervención'],
-    status: 'Producción v1.0',
+    description: 'Hoy, las familias exportan informes de progreso (PDF/CSV/JSON) para compartirlos manualmente con su equipo terapéutico. Un panel de acceso directo para profesionales está en el roadmap.',
+    targetUser: 'Terapeutas, psicólogos/as, orientadores y centros de atención temprana (vía informes compartidos por la familia).',
+    keyFeatures: ['Generación de Informes PDF/CSV/JSON', 'Métricas de 6 dimensiones emocionales', 'Exportación desde el Perfil Parental', 'Panel de acceso directo — en Roadmap'],
+    status: 'Parcial — exportación disponible',
     colorTheme: 'from-sky-500/10 to-indigo-500/10 border-sky-200 text-sky-800'
   },
   {
@@ -151,7 +151,7 @@ const MIRATEA_MODULES: ModuleItem[] = [
     description: 'Gestión de accesos, permisos multi-rol y control estricto de gobernanza de datos para instituciones y asociaciones.',
     targetUser: 'Directores de centros, administradores de red y asociaciones TEA.',
     keyFeatures: ['Cumplimiento GDPR Art. 20', 'Aislamiento por Autenticación de Rol', 'Gestión de roles y consentimiento', 'Sin rastreadores ni terceros'],
-    status: 'Producción v1.0',
+    status: 'Roadmap v2.0',
     colorTheme: 'from-purple-500/10 to-violet-500/10 border-purple-200 text-purple-800'
   },
   {
@@ -167,10 +167,10 @@ const MIRATEA_MODULES: ModuleItem[] = [
   {
     id: 'ai',
     name: 'MIRATEA AI',
-    badge: 'Inteligencia Ética Local',
+    badge: 'Inteligencia Ética y Anonimizada',
     description: 'Motor inteligente adaptativo para descomponer objetivos grandes en micropasos alcanzables e historias de calma.',
     targetUser: 'Uso transversal en la plataforma.',
-    keyFeatures: ['Sanitizador PII automático', 'Modo 100% Offline (WASM/WebLLM)', 'Generador de micropasos MicrotaskEngine', 'Cuentos de regulación empáticos'],
+    keyFeatures: ['Sanitizador PII automático previo a IA externa', 'Generador de micropasos MicrotaskEngine', 'Cuentos de regulación empáticos', 'Modo estático sin conexión para el resto de la app'],
     status: 'Producción v1.0',
     colorTheme: 'from-blue-500/10 to-cyan-500/10 border-cyan-200 text-cyan-800'
   }
@@ -639,7 +639,7 @@ export default function BrandbookPage() {
                 >
                   {[
                     { context: 'Evaluación de rutina', text: '"Has completado la respiración. ¿Cómo sientes tu cuerpo ahora?"', note: 'Enfoque en la percepción corporal interna sin juicios de bien/mal.' },
-                    { context: 'Registro de objetivo', text: '"¡Gran esfuerzo! Has añadido 1 chispa de valentía a tu colección."', note: 'Refuerzo positivo acumulativo que jamás decrece.' },
+                    { context: 'Registro de objetivo', text: '"¡Gran esfuerzo! Has añadido 1 Spark ✦ de valentía a tu colección."', note: 'Refuerzo positivo acumulativo que jamás decrece.' },
                     { context: 'Retorno a la app', text: '"Bienvenido de nuevo. Tu espacio de calma está listo cuando lo necesites."', note: 'Cero reproches ni culpas por días transcurridos sin entrar.' }
                   ].map((item, idx) => (
                     <div key={idx} className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">

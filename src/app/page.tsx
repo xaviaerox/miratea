@@ -10,7 +10,7 @@ export default function RootPage() {
 
   useEffect(() => {
     if (loading) return;
-    if (!session) { router.replace('/login'); return; }
+    if (!session) { router.replace('/landing'); return; }
     const { profile } = session;
     if (!profile.onboarding_complete && profile.role === 'child') {
       router.replace('/onboarding/companion');
