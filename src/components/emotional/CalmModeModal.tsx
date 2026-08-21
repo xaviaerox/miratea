@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, Heart, Clock, Wind } from 'lucide-react';
+import { X, Sparkles, Heart, Clock, Wind, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { useSensoryAudio } from '@/hooks/useSensoryAudio';
 
 interface CalmModeModalProps {
   isOpen: boolean;
@@ -18,12 +19,16 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
   const [phase, setPhase] = useState<Phase>('inhale');
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [cycleCount, setCycleCount] = useState(0);
+
+  const { isMuted, initAudio, toggleMute, playCalmTone, playCompletionChime } = useSensoryAudio();
+
   const handleFinish = useCallback(() => {
     if (cycleCount > 0 || secondsLeft < 55 || secondsLeft === 0) {
+      playCompletionChime();
       onComplete?.();
     }
     onClose();
-  }, [cycleCount, secondsLeft, onComplete, onClose]);
+  }, [cycleCount, secondsLeft, playCompletionChime, onComplete, onClose]);
 
   // Keyboard accessibility (Escape key to dismiss)
   useEffect(() => {
@@ -36,6 +41,16 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, handleFinish]);
+
+  // Reset states and initialize audio context when opening
+  useEffect(() => {
+    if (isOpen) {
+      setSecondsLeft(60);
+      setCycleCount(0);
+      setPhase('inhale');
+      initAudio();
+    }
+  }, [isOpen, initAudio]);
 
   // 60-second countdown timer
   useEffect(() => {
@@ -60,6 +75,9 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
   useEffect(() => {
     if (!isOpen || isTimeFinished) return;
 
+    // Play 432Hz sensory sound for current phase
+    playCalmTone(phase);
+
     let timeout: NodeJS.Timeout;
 
     if (phase === 'inhale') {
@@ -78,7 +96,7 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
     }
 
     return () => clearTimeout(timeout);
-  }, [isOpen, phase, isTimeFinished]);
+  }, [isOpen, phase, isTimeFinished, playCalmTone]);
 
   if (!isOpen) return null;
 
@@ -108,7 +126,11 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
+      <div
+        onClick={initAudio}
+        onPointerDown={initAudio}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md"
+      >
         <motion.div
           role="dialog"
           aria-modal="true"
@@ -116,16 +138,40 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
+          onClick={(e) => {
+            e.stopPropagation();
+            initAudio();
+          }}
           className="relative w-full max-w-lg bg-gradient-to-b from-teal-900/90 via-slate-900/95 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-teal-500/30 overflow-hidden text-center space-y-6"
         >
-          {/* Close Button */}
-          <button
-            onClick={handleFinish}
-            className="absolute top-4 right-4 p-2 text-teal-200/70 hover:text-white hover:bg-white/10 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-300 cursor-pointer"
-            aria-label="Cerrar modo calma"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          {/* Header Controls: Mute Toggle & Close */}
+          <div className="absolute top-4 right-4 flex items-center gap-1 z-10">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleMute();
+              }}
+              className="p-2 text-teal-200/70 hover:text-white hover:bg-white/10 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-300 cursor-pointer"
+              aria-label={isMuted ? 'Activar sonido de respiración' : 'Silenciar sonido de respiración'}
+              title={isMuted ? 'Sonido desactivado' : 'Sonido activado'}
+            >
+              {isMuted ? (
+                <VolumeX className="w-5 h-5 text-rose-300/80" />
+              ) : (
+                <Volume2 className="w-5 h-5 text-teal-300 animate-pulse" />
+              )}
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFinish();
+              }}
+              className="p-2 text-teal-200/70 hover:text-white hover:bg-white/10 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-300 cursor-pointer"
+              aria-label="Cerrar modo calma"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
 
           {/* Header */}
           <div className="space-y-1 pt-4">
@@ -177,7 +223,10 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
 
           {/* Exit / Done Button */}
           <Button
-            onClick={handleFinish}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFinish();
+            }}
             className="w-full bg-teal-500 hover:bg-teal-400 text-teal-950 font-bold py-3 rounded-2xl transition-all shadow-lg shadow-teal-500/20 focus:ring-2 focus:ring-teal-300 cursor-pointer"
           >
             {secondsLeft === 0 ? 'Me siento mejor 🌸' : 'Terminar sesión'}

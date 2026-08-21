@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Dynamic Delegating Adapters**: Implemented `Delegating*Adapter` classes for all 9 core domain modules in `src/lib/adapters.ts`, eliminating state freezes from module-level singleton instantiations and allowing seamless zero-latency switches between Supabase and Static Demo modes.
 - **Demo Mode 1-Click Activation**: Enhanced `signIn` in `DelegatingAuthAdapter` and login handlers to automatically set `mira_demo_mode` in `localStorage` when demo credentials (`child@demo.app`, `parent@mira.app`, `demo`) are provided, preventing erroneous 400 Bad Request calls to Supabase.
 - **Supabase 400 Bad Request Elimination**: Replaced static `DATA_SOURCE === 'supabase'` checks across components (`SparkProvider`, `ChildDetailClient`, `dashboard/page`, `rewards/page`, `CustomizationModal`, `ChildFeedbackModal`, `MemoryEngine`, `VectorMemoryEngine`, `decomposeAI`) with dynamic `isUseSupabase()`, stopping Realtime channels and RPC invocations when in demo mode or when Supabase keys are placeholder values.
-- **Server Route & Middleware Protection**: Added explicit validation of Supabase API keys in `middleware.ts`, `verify-pin/route.ts`, `reset-pin/route.ts`, `companion/chat/route.ts`, and `decompose/route.ts` to skip remote auth calls when API keys are unconfigured or placeholder strings.
+- **Sensory Audio Synthesis for Breathing (`useSensoryAudio` & `CalmModeModal`)**: Integrated phase-aware 432Hz harmonic Web Audio synthesis into `CalmModeModal.tsx` and `CalmCornerModal.tsx`, added user-gesture AudioContext resume handlers on pointer/click events to overcome browser autoplay restrictions, and added a visual Mute/Unmute audio control toggle.
 
 ---
 

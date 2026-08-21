@@ -90,7 +90,7 @@ export function CalmCornerModal({ isOpen, onClose, onComplete }: CalmCornerModal
           const currentConfig = PHASE_CONFIG[phase];
           const nextPhase = currentConfig.next;
           setPhase(nextPhase);
-          playCalmTone();
+          playCalmTone(nextPhase);
           if (nextPhase === 'inhale') {
             setCompletedCycles((c) => c + 1);
           }
