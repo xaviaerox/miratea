@@ -1,6 +1,7 @@
 import type { CompanionMemory, DialogueLine, CompanionStage } from '@/types';
 import { resolveAnimationCue } from './dialogue/DialogueBank';
 import { supabase } from '@/lib/supabase';
+import { isUseSupabase } from '@/lib/adapters';
 
 /**
  * Checks if there is a relevant active memory to mention and generates a custom DialogueLine.
@@ -81,7 +82,7 @@ export async function searchSemanticMemories(
   memoriesFallback: CompanionMemory[] = [],
   limit = 3
 ): Promise<SemanticMemoryMatch[]> {
-  if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase' && supabase) {
+  if (isUseSupabase() && supabase) {
     try {
       // In Supabase mode, call the match_companion_memories RPC
       const rpcCall = supabase.rpc as unknown as (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: unknown }>;

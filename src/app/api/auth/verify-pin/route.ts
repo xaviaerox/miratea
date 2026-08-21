@@ -63,8 +63,12 @@ export async function POST(req: NextRequest) {
     const inputHash = hashPin(pin);
     const defaultDemoHash = hashPin('1234');
 
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const hasSupabaseCreds = !!url && !!key && !url.includes('placeholder') && key !== 'placeholder';
+
     // 2. Supabase Mode (if session exists)
-    if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase') {
+    if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase' && hasSupabaseCreds) {
       try {
         const { createServerSupabaseClient } = await import('@/lib/supabaseServer');
         const supabase = await createServerSupabaseClient();

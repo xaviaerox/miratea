@@ -1,5 +1,6 @@
 import type { EffortLevel } from '@/types';
 import { supabase } from '@/lib/supabase';
+import { isUseSupabase } from '@/lib/adapters';
 import { getApiUrl } from '../utils';
 
 export interface AIMicrotaskSuggestion {
@@ -46,7 +47,7 @@ Responde ÚNICAMENTE con un JSON válido con este formato:
     if (res && res.ok) {
       const data = await res.json();
       rawText = data.text || '';
-    } else if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase') {
+    } else if (isUseSupabase()) {
       const { data: edgeData, error } = await supabase.functions.invoke('decompose', {
         body: { prompt },
       });

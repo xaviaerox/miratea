@@ -97,6 +97,10 @@ export default function LoginPage() {
             variant="ghost"
             size="sm"
             onClick={async () => {
+              if (typeof window !== 'undefined') {
+                localStorage.setItem('mira_demo_mode', 'true');
+                localStorage.setItem('mira_static_role', 'child');
+              }
               await signIn({ email: 'child@demo.app', password: 'demo' });
               router.push('/home');
             }}

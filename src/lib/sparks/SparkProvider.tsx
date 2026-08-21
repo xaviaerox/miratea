@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback, ReactNode } from 'react';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { getSparkAdapter, isSupabase } from '@/lib/adapters';
+import { getSparkAdapter, isUseSupabase } from '@/lib/adapters';
 import { supabase } from '@/lib/supabase';
 import type { SparkLedgerEntry, Result } from '@/types';
 
@@ -61,7 +61,7 @@ export function SparkProvider({ children }: { children: ReactNode }) {
     });
 
     // Realtime subscription for Supabase
-    if (isSupabase) {
+    if (isUseSupabase()) {
       const channel = supabase
         .channel(`sparks_provider:${childId}`)
         .on(

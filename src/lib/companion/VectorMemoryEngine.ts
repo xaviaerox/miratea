@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+import { isUseSupabase } from '@/lib/adapters';
 import { sanitizePii } from '@/lib/security/PiiSanitizer';
 import type { Result } from '@/types';
 
@@ -23,7 +24,7 @@ export class VectorMemoryEngine {
     threshold = 0.5
   ): Promise<Result<SemanticMemoryMatch[]>> {
     try {
-      if (process.env.NEXT_PUBLIC_DATA_SOURCE !== 'supabase') {
+      if (!isUseSupabase()) {
         return { ok: true, data: [] };
       }
 
@@ -70,7 +71,7 @@ export class VectorMemoryEngine {
     memoryId?: string
   ): Promise<Result<void>> {
     try {
-      if (process.env.NEXT_PUBLIC_DATA_SOURCE !== 'supabase') {
+      if (!isUseSupabase()) {
         return { ok: true, data: undefined };
       }
 

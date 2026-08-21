@@ -25,8 +25,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const hasSupabaseCreds = !!url && !!key && !url.includes('placeholder') && key !== 'placeholder';
+
     // 2. Auth check in Supabase mode
-    if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase') {
+    if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase' && hasSupabaseCreds) {
       const supabase = await createServerSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {

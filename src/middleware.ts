@@ -10,9 +10,10 @@ export async function middleware(request: NextRequest) {
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const hasSupabaseCreds = !!url && !!key && !url.includes('placeholder') && key !== 'placeholder';
 
   // In static mode or without env vars, allow client-side handling
-  if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'static' || !url || !key) {
+  if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'static' || !hasSupabaseCreds) {
     return response;
   }
 

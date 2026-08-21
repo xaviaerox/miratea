@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useFamily } from '@/lib/family/FamilyProvider';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { getEmotionalAdapter, getRoutineAdapter, getProgressionAdapter, DATA_SOURCE } from '@/lib/adapters';
+import { getEmotionalAdapter, getRoutineAdapter, getProgressionAdapter, isUseSupabase } from '@/lib/adapters';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { SparkBadge } from '@/components/ui/SparkBadge';
 import { ProgressBar } from '@/components/ui/ProgressBar';
@@ -52,7 +52,7 @@ export default function DashboardPage() {
       if (c.ok) setRoutineCounts(prev => ({ ...prev, [child.id]: c.data.length }));
 
       // Fetch spark balance
-      if (DATA_SOURCE === 'supabase') {
+      if (isUseSupabase()) {
         const fetchBalance = async () => {
           const { data, error } = await supabase
             .from('spark_ledger')
@@ -84,7 +84,7 @@ export default function DashboardPage() {
     });
 
     return () => {
-      if (DATA_SOURCE === 'supabase') {
+      if (isUseSupabase()) {
         channels.forEach(ch => supabase.removeChannel(ch));
       }
     };

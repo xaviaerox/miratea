@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { isUseSupabase } from '@/lib/adapters';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -18,7 +19,7 @@ export function AuthGuard({ children, requireRole }: AuthGuardProps) {
     if (loading) return;
 
     // In static demo mode, if session is null, allow fallback browsing or redirect to login
-    const isStatic = process.env.NEXT_PUBLIC_DATA_SOURCE === 'static';
+    const isStatic = !isUseSupabase();
 
     if (!isAuthenticated && !isStatic) {
       router.push('/login');

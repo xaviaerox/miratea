@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Sparkles, AlertCircle, Lightbulb, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { supabase } from '@/lib/supabase';
+import { isUseSupabase } from '@/lib/adapters';
 
 interface ChildFeedbackModalProps {
   isOpen: boolean;
@@ -30,7 +31,7 @@ export function ChildFeedbackModal({ isOpen, onClose, childId, childName = 'amig
     setSending(true);
 
     try {
-      if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase' && childId) {
+      if (isUseSupabase() && childId) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await (supabase as any).from('family_feedback').insert({
           child_id: childId,

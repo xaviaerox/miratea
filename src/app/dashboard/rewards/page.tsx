@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useFamily } from '@/lib/family/FamilyProvider';
-import { getRewardsAdapter, DATA_SOURCE } from '@/lib/adapters';
+import { getRewardsAdapter, isUseSupabase } from '@/lib/adapters';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
@@ -59,7 +59,7 @@ export default function RewardsDashboardPage() {
         setRequests(requestsRes.data.filter(r => r.status === 'pending'));
       }
 
-      if (DATA_SOURCE === 'supabase') {
+      if (isUseSupabase()) {
         const { data, error } = await supabase
           .from('spark_ledger')
           .select('child_id, delta');
@@ -150,7 +150,7 @@ export default function RewardsDashboardPage() {
 
       // 2. If parent chooses to deduct sparks now
       if (deductSparks) {
-        if (DATA_SOURCE === 'supabase') {
+        if (isUseSupabase()) {
           const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
             selectedRequest.id
           );

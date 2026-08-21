@@ -10,7 +10,7 @@ import {
   getRoutineAdapter,
   getRewardsAdapter,
   getProgressionAdapter,
-  DATA_SOURCE
+  isUseSupabase
 } from '@/lib/adapters';
 import { analyseEmotionTrend } from '@/lib/emotional/EmotionModel';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
@@ -114,7 +114,7 @@ export default function ChildDetailClient() {
 
   const fetchBalanceAndLedger = async () => {
     if (!childId) return;
-    if (DATA_SOURCE === 'supabase') {
+    if (isUseSupabase()) {
       const { data, error } = await supabase
         .from('spark_ledger')
         .select('*')
@@ -190,7 +190,7 @@ export default function ChildDetailClient() {
       setLoading(false);
     });
 
-    if (DATA_SOURCE === 'supabase') {
+    if (isUseSupabase()) {
       const channel = supabase
         .channel(`child_detail_realtime:${childId}`)
         .on(
@@ -224,7 +224,7 @@ export default function ChildDetailClient() {
     if (!childId) return;
     setSubmittingAction(true);
     
-    if (DATA_SOURCE === 'supabase') {
+    if (isUseSupabase()) {
       const { error } = await supabase.rpc('award_sparks', {
         p_child_id: childId,
         p_delta: awardAmount,
@@ -253,7 +253,7 @@ export default function ChildDetailClient() {
     }
     
     setSubmittingAction(true);
-    if (DATA_SOURCE === 'supabase') {
+    if (isUseSupabase()) {
       const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rewardId);
       const { error } = await supabase.rpc('award_sparks', {
         p_child_id: childId,
@@ -284,7 +284,7 @@ export default function ChildDetailClient() {
         return;
       }
 
-      if (DATA_SOURCE === 'supabase') {
+      if (isUseSupabase()) {
         // Log redemption transaction in spark ledger
         const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestId);
         await supabase.rpc('award_sparks', {

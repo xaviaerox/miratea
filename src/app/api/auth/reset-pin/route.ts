@@ -72,8 +72,12 @@ export async function POST(req: NextRequest) {
       const token = randomBytes(32).toString('hex');
       const expiresAt = Date.now() + 15 * 60 * 1000;
 
+      const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      const hasSupabaseCreds = !!url && !!key && !url.includes('placeholder') && key !== 'placeholder';
+
       // Supabase Mode (if session exists)
-      if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase') {
+      if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase' && hasSupabaseCreds) {
         try {
           const { createServerSupabaseClient } = await import('@/lib/supabaseServer');
           const supabase = await createServerSupabaseClient();
@@ -129,8 +133,12 @@ export async function POST(req: NextRequest) {
         );
       }
 
+      const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      const hasSupabaseCreds = !!url && !!key && !url.includes('placeholder') && key !== 'placeholder';
+
       // Supabase Mode (if active session exists)
-      if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase') {
+      if (process.env.NEXT_PUBLIC_DATA_SOURCE === 'supabase' && hasSupabaseCreds) {
         try {
           const { createServerSupabaseClient } = await import('@/lib/supabaseServer');
           const supabase = await createServerSupabaseClient();

@@ -9,7 +9,7 @@ import { ChildAvatar } from '../ui/ChildAvatar';
 import { CompanionBlob } from './CompanionBlob';
 import { CUSTOMIZATION_ITEMS, type CustomizationItem } from '@/lib/customization/CustomizationItems';
 import { Palette, Sparkles, Smile } from 'lucide-react';
-import { getSparkAdapter, DATA_SOURCE } from '@/lib/adapters';
+import { getSparkAdapter, isUseSupabase } from '@/lib/adapters';
 
 interface CustomizationModalProps {
   isOpen: boolean;
@@ -74,7 +74,7 @@ export function CustomizationModal({ isOpen, onClose, sparkBalance, onPurchaseSu
     setBuyingId(item.id);
 
     // 1. Deduct sparks depending on active data source
-    if (DATA_SOURCE === 'supabase') {
+    if (isUseSupabase()) {
       const { error: sparkError } = await supabase.rpc('award_sparks', {
         p_child_id: profile.id,
         p_delta: -item.cost,
