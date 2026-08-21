@@ -42,12 +42,19 @@ export function CalmModeModal({ isOpen, onClose, onComplete, companionName = 'Lu
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, handleFinish]);
 
-  // Reset states and initialize audio context when opening
-  useEffect(() => {
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
     if (isOpen) {
       setSecondsLeft(60);
       setCycleCount(0);
       setPhase('inhale');
+    }
+  }
+
+  // Initialize audio context when opening
+  useEffect(() => {
+    if (isOpen) {
       initAudio();
     }
   }, [isOpen, initAudio]);
