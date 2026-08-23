@@ -4,6 +4,19 @@ All notable changes to the **MIRATEA** project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2026-08-23 (Commercial Validation Hardening Release)
+
+### Security & Anti-PII
+- **Centralized Privacy-First Analytics Architecture (`src/lib/analytics/tracker.ts`)**: Built a strictly typed analytics engine with `EventPayloadMap`, two-tier Anti-PII validator blocking names, emails, phones, national IDs, and clinical text, local `localStorage` queue (max 100 events), deduplication by event UUID, network recovery flush, and Supabase `analytics_events` transport.
+- **Adversarial RLS Security Suite (`rlsSecurityAdversarial.test.ts`)**: Added 63 security tests proving A→A ALLOW, A→B DENY, and B→A DENY for SELECT, INSERT, UPDATE, and DELETE operations across all domain tables.
+
+### Commercial & Data Minimization
+- **Early Family Lead Persistence & Data Minimization (`src/app/landing/page.tsx`)**: Removed `neurodivergence` health data field from lead submission (GDPR Art. 9 compliance), adopted `childAgeRange`, added an explicit legal privacy notice consent checkbox linking to `/privacy` and `/terms`, and enabled real Supabase `early_family_leads` persistence.
+- **Feedback Widget Real Persistence (`src/components/feedback/FeedbackWidget.tsx`)**: Enabled direct Supabase `feedback_responses` table persistence for child sentiment and parent D30 evaluation with semantically correct event names (`child_sentiment_submitted`, `parent_value_evaluated`).
+- **Activation Instrumentation (`src/components/onboarding/OnboardingGuide.tsx`)**: Instrument `onboarding_started`, `onboarding_step_completed`, `activation_completed`, and `onboarding_dismissed` events.
+
+---
+
 ## [1.1.1] - 2026-08-21 (Demo Mode & API Key Robustness Release)
 
 ### Fixed

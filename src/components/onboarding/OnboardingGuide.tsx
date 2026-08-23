@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sparkles, CheckCircle2, Circle, ArrowRight } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
@@ -35,6 +35,16 @@ export function OnboardingGuide({
   const completedCount = steps.filter((s) => s.done).length;
   const isFullyActivated = completedCount === steps.length;
 
+  useEffect(() => {
+    trackEvent('onboarding_started', { totalSteps: steps.length });
+  }, [trackEvent, steps.length]);
+
+  useEffect(() => {
+    if (isFullyActivated) {
+      trackEvent('activation_completed', { durationSeconds: 0 });
+    }
+  }, [isFullyActivated, trackEvent]);
+
   if (dismissed || isFullyActivated) return null;
 
   return (
@@ -42,7 +52,7 @@ export function OnboardingGuide({
       <button
         onClick={() => {
           setDismissed(true);
-          trackEvent('privacy_viewed', { action: 'dismiss_onboarding_guide' });
+          trackEvent('onboarding_dismissed', { completedCount });
         }}
         className="absolute top-4 right-4 text-teal-300 hover:text-white text-xs font-semibold"
       >
@@ -70,7 +80,10 @@ export function OnboardingGuide({
         {steps.map((step, idx) => (
           <div
             key={step.id}
-            onClick={() => onNavigate(step.id)}
+            onClick={() => {
+              trackEvent('onboarding_step_completed', { stepId: step.id, stepIndex: idx + 1 });
+              onNavigate(step.id);
+            }}
             className={`flex items-center justify-between p-3 rounded-2xl border transition-all cursor-pointer ${
               step.done
                 ? 'bg-teal-950/40 border-emerald-500/40 text-emerald-200'
@@ -94,3 +107,4 @@ export function OnboardingGuide({
     </div>
   );
 }
+

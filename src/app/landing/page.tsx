@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { MiraLogo } from '@/components/ui/MiraLogo';
 import { LegalFooter } from '@/components/ui/LegalFooter';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { getSupabaseClient } from '@/lib/supabase';
 import {
   Sparkles,
   CheckCircle2,
@@ -25,20 +26,47 @@ export default function LandingPage() {
   const [formData, setFormData] = useState({
     parentName: '',
     email: '',
-    childAge: '8-10',
-    neurodivergence: 'tea_tdah',
-    message: '',
+    childAgeRange: '8-10',
   });
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     trackEvent('pricing_viewed', { page: 'landing' });
   }, [trackEvent]);
 
-  const handleSubmitEarlyFamily = (e: React.FormEvent) => {
+  const handleSubmitEarlyFamily = async (e: React.FormEvent) => {
     e.preventDefault();
-    trackEvent('early_family_signup', { ...formData, billingCycle });
-    setSubmitted(true);
+    if (!privacyAccepted || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const supabase = getSupabaseClient();
+      if (supabase) {
+        await supabase.from('early_family_leads').insert({
+          parent_name: formData.parentName.trim() || 'Familia MIRATEA',
+          email: formData.email.trim(),
+          child_age: formData.childAgeRange,
+          billing_cycle: billingCycle,
+          status: 'pending',
+        });
+      }
+      trackEvent('early_family_signup', {
+        billingCycle,
+        childAgeRange: formData.childAgeRange,
+      });
+      setSubmitted(true);
+    } catch (err) {
+      console.error('[EarlyFamilyLead] Error:', err);
+      trackEvent('early_family_signup', {
+        billingCycle,
+        childAgeRange: formData.childAgeRange,
+      });
+      setSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleDemoClick = () => {
@@ -401,19 +429,18 @@ export default function LandingPage() {
                 </p>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-stone-700">Tu Nombre</label>
+                  <label className="text-xs font-semibold text-stone-700">Nombre o Alias Parental (Opcional)</label>
                   <input
                     type="text"
-                    required
                     value={formData.parentName}
                     onChange={(e) => setFormData({ ...formData, parentName: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-teal-500 outline-none"
-                    placeholder="Ej. María López"
+                    placeholder="Ej. Familia López"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-stone-700">Email de Contacto</label>
+                  <label className="text-xs font-semibold text-stone-700">Email de Contacto *</label>
                   <input
                     type="email"
                     required
@@ -425,10 +452,10 @@ export default function LandingPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-stone-700">Edad del Niño/a</label>
+                  <label className="text-xs font-semibold text-stone-700">Rango de Edad del Menor</label>
                   <select
-                    value={formData.childAge}
-                    onChange={(e) => setFormData({ ...formData, childAge: e.target.value })}
+                    value={formData.childAgeRange}
+                    onChange={(e) => setFormData({ ...formData, childAgeRange: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-teal-500 outline-none bg-white"
                   >
                     <option value="5-7">5 - 7 años</option>
@@ -437,11 +464,34 @@ export default function LandingPage() {
                   </select>
                 </div>
 
+                <div className="pt-2 flex items-start gap-2 text-xs text-stone-600">
+                  <input
+                    type="checkbox"
+                    id="privacyConsent"
+                    required
+                    checked={privacyAccepted}
+                    onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                    className="mt-0.5 rounded border-stone-300 text-teal-700 focus:ring-teal-500"
+                  />
+                  <label htmlFor="privacyConsent" className="leading-snug">
+                    He leído y acepto la{' '}
+                    <Link href="/privacy" className="text-teal-700 underline font-semibold" target="_blank">
+                      Política de Privacidad
+                    </Link>{' '}
+                    y los{' '}
+                    <Link href="/terms" className="text-teal-700 underline font-semibold" target="_blank">
+                      Términos de Servicio
+                    </Link>
+                    . Entiendo que MIRATEA no recoge datos de salud ni clínicos.
+                  </label>
+                </div>
+
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm shadow-md transition-all mt-2"
+                  disabled={!privacyAccepted || isSubmitting}
+                  className="w-full py-3.5 rounded-xl bg-teal-700 hover:bg-teal-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm shadow-md transition-all mt-2"
                 >
-                  Confirmar Solicitud
+                  {isSubmitting ? 'Enviando...' : 'Confirmar Solicitud'}
                 </button>
               </form>
             ) : (

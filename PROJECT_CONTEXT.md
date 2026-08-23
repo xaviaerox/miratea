@@ -13,11 +13,11 @@
   2. **Niños y Menores**: Entorno lúdico y tranquilo con apoyo de la mascota inmutable *Lumi*.
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
   4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
-* **Estado del proyecto**: Producción / Commercial Product Release v1.1.1 (Demo Mode & API Key Robustness).
-* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, arquitectura de adaptadores delegados dinámicos (`Delegating*Adapter`) con tolerancia a fallos en Modo Demo y API Keys de marcador de posición.
+* **Estado del proyecto**: Producción / Commercial Validation Pre-Flight Ready v1.1.2.
+* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 137/137 tests pasando, suite RLS adversarial probada (A→A ALLOW, A→B DENY, B→A DENY), Anti-PII sanitization y persistencia real en Supabase (Early Family, Feedback, Analytics).
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
-* **Versión actual**: `1.1.1` (Demo Mode & API Key Robustness v1.1.1).
-* **Última actualización**: 2026-08-21.
+* **Versión actual**: `1.1.2` (Commercial Validation Hardening Release v1.1.2).
+* **Última actualización**: 2026-08-23.
 
 ---
 

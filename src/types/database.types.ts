@@ -510,6 +510,93 @@ export type Database = {
         };
         Relationships: [];
       };
+      analytics_events: {
+        Row: {
+          id: string;
+          family_id: string | null;
+          child_id: string | null;
+          event_name: string;
+          metadata: Json;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          family_id?: string | null;
+          child_id?: string | null;
+          event_name: string;
+          metadata?: Json;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          family_id?: string | null;
+          child_id?: string | null;
+          event_name?: string;
+          metadata?: Json;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      early_family_leads: {
+        Row: {
+          id: string;
+          parent_name: string;
+          email: string;
+          child_age: string | null;
+          billing_cycle: string | null;
+          status: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          parent_name: string;
+          email: string;
+          child_age?: string | null;
+          billing_cycle?: string | null;
+          status?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          parent_name?: string;
+          email?: string;
+          child_age?: string | null;
+          billing_cycle?: string | null;
+          status?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      feedback_responses: {
+        Row: {
+          id: string;
+          family_id: string | null;
+          feedback_type: string;
+          value_rating: number | null;
+          disappear_impact: string | null;
+          notes: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          family_id?: string | null;
+          feedback_type: string;
+          value_rating?: number | null;
+          disappear_impact?: string | null;
+          notes?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          family_id?: string | null;
+          feedback_type?: string;
+          value_rating?: number | null;
+          disappear_impact?: string | null;
+          notes?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
