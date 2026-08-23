@@ -1679,7 +1679,7 @@ export default function HomePage() {
             setCurrentCelebration({
               id: Math.random().toString(),
               delta: 1,
-              note: '¡Ganaste 1 chispa por autorregularte y respirar! 🌸'
+              note: '¡Ganaste 1 Spark ✦ por autorregularte y respirar! 🌸'
             });
           }
           await submitCheckin(

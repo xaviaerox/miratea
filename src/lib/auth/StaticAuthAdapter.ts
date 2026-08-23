@@ -78,7 +78,22 @@ export class StaticAuthAdapter implements IAuthAdapter {
   }
 
   async signUpParent(params: SignUpParentParams): Promise<Result<AuthSession>> {
-    const profile: Profile = { ...STATIC_PARENT, display_name: params.display_name };
+    if (params.consent_given !== true) {
+      return {
+        ok: false,
+        error: {
+          code: 'consent_required',
+          message: 'Debe confirmar que es mayor de edad y tutelar a los menores para registrarse.',
+        },
+      };
+    }
+    const timestamp = params.consent_timestamp ?? new Date().toISOString();
+    const profile: Profile = {
+      ...STATIC_PARENT,
+      display_name: params.display_name,
+      consent_given: true,
+      consent_timestamp: timestamp,
+    };
     const family: Family = { ...STATIC_FAMILY, name: params.family_name };
     this._session = { user_id: profile.id, email: params.email, profile, family };
     if (typeof window !== 'undefined') {

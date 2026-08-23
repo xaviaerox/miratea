@@ -9,17 +9,36 @@ describe('StaticAuthAdapter (Phase 1)', () => {
   });
 
   describe('signUpParent', () => {
-    it('creates a new parent profile and family', async () => {
+    it('fails when legal consent is not given', async () => {
       const res = await adapter.signUpParent({
         email: 'test@mira.app',
         password: 'password123',
         display_name: 'Parent Demo',
         family_name: 'Mira Family',
+        consent_given: false,
+      });
+      expect(res.ok).toBe(false);
+      if (!res.ok) {
+        expect(res.error.code).toBe('consent_required');
+      }
+    });
+
+    it('creates a new parent profile and family when legal consent is given', async () => {
+      const timestamp = new Date().toISOString();
+      const res = await adapter.signUpParent({
+        email: 'test@mira.app',
+        password: 'password123',
+        display_name: 'Parent Demo',
+        family_name: 'Mira Family',
+        consent_given: true,
+        consent_timestamp: timestamp,
       });
       expect(res.ok).toBe(true);
       if (res.ok) {
         expect(res.data.profile.role).toBe('parent');
         expect(res.data.profile.display_name).toBe('Parent Demo');
+        expect(res.data.profile.consent_given).toBe(true);
+        expect(res.data.profile.consent_timestamp).toBe(timestamp);
         expect(res.data.family.name).toBe('Mira Family');
       }
     });

@@ -16,17 +16,37 @@ export default function SignupPage() {
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [familyName, setFamilyName] = useState('');
+  const [consentGiven, setConsentGiven] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (step === 'account') { setStep('family'); return; }
+    if (step === 'account') {
+      if (!consentGiven) {
+        setError('Debe confirmar su mayoría de edad y tutela legal para continuar.');
+        return;
+      }
+      setStep('family');
+      return;
+    }
+
+    if (!consentGiven) {
+      setError('Debe confirmar su mayoría de edad y tutela legal para registrar la cuenta.');
+      return;
+    }
 
     setError('');
     setLoading(true);
 
-    const result = await signUpParent({ email, password, display_name: displayName, family_name: familyName });
+    const result = await signUpParent({
+      email,
+      password,
+      display_name: displayName,
+      family_name: familyName,
+      consent_given: consentGiven,
+      consent_timestamp: new Date().toISOString(),
+    });
     setLoading(false);
 
     if (!result.ok) {
@@ -78,6 +98,22 @@ export default function SignupPage() {
               placeholder="Mínimo 8 caracteres"
               minLength={8}
             />
+            <div className="flex items-start gap-2.5 pt-1">
+              <input
+                id="parent-consent-checkbox"
+                type="checkbox"
+                checked={consentGiven}
+                onChange={e => {
+                  setConsentGiven(e.target.checked);
+                  if (e.target.checked) setError('');
+                }}
+                required
+                className="mt-1 h-4 w-4 rounded border-stone-300 text-teal-700 focus:ring-teal-500 cursor-pointer"
+              />
+              <label htmlFor="parent-consent-checkbox" className="text-xs text-stone-600 leading-snug cursor-pointer select-none">
+                Confirmo que soy mayor de edad y que ostento la patria potestad o tutela legal de los menores que registraré en esta cuenta.
+              </label>
+            </div>
           </>
         ) : (
           <Input

@@ -48,6 +48,16 @@ export class SupabaseAuthAdapter implements IAuthAdapter {
   }
 
   async signUpParent(params: SignUpParentParams): Promise<Result<AuthSession>> {
+    if (params.consent_given !== true) {
+      return {
+        ok: false,
+        error: {
+          code: 'consent_required',
+          message: 'Debe confirmar que es mayor de edad y tutelar a los menores para registrarse.',
+        },
+      };
+    }
+
     const { data, error } = await this.client.auth.signUp({
       email: params.email,
       password: params.password,
@@ -56,6 +66,8 @@ export class SupabaseAuthAdapter implements IAuthAdapter {
     if (error || !data.user) {
       return { ok: false, error: { code: 'signup_failed', message: error?.message ?? 'Signup failed' } };
     }
+
+    const timestamp = params.consent_timestamp ?? new Date().toISOString();
 
     const { error: fnError } = await this.client.rpc('create_family_with_parent', {
       p_user_id: data.user.id,
@@ -67,6 +79,12 @@ export class SupabaseAuthAdapter implements IAuthAdapter {
     if (fnError) {
       return { ok: false, error: { code: 'family_creation_failed', message: fnError.message } };
     }
+
+    // Persist consent tracking on parent profile
+    await this.client
+      .from('profiles')
+      .update({ consent_given: true, consent_timestamp: timestamp })
+      .eq('id', data.user.id);
 
     const session = await this._buildSession(data.user.id, data.user.email ?? '');
     if (!session) {

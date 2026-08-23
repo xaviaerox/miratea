@@ -11,6 +11,8 @@ export interface SignUpParentParams {
   family_name: string;
   display_name: string;
   avatar_seed?: string;
+  consent_given: boolean;
+  consent_timestamp?: string;
 }
 
 export interface SignUpChildParams {

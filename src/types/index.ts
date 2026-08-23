@@ -34,6 +34,8 @@ export interface Profile {
   unlocked_accessories?: string[];
   avatar_accessory?: string | null;
   avatar_base_emoji?: string;
+  consent_given?: boolean;
+  consent_timestamp?: string;
   created_at: string;
   updated_at: string;
 }

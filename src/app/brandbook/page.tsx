@@ -462,7 +462,7 @@ export default function BrandbookPage() {
                 { title: 'Empatía Respetuosa', desc: 'Comprensión real sin condescendencia ni infantilización.' },
                 { title: 'Utilidad Directa', desc: 'Cada pantalla resuelve un problema sin fricciones vacías.' },
                 { title: 'Calma Sensorial', desc: 'Diseño sobrio, sin estímulos bruscos ni contadores estresantes.' },
-                { title: 'Confianza y Seguridad', desc: 'Portabilidad GDPR Art. 20 y procesamiento local sin sorpresas.' },
+                { title: 'Confianza y Seguridad', desc: 'Portabilidad GDPR Art. 20 y anonimización previa a cualquier procesamiento externo.' },
                 { title: 'Refuerzo Puro', desc: 'Cero penalizaciones, el esfuerzo siempre suma y jamás se resta.' },
                 { title: 'Continuidad', desc: 'Vínculo permanente entre el hogar, terapeutas y centros.' },
                 { title: 'Respeto Adulto', desc: 'Comunicación clara, precisa y directa con las familias.' }

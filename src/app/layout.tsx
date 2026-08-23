@@ -5,13 +5,24 @@ import { PwaUpdater } from '@/components/PwaUpdater';
 import { OfflineSyncListener } from '@/components/offline/OfflineSyncListener';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://xaviaerox.github.io'),
   title: 'MIRATEA 🌟 — Autonomía y Autorregulación para Familias Neurodivergentes',
   description: 'Un espacio seguro, amable y libre de juicios para crecer juntos a través de la autorregulación emocional y el refuerzo positivo.',
   appleWebApp: { capable: true, statusBarStyle: 'default', title: 'MIRATEA' },
   openGraph: {
     title: 'MIRATEA 🌟 — Crecimiento y Autorregulación Familiar',
     description: 'Plataforma inteligente y amable para apoyar la autonomía de niños neurodivergentes.',
-    images: [{ url: '/miratea/mira-banner.jpg', width: 1200, height: 630, alt: 'MIRATEA Hero Banner' }],
+    url: 'https://xaviaerox.github.io/miratea',
+    siteName: 'MIRATEA',
+    images: [{ url: 'https://xaviaerox.github.io/miratea/mira-banner.jpg', width: 1200, height: 630, alt: 'MIRATEA Hero Banner' }],
+    locale: 'es_ES',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MIRATEA 🌟 — Crecimiento y Autorregulación Familiar',
+    description: 'Plataforma inteligente y amable para apoyar la autonomía de niños neurodivergentes.',
+    images: ['https://xaviaerox.github.io/miratea/mira-banner.jpg'],
   },
   icons: {
     icon: [

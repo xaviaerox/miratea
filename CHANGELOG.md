@@ -4,6 +4,19 @@ All notable changes to the **MIRATEA** project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2026-08-23 (Production Audit & Compliance Hardening Release)
+
+### Fixed & Compliance
+- **Privacy Policy Statement Correction (`/privacy`)**: Replaced imprecise text claiming local-only storage with explicit statement explaining `PiiSanitizer` anonymization prior to transmission to external LLM providers.
+- **Brandbook Values Alignment (`/brandbook`)**: Updated "Confianza y Seguridad" value description to specify pre-anonymization prior to external processing.
+- **OpenGraph Metadata Social Card (`src/app/layout.tsx`)**: Configured `metadataBase` and absolute production URL `https://xaviaerox.github.io/miratea/mira-banner.jpg` for `openGraph` and `twitter` cards.
+
+### Added
+- **Verifiable Parent Legal Consent Checkbox (`src/app/(auth)/signup/page.tsx`)**: Added mandatory, non-prechecked checkbox for parent age majority and legal guardianship confirmation.
+- **Consent Timestamp & DB Tracking (`IAuthAdapter`, `StaticAuthAdapter`, `SupabaseAuthAdapter`, `profiles`)**: Persisted `consent_given` (boolean) and `consent_timestamp` (ISO timestamp) in profiles table, added Supabase migration (`20260823_add_parent_consent.sql`), and added unit tests in `phase1.test.ts`.
+
+---
+
 ## [1.1.2] - 2026-08-23 (Commercial Validation Hardening Release)
 
 ### Security & Anti-PII

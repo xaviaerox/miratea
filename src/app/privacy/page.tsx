@@ -57,7 +57,7 @@ export default function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-stone-900">3. Anonimización Pre-IA (PiiSanitizer)</h2>
             <p className="text-sm leading-relaxed">
-              Las funciones inteligentes de desintegración de objetivos emplean proveedores de lenguaje (LLM). Antes de transmitir cualquier prompt, <code>PiiSanitizer</code> sustituye los identificadores directos (nombres del menor, correos, nombres de familia) por marcadores anonimizados opacos (ej. <code>[CHILD_NAME]</code>). Los nombres reales jamás salen del dispositivo local.
+              Las funciones inteligentes de desintegración de objetivos emplean proveedores de lenguaje (LLM). Antes de su envío a proveedores de IA externos, <code>PiiSanitizer</code> sustituye los identificadores directos (nombres del menor, correos, nombres de familia) por marcadores anonimizados opacos (ej. <code>[CHILD_NAME]</code>). Los datos se transmiten de forma anonimizada; los identificadores reales del menor no se incluyen en dicho envío.
             </p>
           </section>
 
