@@ -1,5 +1,5 @@
 // Service Worker for MIRATEA App (PWA Offline Capability & Static Cache)
-const CACHE_NAME = 'miratea-v1.1.3';
+const CACHE_NAME = 'miratea-v1.1.4';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',

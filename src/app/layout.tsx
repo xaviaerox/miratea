@@ -6,7 +6,7 @@ import { OfflineSyncListener } from '@/components/offline/OfflineSyncListener';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://xaviaerox.github.io'),
-  title: 'MIRATEA 🌟 — Autonomía y Autorregulación para Familias Neurodivergentes',
+  title: 'MIRATEA 🌟 — Autonomía y Autorregulación Familiar',
   description: 'Un espacio seguro, amable y libre de juicios para crecer juntos a través de la autorregulación emocional y el refuerzo positivo.',
   appleWebApp: { capable: true, statusBarStyle: 'default', title: 'MIRATEA' },
   openGraph: {

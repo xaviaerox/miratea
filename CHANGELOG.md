@@ -4,6 +4,15 @@ All notable changes to the **MIRATEA** project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.4] - 2026-08-31 (OpenGraph, Favicon & SEO Optimization Release)
+
+### Fixed & Optimized
+- **Official MIRATEA Beacon Star Favicon & App Icons Unification (`public/favicon.ico`, `src/app/favicon.ico`, `public/icon-192x192.png`, `public/icon-512x512.png`)**: Replaced outdated legacy assets and placeholder favicons with clean, crisp multi-resolution icons rendered directly from the canonical vector [`public/icon.svg`](file:///c:/Users/Xaviaerox/Documents/GitHub/mira-app/public/icon.svg) (16x16, 32x32, 48x48, 192x192, 512x512).
+- **OpenGraph & Twitter Card Image Dimensions (`public/mira-banner.jpg`)**: Resized and optimized hero banner to exactly `1200×630` px (1.91:1 standard aspect ratio), eliminating social crawler aspect ratio warnings, mobile card letterboxing, and unwanted cropping while compressing asset size from 777 KB to 152 KB.
+- **Search Engine Snippet Title Optimization (`src/app/layout.tsx`)**: Shortened root `<title>` from 71 characters to 48 characters (`MIRATEA 🌟 — Autonomía y Autorregulación Familiar`), staying strictly under Google's ~60 character truncation threshold for clean, complete display on SERP snippets across mobile and desktop.
+
+---
+
 ## [1.1.3] - 2026-08-23 (Production Audit & Compliance Hardening Release)
 
 ### Fixed & Compliance
