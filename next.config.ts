@@ -19,6 +19,12 @@ const nextConfig: NextConfig = {
       basePath: false,
       permanent: false,
     },
+    {
+      source: '/guide',
+      destination: '/miratea/ayuda',
+      basePath: false,
+      permanent: false,
+    },
   ],
   headers: async () => [
     {

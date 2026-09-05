@@ -14,6 +14,7 @@ import {
   Smile,
   ChevronDown,
   ArrowRight,
+  HelpCircle,
 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -84,6 +85,13 @@ export default function LandingPage() {
           </Link>
 
           <div className="flex items-center gap-3">
+            <Link
+              href="/ayuda"
+              className="text-sm font-semibold text-stone-600 hover:text-teal-800 px-3 py-2 rounded-xl transition-colors hidden sm:inline-flex items-center gap-1.5"
+            >
+              <HelpCircle className="w-4 h-4 text-teal-600" />
+              <span>Guía para Familias</span>
+            </Link>
             <Link
               href="/login"
               className="text-sm font-semibold text-stone-700 hover:text-teal-800 px-3 py-2 rounded-xl transition-colors"

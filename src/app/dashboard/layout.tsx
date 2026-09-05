@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { cn } from '@/lib/utils';
+import { HelpCircle } from 'lucide-react';
 
 const NAV = [
   { href: '/dashboard',          label: 'Inicio',      icon: '⌂' },
@@ -45,15 +46,26 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <span className="text-stone-300">·</span>
           <span className="text-sm text-stone-500">{profile?.display_name}</span>
         </div>
-        <button
-          onClick={async () => {
-            await signOut();
-            router.replace('/login');
-          }}
-          className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
-        >
-          Salir
-        </button>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Link
+            href="/ayuda"
+            className="flex items-center gap-1.5 text-xs text-stone-600 hover:text-teal-800 bg-stone-50 hover:bg-stone-100 px-2.5 py-1.5 rounded-xl border border-stone-200/80 transition-all shadow-soft"
+            title="Guía de MIRATEA de la A a la Z"
+            aria-label="Guía de ayuda"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-teal-600" />
+            <span className="hidden sm:inline font-medium">Guía de Ayuda</span>
+          </Link>
+          <button
+            onClick={async () => {
+              await signOut();
+              router.replace('/login');
+            }}
+            className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
+          >
+            Salir
+          </button>
+        </div>
       </header>
 
       {/* Content */}

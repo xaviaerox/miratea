@@ -109,6 +109,16 @@ export default function LoginPage() {
             ✨ Explorar Modo Demo al Instante (Sin Registro)
           </Button>
         </div>
+
+        <div className="pt-2 border-t border-stone-100">
+          <Link
+            href="/ayuda"
+            className="text-xs text-stone-500 hover:text-teal-800 flex items-center justify-center gap-1.5 transition-colors"
+          >
+            <span>¿Primera vez aquí?</span>
+            <span className="font-semibold text-teal-700 underline">Guía para Familias de la A a la Z</span>
+          </Link>
+        </div>
       </div>
     </Card>
   );

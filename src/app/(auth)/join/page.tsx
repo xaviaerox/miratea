@@ -120,10 +120,18 @@ export default function JoinPage() {
         </Button>
       </form>
 
-      <div className="mt-6 text-center">
+      <div className="mt-6 text-center flex flex-col gap-3">
         <Link href="/login" className="text-sm text-stone-400 hover:text-stone-600">
           Ya tengo cuenta
         </Link>
+        <div className="pt-2 border-t border-stone-100">
+          <Link
+            href="/ayuda#familias"
+            className="text-xs text-stone-500 hover:text-teal-800 transition-colors"
+          >
+            ¿No sabes dónde encontrar tu código? <span className="font-semibold text-teal-700 underline">Ver Guía</span>
+          </Link>
+        </div>
       </div>
     </Card>
   );

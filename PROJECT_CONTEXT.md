@@ -13,10 +13,10 @@
   2. **Niños y Menores**: Entorno lúdico y tranquilo con apoyo de la mascota inmutable *Lumi*.
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
   4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
-* **Estado del proyecto**: Producción / Decoupled Analytics & Observability Architecture Release v1.2.0.
-* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 149/149 tests pasando (31 test files), arquitectura desacoplada de Analytics & Observabilidad implementada con Zero-PII y Error Boundaries adaptados sensorialmente.
+* **Estado del proyecto**: Producción / Family Guide & Knowledge Architecture Release v1.3.0.
+* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 155/155 tests pasando (32 test files), Centro de Ayuda para Familias de la A a la Z integrado sensorialmente con navegación accesible y puntos de acceso protegidos.
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
-* **Versión actual**: `1.2.0` (Decoupled Analytics & Observability Architecture Release v1.2.0).
+* **Versión actual**: `1.3.0` (Family Guide & Knowledge Architecture Release v1.3.0).
 * **Última actualización**: 2026-09-05.
 
 ---
@@ -124,14 +124,17 @@ miratea-app/
 │   ├── app/                   # App Router de Next.js
 │   │   ├── (auth)/            # Rutas de autenticación (/login, /register)
 │   │   ├── api/               # Endpoints API serverless (/api/decompose)
+│   │   ├── ayuda/             # Guía completa de la A a la Z para familias (/ayuda)
 │   │   ├── brandbook/         # Aplicación interactiva del Brand Book oficial
 │   │   ├── dashboard/         # Panel principal (rutinas, objetivos, emociones)
+│   │   ├── guide/             # Redirección canónica a /ayuda
 │   │   ├── layout.tsx         # Layout raíz con metadatos y enlaces de iconos
 │   │   ├── manifest.ts        # PWA Manifest dinámico
 │   │   └── page.tsx           # Redirección raíz a /miratea
 │   ├── components/            # Componentes UI organizados por dominio
 │   │   ├── emotional/         # Rincón de Calma y autorregulación
 │   │   ├── goals/             # Descomposición de metas y micropasos
+│   │   ├── help/              # Componentes de la Guía (GuideNav, GuideStepCard, GuideFaq)
 │   │   ├── routines/          # Tableros de rutinas visuales
 │   │   └── ui/                # Componentes atómicos (BrandLogos, MiraLogo)
 │   ├── hooks/                 # Custom React Hooks (useAnalytics, useSensoryAudio)
@@ -483,6 +486,12 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Migración del proveedor Groq ante la descatalogación de `llama-3.1-8b-instant` y `llama-3.3-70b-versatile` hacia el modelo de alta velocidad `openai/gpt-oss-20b`.
   - Calibración de streaming SSE y tokens de razonamiento (`reasoning_effort: 'low'`, `max_tokens: 500`) preservando el filtrado Zero-PII en el chat de Lumi y soporte JSON estricto en `/api/decompose`.
   - Sincronización y validación de la clave de producción `GROQ_API_KEY` en `.env.local` y variables de entorno del ecosistema.
+* **Fase 8 (Family Guide & Knowledge Architecture Release v1.3.0)**:
+  - Creación del Centro de Ayuda y Guía Completa de la A a la Z en `/ayuda` (con soporte y redirección desde `/guide`).
+  - Cobertura pedagógica estructurada en 11 áreas temáticas: Filosofía neurodivergente sin punición, Registro parental paso a paso, Gestión familiar y códigos de 8 caracteres para vincular a menores, Mascota Lumi inmutable, Rutinas visuales amables, Desintegrador de metas con IA y Zero-PII, Moneda Sparks ✦ y premios de 1-clic con PIN, Rincón de Calma con audio armónico a 432Hz y Box Breathing 4-4-4-4, PIN parental de 4 dígitos, Accesibilidad sensorial adaptada (OpenDyslexic y Menos Efectos) y Preguntas Frecuentes.
+  - Componentes modulares accesibles: `GuideNav` (filtros con chips), `GuideStepCard` (pasos distinguidos por roles) y `GuideFaq` (acordeones desplegables).
+  - Integración del icono de ayuda y puntos de acceso: Botón con icono `HelpCircle` en la cabecera del panel parental (`/dashboard`), tarjeta formativa en `/dashboard/family`, botón destacado en la Pestaña de Ajustes (`Tab 5 / profile` en `/home`), enlace en `LegalFooter` y guías en pantallas de autenticación (`/login`, `/signup`, `/join`).
+  - Suite de pruebas unitarias específicas para la guía (`src/app/ayuda/__tests__/ayudaLogic.test.ts`) con 155/155 tests totales superados y verificación estricta de denominación Sparks (0 menciones a "chispas").
 
 ---
 

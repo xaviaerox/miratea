@@ -4,6 +4,31 @@ All notable changes to the **MIRATEA** project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-09-05 (Family Guide & Knowledge Architecture Release)
+
+### Added
+- **Centro de Ayuda y Guía Completa de la A a la Z (`/ayuda`, `/guide`)**:
+  - Nueva página pública y sensorial (`src/app/ayuda/page.tsx`) estructurada en 11 áreas temáticas: Filosofía neurodivergente sin punición, Registro parental paso a paso, Familias e invitación de hijos (códigos de 8 caracteres), El compañero Lumi inmutable, Rutinas visuales amables, Desintegrador de metas con IA y Zero-PII, Moneda Sparks ✦ y catálogo de premios, Rincón de Calma a 432Hz y Box Breathing 4-4-4-4, Seguridad con PIN parental de 4 dígitos, Accesibilidad adaptada (OpenDyslexic y Menos Efectos) y Preguntas Frecuentes.
+  - Redirección automática transparente desde `/guide` y `/miratea/guide` a `/ayuda` en Next.js App Router (`src/app/guide/page.tsx`) y configuración `next.config.ts`.
+- **Componentes Modulares de Ayuda (`src/components/help/`)**:
+  - `GuideNav.tsx`: Selector de categorías interactivo con chips/píldoras y scroll accesible.
+  - `GuideStepCard.tsx`: Tarjeta ilustrada de pasos secuenciales distinguiendo roles ("Acción del Adulto", "Acción del Menor", "En Familia").
+  - `GuideFaq.tsx`: Acordeón interactivo de preguntas frecuentes filtrable por categoría.
+- **Puntos de Integración del Icono y Enlaces de Ayuda**:
+  - Cabecera del panel parental (`src/app/dashboard/layout.tsx`): Botón accesible con icono `HelpCircle` de Lucide y enlace directo a la guía.
+  - Pantalla de Familia (`src/app/dashboard/family/page.tsx`): Banner didáctico explicando cómo generar códigos para hijos e invitaciones.
+  - Pestaña de Ajustes (`Tab 5 / profile` en `src/app/home/page.tsx`): Tarjeta destacada "Guía de MIRATEA (de la A a la Z)".
+  - Cabecera de Landing (`src/app/landing/page.tsx`): Enlace "Guía para Familias".
+  - Formularios de Autenticación (`/login`, `/signup`, `/join`): Enlaces de orientación contextual para nuevos tutores.
+  - Pie de página legal (`src/components/ui/LegalFooter.tsx`): Enlace unificado a la Guía para Familias.
+- **Suite de Pruebas Unitarias (`src/app/ayuda/__tests__/ayudaLogic.test.ts`)**:
+  - 6 tests unitarios verificando la presencia de categorías, cumplimiento inmutable de denominación Sparks (0 menciones a "chispas"), filosofía sin punición, código de 8 caracteres y política Zero-PII (total suite: 155/155 tests pasando).
+
+### Changed & Maintained
+- **Versionado SemVer & Caché PWA**: Incremento de versión canónica a `1.3.0` en `package.json` y actualización de `CACHE_NAME` a `miratea-v1.3.0` en `public/sw.js`.
+
+---
+
 ## [1.2.0] - 2026-09-05 (Decoupled Analytics & Observability Architecture Release)
 
 ### Added

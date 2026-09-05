@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { ChildAvatar } from '@/components/ui/ChildAvatar';
 import { Button } from '@/components/ui/Button';
+import Link from 'next/link';
 import {
   Gift,
   Award,
@@ -25,6 +26,7 @@ import {
   CheckCircle2,
   LogOut,
   Palette,
+  HelpCircle,
 } from 'lucide-react';
 
 const CustomizationModal = dynamic(
@@ -1083,6 +1085,23 @@ export default function HomePage() {
                     {silentMode ? 'Activado ✓' : 'Desactivado'}
                   </button>
                 </div>
+
+                {/* Guide / How MIRATEA Works (A to Z) */}
+                <Link
+                  href="/ayuda"
+                  className="p-4 bg-white/90 backdrop-blur-md rounded-2xl border border-stone-200/80 flex items-center justify-between shadow-soft hover:bg-white hover:border-teal-300 transition-all hover:scale-[1.01] active:scale-98 cursor-pointer text-left"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-2xl bg-teal-100/80 text-teal-700 border border-teal-200/60">
+                      <HelpCircle className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-stone-700">Guía de MIRATEA (de la A a la Z)</p>
+                      <p className="text-xs text-stone-500">Aprende cómo funciona el registro, rutinas, Sparks y premios</p>
+                    </div>
+                  </div>
+                  <span className="text-xs text-teal-700 font-semibold">Ver Guía ›</span>
+                </Link>
 
                 {/* Feedback / Support Ticket */}
                 <button

@@ -10,6 +10,7 @@ import { ConfirmParentPinModal } from '@/components/dashboard/ConfirmParentPinMo
 import { getApiUrl } from '@/lib/utils';
 import { supabase } from '@/lib/supabase';
 import { isUseSupabase } from '@/lib/adapters';
+import { HelpCircle } from 'lucide-react';
 
 export default function FamilySettingsPage() {
   const { family, createInvite, getActiveInvites, loading: familyLoading } = useFamily();
@@ -211,6 +212,27 @@ export default function FamilySettingsPage() {
       <div>
         <h1 className="font-display text-2xl text-stone-800 font-semibold">{family.name}</h1>
         <p className="text-xs text-stone-400 mt-1">Gestiona los miembros de tu familia e invita a nuevos tutores o niños</p>
+      </div>
+
+      {/* Guide Helper Banner */}
+      <div className="bg-teal-50/80 border border-teal-200/80 rounded-3xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-teal-950 shadow-soft">
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-2xl bg-teal-100 text-teal-800 shrink-0">
+            <HelpCircle className="w-5 h-5" />
+          </div>
+          <div>
+            <p className="text-xs font-bold text-stone-800">¿Cómo invitar y registrar a tus hijos?</p>
+            <p className="text-xs text-stone-600 mt-0.5 leading-normal">
+              Genera un código para Niño más abajo. Tu hijo solo tiene que entrar en la app y pulsar &ldquo;Unirme a mi familia&rdquo; con ese código.
+            </p>
+          </div>
+        </div>
+        <Link
+          href="/ayuda#familias"
+          className="text-xs font-bold text-teal-800 hover:text-teal-950 bg-white px-3.5 py-2 rounded-xl border border-teal-200/90 shadow-soft shrink-0 text-center transition-all hover:shadow"
+        >
+          Ver Guía de la A a la Z →
+        </Link>
       </div>
 
       {/* Members Section */}

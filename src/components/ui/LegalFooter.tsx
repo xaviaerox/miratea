@@ -14,6 +14,10 @@ export function LegalFooter() {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-4 text-stone-600 font-medium">
+          <Link href="/ayuda" className="hover:text-teal-700 transition-colors">
+            Guía para Familias
+          </Link>
+          <span className="text-stone-300">•</span>
           <Link href="/privacy" className="hover:text-teal-700 transition-colors">
             Política de Privacidad
           </Link>
@@ -33,7 +37,7 @@ export function LegalFooter() {
       </div>
 
       <div className="max-w-5xl mx-auto mt-6 pt-4 border-t border-stone-200/60 text-center text-stone-400">
-        © {new Date().getFullYear()} Solutech — Todos los derechos reservados. Versión 1.1.0 (Commercial Product Release).
+        © {new Date().getFullYear()} Solutech — Todos los derechos reservados. Versión 1.3.0 (Family Guide & Knowledge Release).
       </div>
     </footer>
   );
