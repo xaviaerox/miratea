@@ -50,6 +50,9 @@ describe('HTTP Integration: /api/companion/chat/route.ts', () => {
       });
     }
 
+    // Verify Groq model is openai/gpt-oss-20b
+    expect((capturedBody as Record<string, unknown> | null)?.model).toBe('openai/gpt-oss-20b');
+
     vi.unstubAllGlobals();
   });
 });

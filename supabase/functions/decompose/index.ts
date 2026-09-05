@@ -29,7 +29,7 @@ serve(async (req) => {
           'Authorization': `Bearer ${groqKey}`,
         },
         body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
+          model: Deno.env.get('GROQ_MODEL') || 'openai/gpt-oss-20b',
           messages: [{ role: 'user', content: prompt }],
           max_tokens: 1024,
           temperature: 0.3,

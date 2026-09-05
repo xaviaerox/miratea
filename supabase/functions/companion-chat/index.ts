@@ -76,13 +76,14 @@ Principios éticos no negociables:
           'Authorization': `Bearer ${groqKey}`,
         },
         body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
+          model: Deno.env.get('GROQ_MODEL') || 'openai/gpt-oss-20b',
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: sanitized },
           ],
-          max_tokens: 250,
+          max_tokens: 500,
           temperature: 0.7,
+          reasoning_effort: 'low',
         }),
       });
 

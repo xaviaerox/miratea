@@ -4,6 +4,29 @@ All notable changes to the **MIRATEA** project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-09-05 (Decoupled Analytics & Observability Architecture Release)
+
+### Added
+- **Decoupled Analytics & Observability Infrastructure (`src/infrastructure/analytics/`)**: Centralized facade (`analytics.track`, `analytics.identify`, `analytics.page`, `analytics.error`, `analytics.message`, `analytics.flush`) isolating transport providers from business logic and preventing direct vendor lock-in.
+- **Strict Anti-PII & Privacy Guard (`privacy.guard.ts`)**: Enforced Zero-PII sanitization blocking parent/child names, emails, phones, national IDs, and clinical diagnostics (TEA/TDAH) in event payloads and error stack traces.
+- **Provider Architecture (`providers/`)**:
+  - `SupabaseAnalyticsProvider`: Persistent product analytics with local storage queue (max 100 events), offline resilience, and automatic flush on reconnection.
+  - `SentryTelemetryProvider`: Sentry-compatible technical observability with sanitized `beforeSend` scrubbing and in-memory report buffer for static/SSR environments.
+  - `PostHogAnalyticsProvider`: Pluggable, decoupled product analytics adapter activated only when environment keys are provided.
+- **Sensory-Adapted Error Boundaries (`src/app/error.tsx`, `src/app/global-error.tsx`)**: Calming, neurodiversity-affirmative error boundaries (`#FAF9F7`) in Next.js 16 App Router routing errors to `analytics.error()` without disrupting user experience or triggering sensory overload.
+- **Dedicated Test Suite (`src/infrastructure/analytics/__tests__/analytics.test.ts`)**: 11 automated unit tests verifying Zero-PII blocking, URL sanitization, fail-safe non-blocking execution, and offline queueing (total tests: 149/149).
+
+### Fixed & AI Migration
+- **Groq Deprecated Model Migration (`openai/gpt-oss-20b`)**: Replaced decommissioned models `llama-3.1-8b-instant` and `llama-3.3-70b-versatile` (which returned HTTP 404 model_not_found) with the active high-speed reasoning model `openai/gpt-oss-20b` across API routes (`/api/companion/chat`, `/api/decompose`) and Supabase Edge Functions (`companion-chat`, `decompose`).
+- **AI Streaming & Reasoning Tuning**: Configured `reasoning_effort: 'low'` and calibrated `max_tokens` to `500` to prevent truncation during token generation while preserving safe Zero-PII streaming filtering (reasoning tokens filtered before child exposure).
+- **Environment Alignment & Key Verification**: Synchronized and verified production `GROQ_API_KEY`, `GROQ_MODEL`, `GROQ_MAX_TOKENS`, and `GROQ_REASONING_EFFORT` across `.env.local` and `.env.local.example`.
+
+### Refactored & Enhanced
+- **Legacy Compatibility Bridges (`tracker.ts`, `telemetry.ts`, `errorTracker.ts`, `useAnalytics.ts`)**: Transparent re-exports maintaining 100% backward compatibility for existing components and tests.
+- **PWA Service Worker Cache Refresh (`public/sw.js`)**: Bumped `CACHE_NAME` to `miratea-v1.2.0`.
+
+---
+
 ## [1.1.4] - 2026-08-31 (OpenGraph, Favicon & SEO Optimization Release)
 
 ### Fixed & Optimized

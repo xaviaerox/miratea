@@ -13,11 +13,11 @@
   2. **Niños y Menores**: Entorno lúdico y tranquilo con apoyo de la mascota inmutable *Lumi*.
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
   4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
-* **Estado del proyecto**: Producción / Commercial Validation Pre-Flight Ready v1.1.4.
-* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 138/138 tests pasando, auditoría de privacidad en producción corregida, OpenGraph y SEO optimizados (banner 1200x630, title 48 chars), Favicon y PWA icons unificados con el Isotipo oficial Beacon Star (`icon.svg`), consentimiento legal parental implementado y verificado.
+* **Estado del proyecto**: Producción / Decoupled Analytics & Observability Architecture Release v1.2.0.
+* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 149/149 tests pasando (31 test files), arquitectura desacoplada de Analytics & Observabilidad implementada con Zero-PII y Error Boundaries adaptados sensorialmente.
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
-* **Versión actual**: `1.1.4` (OpenGraph, Favicon & SEO Optimization Release v1.1.4).
-* **Última actualización**: 2026-08-31.
+* **Versión actual**: `1.2.0` (Decoupled Analytics & Observability Architecture Release v1.2.0).
+* **Última actualización**: 2026-09-05.
 
 ---
 
@@ -134,7 +134,9 @@ miratea-app/
 │   │   ├── goals/             # Descomposición de metas y micropasos
 │   │   ├── routines/          # Tableros de rutinas visuales
 │   │   └── ui/                # Componentes atómicos (BrandLogos, MiraLogo)
-│   ├── hooks/                 # Custom React Hooks
+│   ├── hooks/                 # Custom React Hooks (useAnalytics, useSensoryAudio)
+│   ├── infrastructure/        # Capa de infraestructura desacoplada
+│   │   └── analytics/         # Fachada central, providers (Supabase, Sentry, PostHog) y Zero-PII guard
 │   ├── lib/                   # Lógica de dominio, adaptadores y seguridad
 │   │   ├── adapters/          # Implementación del patrón Dual-Adapter
 │   │   ├── companion/         # Sistema del compañero digital Lumi
@@ -237,7 +239,10 @@ NEXT_PUBLIC_DATA_SOURCE=static
 NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key
 ANTHROPIC_API_KEY=tu-anthropic-key
-GROQ_API_KEY=tu-groq-key
+GROQ_API_KEY=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
+GROQ_MODEL=openai/gpt-oss-20b
+GROQ_MAX_TOKENS=500
+GROQ_REASONING_EFFORT=low
 DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.supabase.com:5432/postgres
 ```
 
@@ -250,6 +255,67 @@ DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.s
 * **Protección CSRF y Rate Limiting**: Limitación de peticiones por ventana deslizante en endpoints clave.
 
 ---
+
+# Analytics, Observabilidad & Telemetría (Arquitectura v1.2.0)
+
+MIRATEA implementa una arquitectura de telemetría y analítica estrictamente desacoplada en `src/infrastructure/analytics/`, diseñada bajo los principios de **Zero-PII, Fail-Safe No Bloqueante, Privacidad Reforzada para Menores con Neurodivergencia y Desconexión de Proveedores**.
+
+### 1. Principio de Separación de Capas
+* **A. Observabilidad Técnica**: Monitoreo de errores no controlados, excepciones de cliente y SSR, Web Vitals y trazas de regresión. Adaptador Sentry (`SentryTelemetryProvider`) con fallback local en memoria y sanitización preventiva en `beforeSend`.
+* **B. Product Analytics**: Métricas de activación, uso de rutinas, adopción del Rincón de Calma y funnels. Adaptador persistente Supabase (`SupabaseAnalyticsProvider`) con cola offline en `localStorage` (max 100 eventos) y adaptador opcional PostHog (`PostHogAnalyticsProvider`).
+* **C. Business Analytics**: Suscripciones, leads de validación y registros familiares aislados exclusivamente en la base de datos PostgreSQL de Supabase. Prohibido almacenar métricas de negocio en Sentry.
+
+### 2. Privacidad Absoluta y Protección de Menores (Zero-PII Guard)
+Implementado en `privacy.guard.ts`:
+* **Claves Prohibidas**: Rechazo automático de claves que contengan `name`, `email`, `phone`, `dni`, `clinical`, `diag`, `password`, `token`.
+* **Valores Sanitizados**: Prohibición estricta de textos libres > 100 caracteres, emails, teléfonos y términos clínicos sensibles (`autismo`, `tea`, `tdah`, `diagnóstico`, `terapia`, `psicología`).
+* **Sanitización de Errores Técnicos (`sanitizeError`)**: Neutralización de emails, teléfonos y DNI en mensajes de error y stack traces antes de registrar en observabilidad o despachar a Sentry.
+* **Sanitización de URLs (`sanitizeUrl`)**: Eliminación de parámetros sensibles en query strings (`token`, `email`, `child_name`, `auth`).
+* **Identidad Opaca**: Solo se admiten identificadores sintéticos (`familyId`, `childId` UUIDs). Prohibido taxativamente el uso de correos o nombres en `analytics.identify()`.
+
+### 3. Registro y Taxonomía Centralizada de Eventos (Snake_Case)
+
+| Evento | Categoría | Propiedades Permitidas | Sensibilidad |
+| :--- | :--- | :--- | :--- |
+| `app_opened` | Ciclo de Vida | `source`, `isPwa` | Baja |
+| `page_viewed` | Navegación | `path`, `referrer` | Baja |
+| `feature_used` | Adopción | `featureName` | Baja |
+| `routine_created` | Rutinas | `taskCount` | Baja |
+| `routine_task_completed`| Rutinas | `sparkEarned` | Baja |
+| `routine_completed` | Rutinas | `taskCount`, `totalSparks` | Baja |
+| `calm_space_opened` | Sensorial | `source` | Baja |
+| `breathing_started` | Sensorial | `mode` | Baja |
+| `breathing_completed` | Sensorial | `durationSeconds` | Baja |
+| `emotion_logged` | Sensorial | `valence` (1..5), `energyLevel` (1..5) | Media (Anonimizado) |
+| `goal_created` | Metas | `stepCount` | Baja |
+| `goal_completed` | Metas | `totalSparks` | Baja |
+| `goal_decomposition_used`| Metas IA | `targetCount` | Baja |
+| `spark_earned` | Economía Sparks | `amount`, `reason` | Baja |
+| `spark_spent` | Economía Sparks | `amount` | Baja |
+| `reward_redeemed` | Premios | `cost` | Baja |
+| `onboarding_started` | Onboarding | `totalSteps` | Baja |
+| `onboarding_step_completed`| Onboarding | `stepId`, `stepIndex` | Baja |
+| `activation_completed`| Onboarding | `durationSeconds` | Baja |
+| `early_family_signup` | Validación | `billingCycle`, `childAgeRange` | Baja |
+
+### 4. Error Boundaries Sensorialmente Adaptados
+* **`src/app/error.tsx`**: Error Boundary de ruta de Next.js App Router con reporte automático a `analytics.error()` y diseño visual calmado (`#FAF9F7`, sin alarmismos visuales para el usuario neurodivergente).
+* **`src/app/global-error.tsx`**: Error Boundary para fallos críticos en el Root Layout con interfaz tranquilizadora y botón de reinicio suave.
+
+### 5. Resiliencia y Comportamiento Offline
+* La aplicación encola eventos en `localStorage` (`miratea_analytics_queue`, cap 100) si la red no está disponible.
+* Al recuperar conexión (`window.addEventListener('online')`), se vacía automáticamente la cola de forma no bloqueante hacia Supabase.
+* Todos los métodos de `analytics` son **fail-safe**: si un proveedor externo falla o arroja una excepción, la UI de MIRATEA continúa funcionando sin degradación.
+
+### 6. Variables de Entorno de Telemetría (.env.local)
+```env
+# Telemetría & Observabilidad Técnica (Sentry / Fail-Safe)
+NEXT_PUBLIC_SENTRY_DSN=
+
+# Analítica de Producto (PostHog EU Cloud / Desacoplado Zero-PII)
+NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=
+NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
+```
 
 # Rendimiento
 
@@ -390,13 +456,13 @@ DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.s
 * **Fase 2 (Gestión de Rutinas & Mascotas Inmutables)**:
   - Desarrollo de los tableros visuales de rutinas adaptativas sin rachas punitivas.
   - Sistema de acompañamiento del avatar *Lumi* con inmutabilidad de experiencia alcanzada.
-  - Mecánica afirmativa de chispas y medallas acumulativas.
+  - Mecánica afirmativa de Sparks ✦ y medallas acumulativas.
 * **Fase 3 (Autorregulación Sensorial & Rincón de Calma)**:
   - Implementación del *Rincón de Calma* accesible en 1-clic.
   - Desarrollo del temporizador visual de respiración guiada *Box Breathing 4-4-4-4*.
   - Integración de síntesis sonora a 432Hz mediante la Web Audio API nativa.
 * **Fase 4 (Descomposición de Metas con IA Anonimizada)**:
-  - Implementación de `/api/decompose` para la desintegración de objetivos complejos en 3 micropasos.
+  - Implementación de `/api/decompose` para la desintegración de objetivos complejos en micropasos.
   - Integración del middleware `PiiSanitizer` para la anonimización de nombres de menores pre-LLM.
   - Generador de relatos e historias interactivas de calma (*StoryGenerator*).
 * **Fase 5 (Informes Terapéuticos & Portabilidad GDPR)**:
@@ -411,6 +477,12 @@ DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.s
   - Resiliencia de sesión en `SupabaseAuthAdapter` (`.maybeSingle()` con fallbacks para `Profile` y `Family`) evitando bloqueos de interfaz o cargadores colgados.
   - Cobertura completa de verificación por PIN parental en todas las acciones de Premios (aprobación, cobro de Sparks, rechazo, creación, edición y eliminación de recompensas).
   - Auditoría integral de seguridad, eliminación de credenciales de prueba y formalización del licenciamiento comercial propietario.
+* **Fase 7 (Decoupled Analytics, Observability & Groq Migration Release v1.2.0)**:
+  - Fachada desacoplada de Analytics & Observabilidad Zero-PII (`src/infrastructure/analytics/`).
+  - Error Boundaries adaptados sensorialmente (`src/app/error.tsx`, `src/app/global-error.tsx`).
+  - Migración del proveedor Groq ante la descatalogación de `llama-3.1-8b-instant` y `llama-3.3-70b-versatile` hacia el modelo de alta velocidad `openai/gpt-oss-20b`.
+  - Calibración de streaming SSE y tokens de razonamiento (`reasoning_effort: 'low'`, `max_tokens: 500`) preservando el filtrado Zero-PII en el chat de Lumi y soporte JSON estricto en `/api/decompose`.
+  - Sincronización y validación de la clave de producción `GROQ_API_KEY` en `.env.local` y variables de entorno del ecosistema.
 
 ---
 

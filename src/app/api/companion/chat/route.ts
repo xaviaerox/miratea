@@ -419,10 +419,11 @@ Responde en español de forma natural y cariñosa.`;
               'Authorization': `Bearer ${groqKey}`,
             },
             body: JSON.stringify({
-              model: 'llama-3.1-8b-instant',
+              model: process.env.GROQ_MODEL || 'openai/gpt-oss-20b',
               messages: [{ role: 'system', content: systemPrompt }, ...messagesPayload],
-              max_tokens: 120,
+              max_tokens: parseInt(process.env.GROQ_MAX_TOKENS || '500', 10),
               temperature: 0.7,
+              reasoning_effort: process.env.GROQ_REASONING_EFFORT || 'low',
               stream: true,
             }),
           });
@@ -521,10 +522,11 @@ Responde en español de forma natural y cariñosa.`;
             'Authorization': `Bearer ${groqKey}`
           },
           body: JSON.stringify({
-            model: 'llama-3.1-8b-instant',
+            model: process.env.GROQ_MODEL || 'openai/gpt-oss-20b',
             messages: [{ role: 'system', content: systemPrompt }, ...messagesPayload],
-            max_tokens: 120,
-            temperature: 0.7
+            max_tokens: parseInt(process.env.GROQ_MAX_TOKENS || '500', 10),
+            temperature: 0.7,
+            reasoning_effort: process.env.GROQ_REASONING_EFFORT || 'low',
           })
         });
 
