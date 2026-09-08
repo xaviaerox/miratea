@@ -1,0 +1,110 @@
+[
+  {
+    "id_contacto": 1,
+    "nombre_asociacion": "Lorca Activa TDAH",
+    "email": "asociacion@lorcaactivatdah.es",
+    "categoria": "TDAH",
+    "ubicacion": "Lorca",
+    "prioridad": 1,
+    "fecha_hora_envio": "2026-09-08 23:00:41",
+    "asunto_usado": "MIRATEA: apoyo a la autonomía y autorregulación para familias con TDAH en Lorca",
+    "estado": "enviado",
+    "notas": "Prioridad 1"
+  },
+  {
+    "id_contacto": 2,
+    "nombre_asociacion": "Talentismo (Astrade) — Delegación Lorca",
+    "email": "atlorca@astrade.es",
+    "categoria": "TEA",
+    "ubicacion": "Lorca",
+    "prioridad": 1,
+    "fecha_hora_envio": "2026-09-08 23:03:42",
+    "asunto_usado": "MIRATEA y el apoyo a familias en el espectro autista en Lorca",
+    "estado": "enviado",
+    "notas": "Prioridad 1"
+  },
+  {
+    "id_contacto": 3,
+    "nombre_asociacion": "ASTEAMUR (Centro Puerto Lumbreras y Sede Central Murcia)",
+    "email": "info@asteamur.org",
+    "categoria": "TEA",
+    "ubicacion": "Puerto Lumbreras / Murcia",
+    "prioridad": 1,
+    "fecha_hora_envio": "2026-09-08 23:06:44",
+    "asunto_usado": "Una herramienta para familias TEA en la Región: saludo desde Lorca a ASTEAMUR",
+    "estado": "enviado",
+    "notas": "Prioridad 1"
+  },
+  {
+    "id_contacto": 11,
+    "nombre_asociacion": "Teayuda (TEA Noroeste)",
+    "email": "teayudanoroeste@gmail.com",
+    "categoria": "TEA",
+    "ubicacion": "Caravaca de la Cruz",
+    "prioridad": 1,
+    "fecha_hora_envio": "2026-09-08 23:09:46",
+    "asunto_usado": "MIRATEA: autorregulación y rutinas para familias con TEA en el Noroeste",
+    "estado": "enviado",
+    "notas": "Prioridad 1"
+  },
+  {
+    "id_contacto": 4,
+    "nombre_asociacion": "FAUM (Federación Autismo Región de Murcia)",
+    "email": "info@autismomurcia.org",
+    "categoria": "TEA - Federación",
+    "ubicacion": "Murcia",
+    "prioridad": 2,
+    "fecha_hora_envio": "2026-09-08 23:12:48",
+    "asunto_usado": "Presentación de MIRATEA a FAUM: tecnología de autorregulación para familias con TEA en la Región",
+    "estado": "enviado",
+    "notas": "Prioridad 2"
+  },
+  {
+    "id_contacto": 5,
+    "nombre_asociacion": "Talentismo (Astrade) — Sede General",
+    "email": "hola@talentismo.org",
+    "categoria": "TEA",
+    "ubicacion": "Molina de Segura",
+    "prioridad": 2,
+    "fecha_hora_envio": "2026-09-08 23:15:50",
+    "asunto_usado": "MIRATEA: nueva iniciativa murciana de autorregulación y rutinas para familias con TEA",
+    "estado": "enviado",
+    "notas": "Prioridad 2"
+  },
+  {
+    "id_contacto": 7,
+    "nombre_asociacion": "ABAMUR",
+    "email": "abamur@abamur.org",
+    "categoria": "TEA",
+    "ubicacion": "Murcia",
+    "prioridad": 2,
+    "fecha_hora_envio": "2026-09-08 23:18:52",
+    "asunto_usado": "MIRATEA: estructuración visual y refuerzo positivo para el día a día en casa",
+    "estado": "enviado",
+    "notas": "Prioridad 2"
+  },
+  {
+    "id_contacto": 8,
+    "nombre_asociacion": "Aspermur (Asociación Asperger Murcia)",
+    "email": "info@aspermur.org",
+    "categoria": "TEA",
+    "ubicacion": "Puente Tocinos, Murcia",
+    "prioridad": 2,
+    "fecha_hora_envio": "2026-09-08 23:21:53",
+    "asunto_usado": "MIRATEA: organización de rutinas y calma emocional para familias de Aspermur",
+    "estado": "enviado",
+    "notas": "Prioridad 2"
+  },
+  {
+    "id_contacto": 9,
+    "nombre_asociacion": "Autismo Somos Todos",
+    "email": "info@autismosomostodos.org",
+    "categoria": "TEA",
+    "ubicacion": "Cartagena",
+    "prioridad": 2,
+    "fecha_hora_envio": "2026-09-08 23:24:55",
+    "asunto_usado": "MIRATEA: herramienta de autorregulación y rutinas para familias en Cartagena",
+    "estado": "enviado",
+    "notas": "Prioridad 2"
+  }
+]
