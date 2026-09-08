@@ -4,6 +4,25 @@ All notable changes to the **MIRATEA** project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-09-08 (Custom Domain & Production Architecture Release)
+
+### Added
+- **Dominio Propio Canónico (`miratea.es`)**:
+  - Incorporación del archivo `public/CNAME` con `miratea.es` para persistencia nativa y automática en GitHub Pages durante el pipeline de despliegue (`output: 'export'`).
+  - Verificación y enlace DNS con registros A/AAAA para el dominio raíz `miratea.es` y registro CNAME para `www.miratea.es` hacia `xaviaerox.github.io`.
+
+### Changed & Maintained
+- **Migración de `basePath` a la Raíz (`/`)**:
+  - Actualizado `next.config.ts` para que `basePath` utilice por defecto la raíz (`''`), permitiendo URLs limpias (`/login`, `/dashboard`, `/ayuda`, `/home`) sin el prefijo `/miratea`.
+  - Actualización de metadatos SEO y OpenGraph (`metadataBase: https://miratea.es`) y tarjetas sociales de Twitter en `src/app/layout.tsx`.
+  - Adaptación de rutas de iconos y favicon en `src/app/layout.tsx` y `src/app/manifest.ts` (`start_url: '/'`, `scope: '/'`).
+  - Registro de Service Worker unificado en `/sw.js` en `src/components/PwaUpdater.tsx`.
+  - Actualización de `CACHE_NAME` a `miratea-v1.3.1` en `public/sw.js` con cacheo determinista de `icon.svg` y `manifest.webmanifest`.
+  - Normalización de rutas de activos en `BrandLogos.tsx` y URLs de retorno en autenticación parental (`reset-pin` y `ConfirmParentPinModal`).
+  - Incremento de versión canónica a `1.3.1` en `package.json`.
+
+---
+
 ## [1.3.0] - 2026-09-05 (Family Guide & Knowledge Architecture Release)
 
 ### Added

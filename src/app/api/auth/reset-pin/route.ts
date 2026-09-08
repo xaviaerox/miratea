@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
 
           const origin = req.nextUrl?.origin || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
           await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${origin}/miratea/dashboard/family?token=${token}`,
+            redirectTo: `${origin}/dashboard/family?token=${token}`,
           });
 
           return NextResponse.json({

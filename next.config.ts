@@ -5,24 +5,11 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: '/miratea',
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
   redirects: async () => [
     {
-      source: '/',
-      destination: '/miratea',
-      basePath: false,
-      permanent: false,
-    },
-    {
-      source: '/brandbook',
-      destination: '/miratea/brandbook',
-      basePath: false,
-      permanent: false,
-    },
-    {
       source: '/guide',
-      destination: '/miratea/ayuda',
-      basePath: false,
+      destination: '/ayuda',
       permanent: false,
     },
   ],

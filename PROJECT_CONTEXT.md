@@ -13,11 +13,12 @@
   2. **Niños y Menores**: Entorno lúdico y tranquilo con apoyo de la mascota inmutable *Lumi*.
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
   4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
-* **Estado del proyecto**: Producción / Family Guide & Knowledge Architecture Release v1.3.0.
-* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 155/155 tests pasando (32 test files), Centro de Ayuda para Familias de la A a la Z integrado sensorialmente con navegación accesible y puntos de acceso protegidos.
+* **Estado del proyecto**: Producción / Custom Domain & Production Architecture Release v1.3.1.
+* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 155/155 tests pasando (32 test files), Dominio canónico oficial `miratea.es` integrado con GitHub Pages, CNAME permanente y rutas raíz (`/`).
+* **Dominio de Producción**: `https://miratea.es` (Apex y `www.miratea.es` sincronizados con DNS de IONOS).
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
-* **Versión actual**: `1.3.0` (Family Guide & Knowledge Architecture Release v1.3.0).
-* **Última actualización**: 2026-09-05.
+* **Versión actual**: `1.3.1` (Custom Domain & Production Architecture Release v1.3.1).
+* **Última actualización**: 2026-09-08.
 
 ---
 
@@ -130,7 +131,7 @@ miratea-app/
 │   │   ├── guide/             # Redirección canónica a /ayuda
 │   │   ├── layout.tsx         # Layout raíz con metadatos y enlaces de iconos
 │   │   ├── manifest.ts        # PWA Manifest dinámico
-│   │   └── page.tsx           # Redirección raíz a /miratea
+│   │   └── page.tsx           # Redirección inteligente por rol (Landing / Dashboard / Home)
 │   ├── components/            # Componentes UI organizados por dominio
 │   │   ├── emotional/         # Rincón de Calma y autorregulación
 │   │   ├── goals/             # Descomposición de metas y micropasos
@@ -147,7 +148,7 @@ miratea-app/
 │   │   ├── pdf/               # Exportador de informes PDF
 │   │   └── security/          # PiiSanitizer y RateLimiter
 │   └── types/                 # Definiciones globales de tipos TypeScript
-├── next.config.ts             # Configuración Next.js (basePath: '/miratea')
+├── next.config.ts             # Configuración Next.js (basePath dinámico raíz: '')
 ├── package.json               # Dependencias y scripts del proyecto
 ├── tailwind.config.ts         # Tokens de diseño y colores oficiales
 └── tsconfig.json              # Configuración TypeScript estricta
@@ -232,9 +233,10 @@ miratea-app/
 
 # Configuración
 
-### Rutas Base
-* **`basePath`**: `/miratea` configurado en `next.config.ts`.
-* **Redirecciones**: La raíz `/` y `/brandbook` redirigen automáticamente a `/miratea` y `/miratea/brandbook`.
+### Rutas Base y Despliegue de Dominio
+* **Dominio Oficial**: `https://miratea.es` (Apex y `www.miratea.es` vinculados a GitHub Pages con DNS IONOS).
+* **`basePath`**: Por defecto raíz vacía `''` (`process.env.NEXT_PUBLIC_BASE_PATH || ''`) alojado en la raíz del dominio personalizado.
+* **Persistencia CNAME**: `public/CNAME` configurado con `miratea.es` y copiado automáticamente a `out/CNAME` durante `next build` (`output: 'export'`).
 
 ### Variables de Entorno (.env.local)
 ```env
@@ -491,7 +493,12 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Cobertura pedagógica estructurada en 11 áreas temáticas: Filosofía neurodivergente sin punición, Registro parental paso a paso, Gestión familiar y códigos de 8 caracteres para vincular a menores, Mascota Lumi inmutable, Rutinas visuales amables, Desintegrador de metas con IA y Zero-PII, Moneda Sparks ✦ y premios de 1-clic con PIN, Rincón de Calma con audio armónico a 432Hz y Box Breathing 4-4-4-4, PIN parental de 4 dígitos, Accesibilidad sensorial adaptada (OpenDyslexic y Menos Efectos) y Preguntas Frecuentes.
   - Componentes modulares accesibles: `GuideNav` (filtros con chips), `GuideStepCard` (pasos distinguidos por roles) y `GuideFaq` (acordeones desplegables).
   - Integración del icono de ayuda y puntos de acceso: Botón con icono `HelpCircle` en la cabecera del panel parental (`/dashboard`), tarjeta formativa en `/dashboard/family`, botón destacado en la Pestaña de Ajustes (`Tab 5 / profile` en `/home`), enlace en `LegalFooter` y guías en pantallas de autenticación (`/login`, `/signup`, `/join`).
-  - Suite de pruebas unitarias específicas para la guía (`src/app/ayuda/__tests__/ayudaLogic.test.ts`) con 155/155 tests totales superados y verificación estricta de denominación Sparks (0 menciones a "chispas").
+* **Fase 9 (Custom Domain & Production Architecture Release v1.3.1)**:
+  - Vinculación canónica del dominio oficial de producción `miratea.es` (Apex y `www.miratea.es` con servidores autoritativos IONOS y registros DNS A/AAAA/CNAME hacia GitHub Pages).
+  - Creación de `public/CNAME` persistente para regeneración continua en pipelines de GitHub Actions (`output: 'export'`).
+  - Migración limpia de `basePath` de `/miratea` a la raíz vacía `''` (`process.env.NEXT_PUBLIC_BASE_PATH || ''`) eliminando el subpath innecesario en producción.
+  - Estandarización de metadatos SEO y OpenGraph (`https://miratea.es`), URLs de Twitter, Web App Manifest (`start_url: '/'`, `scope: '/'`), Service Worker (`/sw.js`, `miratea-v1.3.1`) y rutas relativas de activos institucionales y logos.
+  - Actualización de redirecciones de autenticación parental y confirmación de PIN en la raíz del dominio.
 
 ---
 

@@ -97,9 +97,9 @@ export function ConfirmParentPinModal({
 
     try {
       if (isUseSupabase()) {
-        const origin = typeof window !== 'undefined' ? window.location.origin : 'https://xaviaerox.github.io';
+        const origin = typeof window !== 'undefined' ? window.location.origin : 'https://miratea.es';
         const { error: resetErr } = await supabase.auth.resetPasswordForEmail(targetEmail, {
-          redirectTo: `${origin}/miratea/dashboard/family`,
+          redirectTo: `${origin}/dashboard/family`,
         });
 
         if (resetErr) {
