@@ -41,7 +41,7 @@ export default function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-stone-900">1. Responsable del Tratamiento</h2>
             <p className="text-sm leading-relaxed">
-              El responsable del tratamiento de los datos es Solutech (contacto: <code>xavi@solutech.blog</code>). MIRATEA ofrece una plataforma digital modular de desarrollo personal, autorregulación y autonomía orientada al entorno del Espectro Autista (TEA), TDAH, altas capacidades y sus familias.
+              El responsable del tratamiento de los datos es Solutech (contacto: <code>xavi@miratea.es</code>). MIRATEA ofrece una plataforma digital modular de desarrollo personal, autorregulación y autonomía orientada al entorno del Espectro Autista (TEA), TDAH, altas capacidades y sus familias.
             </p>
           </section>
 

@@ -19,7 +19,7 @@
 
 Si detectas cualquier fallo de seguridad en la plataforma, por favor repórtalo de forma privada a nuestro equipo de ingeniería:
 
-- **Contacto Directo**: `xavi@solutech.blog`
+- **Contacto Directo**: `xavi@miratea.es`
 - **SLA de Respuesta**: Acuse de recibo en menos de 24 horas y resolución prioritaria.
 
 ---

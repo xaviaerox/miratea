@@ -249,6 +249,16 @@ GROQ_MODEL=openai/gpt-oss-20b
 GROQ_MAX_TOKENS=500
 GROQ_REASONING_EFFORT=low
 DATABASE_URL=postgresql://postgres.tu-proyecto:password@aws-0-eu-west-1.pooler.supabase.com:5432/postgres
+# Correo Corporativo Oficial IONOS
+CORPORATE_EMAIL=xavi@miratea.es
+SMTP_HOST=smtp.ionos.es
+SMTP_PORT=587
+SMTP_USER=xavi@miratea.es
+SMTP_PASS=tu-password-seguro
+IMAP_HOST=imap.ionos.es
+IMAP_PORT=993
+IMAP_USER=xavi@miratea.es
+IMAP_PASS=tu-password-seguro
 ```
 
 ---

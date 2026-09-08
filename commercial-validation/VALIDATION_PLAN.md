@@ -26,4 +26,4 @@ Validar empíricamente que familias externas adoptan MIRATEA, la utilizan de for
 - **Tamaño objetivo:** 10–20 familias externas.
 - **Perfil:** Niños de 8 a 14 años (con o sin diagnóstico de TEA/TDAH/altas capacidades).
 - **Duración:** 8 a 12 semanas.
-- **Canal de soporte:** Email prioritario (`xavi@solutech.blog`) + formularios in-app.
+- **Canal de soporte:** Email prioritario (`xavi@miratea.es`) + formularios in-app.

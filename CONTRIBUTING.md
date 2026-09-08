@@ -20,4 +20,4 @@ Este repositorio no está abierto a contribuciones externas públicas, Pull Requ
 Para cualquier sugerencia, consulta institucional o integración clínica:
 * **Compañía**: Solutech
 * **Desarrollo**: Xavi Alonso
-* **Contacto**: xavi@solutech.blog
+* **Contacto**: xavi@miratea.es

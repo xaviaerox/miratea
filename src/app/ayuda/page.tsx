@@ -78,7 +78,7 @@ export default function AyudaPage() {
             </Link>
 
             <a
-              href="mailto:xavi@solutech.blog?subject=Consulta%20sobre%20MIRATEA"
+              href="mailto:xavi@miratea.es?subject=Consulta%20sobre%20MIRATEA"
               className="text-xs sm:text-sm font-semibold bg-teal-700 hover:bg-teal-800 text-white px-3.5 py-2 rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-1.5"
             >
               <MessageSquare className="w-3.5 h-3.5 text-teal-200" />
@@ -671,10 +671,10 @@ export default function AyudaPage() {
 
           <div className="flex flex-wrap gap-3 pt-2">
             <a
-              href="mailto:xavi@solutech.blog?subject=Soporte%20Familia%20MIRATEA"
+              href="mailto:xavi@miratea.es?subject=Soporte%20Familia%20MIRATEA"
               className="bg-amber-400 hover:bg-amber-500 text-slate-950 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-2"
             >
-              <span>Escribir a Soporte (xavi@solutech.blog)</span>
+              <span>Escribir a Soporte (xavi@miratea.es)</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
             <Link
