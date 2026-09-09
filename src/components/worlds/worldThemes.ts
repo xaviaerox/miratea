@@ -5,10 +5,16 @@ export interface WorldTheme {
   name: string;
   dimension: ValueDimensionId;
   bgGradient: string;
+  auraGradient: string;
   textColor: string;
   accentBg: string;
+  accentBorder: string;
   emoji: string;
   description: string;
+  ambientCues: {
+    icon: string;
+    label: string;
+  };
 }
 
 export const WORLD_THEMES: WorldTheme[] = [
@@ -16,51 +22,81 @@ export const WORLD_THEMES: WorldTheme[] = [
     id: 'lago_calma',
     name: 'Lago de la Calma',
     dimension: 'regulation',
-    bgGradient: 'from-sky-100 via-sky-50 to-blue-200 dark:from-sky-950 dark:via-sky-900 dark:to-indigo-950',
-    textColor: 'text-sky-700 dark:text-sky-300',
-    accentBg: 'bg-sky-100 border-sky-200 dark:bg-sky-900/50 dark:border-sky-850',
+    bgGradient: 'from-sky-100 via-sky-50 to-blue-100',
+    auraGradient: 'from-sky-100/60 via-blue-50/30 to-transparent',
+    textColor: 'text-sky-850',
+    accentBg: 'bg-sky-50/90 border-sky-200/90 hover:bg-sky-100/70',
+    accentBorder: 'border-sky-200',
     emoji: '☯',
     description: 'Aprende a regular tus emociones y respirar hondo.',
+    ambientCues: {
+      icon: '💧',
+      label: 'Bruma y calma acuática',
+    },
   },
   {
     id: 'valle_habitos',
     name: 'Valle de los Hábitos',
     dimension: 'connection', // Constancia
-    bgGradient: 'from-emerald-100 via-green-50 to-teal-200 dark:from-emerald-950 dark:via-green-950 dark:to-teal-950',
-    textColor: 'text-moss-700 dark:text-moss-300',
-    accentBg: 'bg-moss-100 border-moss-200 dark:bg-moss-900/50 dark:border-moss-850',
+    bgGradient: 'from-emerald-100 via-green-50 to-teal-100',
+    auraGradient: 'from-emerald-100/50 via-green-50/30 to-transparent',
+    textColor: 'text-moss-850',
+    accentBg: 'bg-moss-50/90 border-moss-200/90 hover:bg-moss-100/70',
+    accentBorder: 'border-moss-200',
     emoji: '♾',
     description: 'La constancia en tus rutinas hace que este valle florezca.',
+    ambientCues: {
+      icon: '🌸',
+      label: 'Pétalos y brisa suave',
+    },
   },
   {
     id: 'bosque_autonomia',
     name: 'Bosque de la Autonomía',
     dimension: 'autonomy',
-    bgGradient: 'from-green-100 via-emerald-50 to-emerald-300 dark:from-green-950 dark:via-emerald-950 dark:to-emerald-900',
-    textColor: 'text-emerald-700 dark:text-emerald-300',
-    accentBg: 'bg-emerald-100 border-emerald-200 dark:bg-emerald-900/50 dark:border-emerald-850',
+    bgGradient: 'from-green-100 via-emerald-50 to-emerald-200',
+    auraGradient: 'from-teal-100/50 via-emerald-50/30 to-transparent',
+    textColor: 'text-emerald-850',
+    accentBg: 'bg-emerald-50/90 border-emerald-200/90 hover:bg-emerald-100/70',
+    accentBorder: 'border-emerald-200',
     emoji: '↟',
     description: 'Haz las cosas por ti mismo y ayuda a crecer a los árboles.',
+    ambientCues: {
+      icon: '🍃',
+      label: 'Hojas y luciérnagas',
+    },
   },
   {
     id: 'montana_esfuerzo',
     name: 'Montañas del Esfuerzo',
     dimension: 'courage', // Valentía
-    bgGradient: 'from-amber-100 via-orange-50 to-rose-200 dark:from-amber-950 dark:via-orange-950 dark:to-rose-950',
-    textColor: 'text-bloom-700 dark:text-bloom-300',
-    accentBg: 'bg-bloom-100 border-bloom-200 dark:bg-bloom-900/50 dark:border-bloom-850',
+    bgGradient: 'from-amber-100 via-orange-50 to-rose-100',
+    auraGradient: 'from-amber-100/50 via-orange-50/30 to-transparent',
+    textColor: 'text-bloom-850',
+    accentBg: 'bg-bloom-50/90 border-bloom-200/90 hover:bg-bloom-100/70',
+    accentBorder: 'border-bloom-200',
     emoji: '▲',
     description: 'Supera tus miedos y sube las cumbres del esfuerzo.',
+    ambientCues: {
+      icon: '✦',
+      label: 'Chispas de esfuerzo',
+    },
   },
   {
     id: 'reino_social',
     name: 'Reino de la Vida Social',
     dimension: 'empathy',
-    bgGradient: 'from-purple-100 via-pink-50 to-fuchsia-200 dark:from-purple-950 dark:via-pink-950 dark:to-fuchsia-950',
-    textColor: 'text-lavender-700 dark:text-lavender-300',
-    accentBg: 'bg-lavender-100 border-lavender-200 dark:bg-lavender-900/50 dark:border-lavender-850',
+    bgGradient: 'from-purple-100 via-pink-50 to-fuchsia-100',
+    auraGradient: 'from-purple-100/50 via-pink-50/30 to-transparent',
+    textColor: 'text-lavender-850',
+    accentBg: 'bg-lavender-50/90 border-lavender-200/90 hover:bg-lavender-100/70',
+    accentBorder: 'border-lavender-200',
     emoji: '♡',
     description: 'Comparte con otros, empatiza y haz amigos.',
+    ambientCues: {
+      icon: '♡',
+      label: 'Destellos de empatía',
+    },
   },
 ];
 

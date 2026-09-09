@@ -4,6 +4,25 @@ All notable changes to the **MIRATEA** project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2026-09-09 (Emotional Worlds Sensory Atmosphere & Accessibility Release)
+
+### Changed & Improved
+- **Preservación del Fondo Sensorial Cálido (`#FAF9F7`)**:
+  - Eliminadas las variantes oscuras agresivas (`dark:from-*-950`, `dark:via-*-950`) en `src/components/worlds/worldThemes.ts` que se activaban de forma involuntaria cuando el sistema o navegador tenía activado el modo oscuro (`prefers-color-scheme: dark`), rompiendo la interfaz y la legibilidad.
+  - El contenedor principal de `/home` mantiene de forma constante y serena el fondo cálido `#FAF9F7` (`bg-stone-50`) con contraste tipográfico AAA en el saludo, nombre del menor y textos de acompañamiento.
+- **Nueva Capa de Atmósfera Ambiental (`WorldAtmosphere`)**:
+  - Incorporado el componente modular `WorldAtmosphere.tsx` con un aura superior difusa y sutil (`auraGradient`) que tiñe delicadamente la zona del terrario sin sobrecargar.
+  - Integradas partículas flotantes temáticas (burbujas en el Lago de la Calma, pétalos en el Valle de los Hábitos, hojas y luciérnagas en el Bosque de la Autonomía, chispas estelares en las Montañas del Esfuerzo y corazones en el Reino Social) con baja opacidad (25%-40%) y `pointer-events-none`.
+  - Soporte de accesibilidad estricto: en modo "Menos Efectos y Animaciones" (`silentMode`) o con `prefers-reduced-motion`, todas las partículas y animaciones quedan desactivadas de inmediato.
+- **Píldoras y Controles de Interfaz Pulidos**:
+  - Rediseñado el botón selector de mundo y la tarjeta de progreso para garantizar tipografía nítida y contraste perfecto sobre el lienzo cálido.
+  - Ajustados los botones de acción inferior ("Recuerdos", "Cuento", "Hablar") con colores pastel armónicos de alto contraste.
+- **Gobernanza PWA**:
+  - Actualizado `CACHE_NAME` a `miratea-v1.3.2` en `public/sw.js`.
+  - Incremento de versión canónica a `1.3.2` en `package.json`.
+
+---
+
 ## [1.3.1] - 2026-09-08 (Custom Domain & Production Architecture Release)
 
 ### Added

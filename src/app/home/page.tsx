@@ -75,6 +75,7 @@ import { useHomeState } from '@/hooks/useHomeState';
 import type { Reward } from '@/types';
 import { WORLD_THEMES } from '@/components/worlds/worldThemes';
 import { WorldAmbientVisuals } from '@/components/worlds/WorldAmbientVisuals';
+import { WorldAtmosphere } from '@/components/worlds/WorldAtmosphere';
 
 
 const ENERGY_OPTIONS = [
@@ -290,7 +291,9 @@ export default function HomePage() {
   if (!session) return null;
 
   return (
-    <div className={`min-h-dvh bg-gradient-to-b ${selectedWorld.bgGradient} transition-all duration-700 flex flex-col relative overflow-x-hidden pb-20`}>
+    <div className="min-h-dvh bg-stone-50 text-stone-850 transition-colors duration-700 flex flex-col relative overflow-x-hidden pb-20">
+      {/* World Ambient Atmosphere & Floating Accents */}
+      <WorldAtmosphere worldId={selectedWorld.id} silentMode={silentMode} />
 
       {/* Header */}
       <header className="px-5 pt-8 pb-4 flex items-center justify-between z-10">
@@ -304,7 +307,7 @@ export default function HomePage() {
           />
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <p className="text-xs text-stone-400 dark:text-stone-500 uppercase tracking-widest font-body leading-none">
+              <p className="text-xs text-stone-500 font-semibold uppercase tracking-widest font-body leading-none">
                 {greeting}
               </p>
               <button
@@ -314,12 +317,12 @@ export default function HomePage() {
                     router.replace('/login');
                   }
                 }}
-                className="text-[10px] text-stone-400 hover:text-stone-600 bg-stone-100/80 hover:bg-stone-200/60 px-2 py-0.5 rounded-full transition-all cursor-pointer font-medium leading-none"
+                className="text-[10px] text-stone-500 hover:text-stone-700 bg-stone-100/90 hover:bg-stone-200/80 px-2.5 py-0.5 rounded-full transition-all cursor-pointer font-medium leading-none shadow-xs"
               >
                 Salir
               </button>
             </div>
-            <h1 className="font-display text-2xl text-stone-800 mt-1 flex items-center gap-1.5 leading-none">
+            <h1 className="font-display text-2xl text-stone-900 font-bold mt-1 flex items-center gap-1.5 leading-none">
               {profile?.display_name}
             </h1>
           </div>
@@ -364,9 +367,10 @@ export default function HomePage() {
               )}
 
               {/* World indicator (button to change world) */}
+              {/* World indicator (button to change world) */}
               <button
                 onClick={() => setShowWorldsModal(true)}
-                className={`px-4 py-2 rounded-full border text-xs font-semibold shadow-soft ${selectedWorld.accentBg} ${selectedWorld.textColor} flex items-center gap-2 mb-2 hover:scale-[1.03] active:scale-95 transition-all cursor-pointer`}
+                className={`px-4 py-2 rounded-full border text-xs font-bold shadow-soft backdrop-blur-sm ${selectedWorld.accentBg} ${selectedWorld.textColor} flex items-center gap-2 mb-2 hover:scale-[1.03] active:scale-95 transition-all cursor-pointer`}
               >
                 <span>{selectedWorld.emoji}</span>
                 <span>Mundo: {selectedWorld.name} ({activeWorldPhase.label} {activeWorldPhase.icon}) ▾</span>
@@ -376,14 +380,14 @@ export default function HomePage() {
               {(() => {
                 const { percent, nextLabel } = getWorldProgress(activeWorldScore);
                 return (
-                  <div className="w-full max-w-xs px-4 py-2 bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/50 mb-2 flex flex-col gap-1.5 shadow-sm">
-                    <div className="flex justify-between text-[10px] font-semibold text-stone-500 uppercase tracking-wider">
+                  <div className="w-full max-w-xs px-4 py-2.5 bg-white/85 backdrop-blur-sm rounded-2xl border border-stone-200/80 mb-2 flex flex-col gap-1.5 shadow-soft">
+                    <div className="flex justify-between text-[10px] font-bold text-stone-600 uppercase tracking-wider">
                       <span>Crecimiento del Mundo</span>
-                      <span>{percent}% {nextLabel}</span>
+                      <span className="text-stone-800 font-extrabold">{percent}% {nextLabel}</span>
                     </div>
-                    <div className="w-full h-2 bg-stone-100 dark:bg-stone-850 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-stone-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-emerald-400 dark:bg-emerald-500 rounded-full transition-all duration-1000"
+                        className="h-full bg-emerald-500 rounded-full transition-all duration-1000"
                         style={{ width: `${percent}%` }}
                       />
                     </div>
@@ -396,25 +400,25 @@ export default function HomePage() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="w-full max-w-xs px-5 py-4 bg-emerald-50/75 dark:bg-emerald-950/20 border border-emerald-250/30 rounded-[28px] text-center shadow-soft mb-2"
+                  className="w-full max-w-xs px-5 py-4 bg-emerald-50/90 border border-emerald-200 rounded-[28px] text-center shadow-soft mb-2"
                 >
                   <p className="text-xl mb-1">🌟</p>
-                  <h4 className="font-display text-xs font-bold text-emerald-850 dark:text-emerald-300">¡Todo listo por hoy!</h4>
-                  <p className="text-[10px] text-emerald-700/80 dark:text-emerald-400/80 font-body mt-1 leading-relaxed">
+                  <h4 className="font-display text-xs font-bold text-emerald-900">¡Todo listo por hoy!</h4>
+                  <p className="text-[10px] text-emerald-800 font-body mt-1 leading-relaxed">
                     Has hecho un trabajo increíble hoy. Relájate, disfruta de tu mundo y platica libremente con {display?.name}.
                   </p>
                 </motion.div>
               )}
 
               {/* Ambient visual state description */}
-              <p className="text-stone-400 text-center text-xs italic font-body max-w-xs mb-2">
+              <p className="text-stone-600 text-center text-xs italic font-body max-w-xs mb-2 leading-relaxed">
                 {activeWorldPhase.phase === 'seed' && 'El entorno se encuentra en calma, cuidando de una semilla.'}
                 {activeWorldPhase.phase === 'sprout' && 'Pequeños brotes de naturaleza comienzan a asomar en los rincones.'}
                 {activeWorldPhase.phase === 'bloom' && '¡El entorno irradia flores y una luz vibrante debido a tu crecimiento!'}
               </p>
 
               {/* Viewport container representing the magical terrarium/world */}
-              <div className="relative w-full max-w-[280px] aspect-square flex items-center justify-center my-4 rounded-[40px] border border-stone-250/20 bg-white/45 dark:bg-stone-900/10 backdrop-blur-md shadow-card transition-all duration-700">
+              <div className="relative w-full max-w-[280px] aspect-square flex items-center justify-center my-4 rounded-[40px] border border-stone-200/80 bg-white/70 backdrop-blur-md shadow-card transition-all duration-700">
                 {/* Background wrapper (clipping landscapes inside rounded border) */}
                 <div className="absolute inset-0 overflow-hidden rounded-[40px] z-0">
                   <WorldAmbientVisuals worldId={selectedWorld.id} phase={activeWorldPhase.phase} silentMode={silentMode} />
@@ -439,23 +443,23 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
                 <button
                   onClick={() => setShowMemoriesModal(true)}
-                  className="text-xs font-bold px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-md border border-stone-200/80 hover:border-amber-300 text-stone-700 hover:bg-white shadow-soft transition-all hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-1.5"
+                  className="text-xs font-bold px-3.5 py-2 rounded-full bg-white/95 backdrop-blur-md border border-stone-200 hover:border-amber-300 text-stone-700 hover:bg-white shadow-soft transition-all hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-1.5"
                 >
                   <Award className="w-3.5 h-3.5 text-stone-600" />
                   <span>Recuerdos</span>
                 </button>
                 <button
                   onClick={handleOpenStory}
-                  className="text-xs font-bold px-3.5 py-2 rounded-full bg-amber-500/15 backdrop-blur-md border border-amber-300/80 text-amber-900 hover:bg-amber-500/25 shadow-soft transition-all hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-1.5"
+                  className="text-xs font-bold px-3.5 py-2 rounded-full bg-amber-50 backdrop-blur-md border border-amber-300 text-amber-900 hover:bg-amber-100 shadow-soft transition-all hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-1.5"
                 >
                   <BookOpen className="w-3.5 h-3.5 text-amber-700" />
                   <span>Cuento con {display?.name ?? 'Lumi'}</span>
                 </button>
                 <button
                   onClick={() => setShowChatModal(true)}
-                  className="text-xs font-bold px-4 py-2 rounded-full bg-bloom-50/90 backdrop-blur-md hover:bg-bloom-100 border border-bloom-200/90 text-bloom-700 shadow-soft transition-all hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-1.5"
+                  className="text-xs font-bold px-4 py-2 rounded-full bg-bloom-50 backdrop-blur-md hover:bg-bloom-100 border border-bloom-300 text-bloom-850 shadow-soft transition-all hover:scale-[1.03] active:scale-95 cursor-pointer flex items-center gap-1.5"
                 >
-                  <MessageSquare className="w-3.5 h-3.5 text-bloom-600" />
+                  <MessageSquare className="w-3.5 h-3.5 text-bloom-700" />
                   <span>Hablar con {display?.name ?? 'Lumi'}</span>
                 </button>
               </div>
@@ -1661,7 +1665,7 @@ export default function HomePage() {
                           <div className="absolute inset-0 scale-[0.55] origin-bottom overflow-hidden">
                             <WorldAmbientVisuals worldId={world.id} phase={phase.phase} silentMode={silentMode} />
                           </div>
-                          <span className="absolute bottom-0.5 right-0.5 text-xs bg-white/70 dark:bg-stone-900/70 rounded-full w-5 h-5 flex items-center justify-center shadow-soft">
+                          <span className="absolute bottom-0.5 right-0.5 text-xs bg-white/90 rounded-full w-5 h-5 flex items-center justify-center shadow-soft">
                             {world.emoji}
                           </span>
                         </div>

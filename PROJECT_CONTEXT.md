@@ -13,17 +13,12 @@
   2. **Niños y Menores**: Entorno lúdico y tranquilo con apoyo de la mascota inmutable *Lumi*.
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
   4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
-* **Estado del proyecto**: Producción / Custom Domain & Production Architecture Release v1.3.1.
+* **Estado del proyecto**: Producción / Emotional Worlds Sensory Atmosphere & Accessibility Release v1.3.2.
 * **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 155/155 tests pasando (32 test files), Dominio canónico oficial `miratea.es` integrado con GitHub Pages, CNAME permanente y rutas raíz (`/`).
 * **Dominio de Producción**: `https://miratea.es` (Apex y `www.miratea.es` sincronizados con DNS de IONOS).
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
-<<<<<<< Updated upstream
-* **Versión actual**: `1.3.1` (Custom Domain & Production Architecture Release v1.3.1).
-* **Última actualización**: 2026-09-08.
-=======
-* **Versión actual**: `1.1.4` (OpenGraph, Favicon & SEO Optimization Release v1.1.4).
-* **Última actualización**: 2026-09-06.
->>>>>>> Stashed changes
+* **Versión actual**: `1.3.2` (Emotional Worlds Sensory Atmosphere & Accessibility Release v1.3.2).
+* **Última actualización**: 2026-09-09.
 
 ---
 
@@ -501,7 +496,6 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Resiliencia de sesión en `SupabaseAuthAdapter` (`.maybeSingle()` con fallbacks para `Profile` y `Family`) evitando bloqueos de interfaz o cargadores colgados.
   - Cobertura completa de verificación por PIN parental en todas las acciones de Premios (aprobación, cobro de Sparks, rechazo, creación, edición y eliminación de recompensas).
   - Auditoría integral de seguridad, eliminación de credenciales de prueba y formalización del licenciamiento comercial propietario.
-<<<<<<< Updated upstream
 * **Fase 7 (Decoupled Analytics, Observability & Groq Migration Release v1.2.0)**:
   - Fachada desacoplada de Analytics & Observabilidad Zero-PII (`src/infrastructure/analytics/`).
   - Error Boundaries adaptados sensorialmente (`src/app/error.tsx`, `src/app/global-error.tsx`).
@@ -519,12 +513,15 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Migración limpia de `basePath` de `/miratea` a la raíz vacía `''` (`process.env.NEXT_PUBLIC_BASE_PATH || ''`) eliminando el subpath innecesario en producción.
   - Estandarización de metadatos SEO y OpenGraph (`https://miratea.es`), URLs de Twitter, Web App Manifest (`start_url: '/'`, `scope: '/'`), Service Worker (`/sw.js`, `miratea-v1.3.1`) y rutas relativas de activos institucionales y logos.
   - Actualización de redirecciones de autenticación parental y confirmación de PIN en la raíz del dominio.
-=======
-* **Fase de Organización y Blindaje de Activos Confidenciales (Septiembre 2026)**:
-  - Integración y ordenación de la documentación interna, estratégica y comercial en el directorio protegido `/internal/` (`commercial/`, `presentations/`, `legal/`).
-  - Blindaje completo frente a repositorios públicos en `.gitignore` bloqueando `/internal/`, formatos de oficina (`*.docx`, `*.pptx`, `*.xlsx`), PDFs no públicos y registros de validación.
-  - Garantía verificada de cero exposición en Git (`git status` limpio sin archivos internos rastreados).
->>>>>>> Stashed changes
+* **Fase 10 (Emotional Worlds Sensory Atmosphere & Accessibility Release v1.3.2)**:
+  - Eliminación de fondos oscuros accidentales (`dark:from-*-950`) en la pantalla de inicio infantil (`/home`) causados por la preferencia de modo oscuro a nivel de sistema.
+  - Preservación inmutable del fondo base sensorial cálido `#FAF9F7` (`bg-stone-50`) con contraste tipográfico AAA.
+  - Nueva capa de ambientación sutil `WorldAtmosphere.tsx` con halo difuso superior (`auraGradient`) y partículas flotantes temáticas de baja opacidad (25%-40%) con `pointer-events-none`.
+  - Integración con `silentMode` (Menos Efectos y Animaciones) y `prefers-reduced-motion` para desactivación instantánea de movimiento.
+  - Píldoras de mundo y controles con contraste pulido. Actualización del Service Worker a `miratea-v1.3.2`.
+* **Organización y Blindaje de Activos Confidenciales**:
+  - Integración y ordenación de documentación interna, estratégica y comercial en el directorio protegido `/internal/`.
+  - Blindaje completo en `.gitignore` bloqueando `/internal/` y formatos ofimáticos confidenciales.
 
 ---
 
