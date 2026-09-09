@@ -45,3 +45,20 @@ next-env.d.ts
 
 # scratch/temporary scripts
 /scratch/
+
+# internal, commercial & proprietary confidential assets (strict privacy boundary)
+/internal/
+*.docx
+*.pptx
+*.xlsx
+
+# PDF documents outside public web assets
+*.pdf
+!public/**/*.pdf
+
+# Real validation records, raw interviews, and customer responses
+/commercial-validation/**/responses/
+/commercial-validation/**/records/
+/commercial-validation/**/private/
+/commercial-validation/**/*_notes.md
+/commercial-validation/**/*_completed.md

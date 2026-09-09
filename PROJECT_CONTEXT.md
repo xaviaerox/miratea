@@ -17,8 +17,13 @@
 * **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 155/155 tests pasando (32 test files), Dominio canónico oficial `miratea.es` integrado con GitHub Pages, CNAME permanente y rutas raíz (`/`).
 * **Dominio de Producción**: `https://miratea.es` (Apex y `www.miratea.es` sincronizados con DNS de IONOS).
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
+<<<<<<< Updated upstream
 * **Versión actual**: `1.3.1` (Custom Domain & Production Architecture Release v1.3.1).
 * **Última actualización**: 2026-09-08.
+=======
+* **Versión actual**: `1.1.4` (OpenGraph, Favicon & SEO Optimization Release v1.1.4).
+* **Última actualización**: 2026-09-06.
+>>>>>>> Stashed changes
 
 ---
 
@@ -268,6 +273,10 @@ IMAP_PASS=tu-password-seguro
 * **Row Level Security (RLS)**: En Supabase Postgres, todas las tablas imponen aislamiento estricto por `family_id`.
 * **Sanitización Pre-LLM**: Ninguna API externa recibe datos identificativos personales.
 * **Protección CSRF y Rate Limiting**: Limitación de peticiones por ventana deslizante en endpoints clave.
+* **Gobernanza de Confidencialidad y Límite de Privacidad (Zero Leak Boundary)**:
+  - **Capa Pública y Funcional**: El código fuente en `src/`, las páginas legales en producción (`/privacy`, `/terms`), la documentación técnica en `docs/` y las plantillas operativas en `commercial-validation/` forman la superficie técnica pública y reproducible.
+  - **Capa Interna y Confidencial (`/internal/`)**: Toda la propiedad intelectual estratégica, modelos de negocio (`commercial/MIRATEA_COMMERCIALIZATION_BLUEPRINT_v0.1.md`), operativas de validación con familias (`commercial/MIRATEA_COMMERCIAL_VALIDATION_KIT_v0.1.md`), guiones de venta en vivo (`commercial/GUION_DEMO_MIRATEA.md`), presentaciones ejecutivas (`presentations/MIRATEA_Pitch_Deck.pptx`, `presentations/MIRATEA_OnePager_Tecnico.pdf`) y borradores legales editables (`legal/*.docx`) se gestionan en `/internal/`.
+  - **Aislamiento Determinista por Git**: `/internal/`, formatos de oficina (`*.docx`, `*.pptx`, `*.xlsx`), PDFs no públicos y respuestas reales de familias están permanentemente ignorados en `.gitignore` para garantizar cero fugas de datos hacia GitHub.
 
 ---
 
@@ -492,6 +501,7 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Resiliencia de sesión en `SupabaseAuthAdapter` (`.maybeSingle()` con fallbacks para `Profile` y `Family`) evitando bloqueos de interfaz o cargadores colgados.
   - Cobertura completa de verificación por PIN parental en todas las acciones de Premios (aprobación, cobro de Sparks, rechazo, creación, edición y eliminación de recompensas).
   - Auditoría integral de seguridad, eliminación de credenciales de prueba y formalización del licenciamiento comercial propietario.
+<<<<<<< Updated upstream
 * **Fase 7 (Decoupled Analytics, Observability & Groq Migration Release v1.2.0)**:
   - Fachada desacoplada de Analytics & Observabilidad Zero-PII (`src/infrastructure/analytics/`).
   - Error Boundaries adaptados sensorialmente (`src/app/error.tsx`, `src/app/global-error.tsx`).
@@ -509,6 +519,12 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Migración limpia de `basePath` de `/miratea` a la raíz vacía `''` (`process.env.NEXT_PUBLIC_BASE_PATH || ''`) eliminando el subpath innecesario en producción.
   - Estandarización de metadatos SEO y OpenGraph (`https://miratea.es`), URLs de Twitter, Web App Manifest (`start_url: '/'`, `scope: '/'`), Service Worker (`/sw.js`, `miratea-v1.3.1`) y rutas relativas de activos institucionales y logos.
   - Actualización de redirecciones de autenticación parental y confirmación de PIN en la raíz del dominio.
+=======
+* **Fase de Organización y Blindaje de Activos Confidenciales (Septiembre 2026)**:
+  - Integración y ordenación de la documentación interna, estratégica y comercial en el directorio protegido `/internal/` (`commercial/`, `presentations/`, `legal/`).
+  - Blindaje completo frente a repositorios públicos en `.gitignore` bloqueando `/internal/`, formatos de oficina (`*.docx`, `*.pptx`, `*.xlsx`), PDFs no públicos y registros de validación.
+  - Garantía verificada de cero exposición en Git (`git status` limpio sin archivos internos rastreados).
+>>>>>>> Stashed changes
 
 ---
 
