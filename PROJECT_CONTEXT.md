@@ -18,7 +18,7 @@
 * **Dominio de Producción**: `https://miratea.es` (Apex y `www.miratea.es` sincronizados con DNS de IONOS).
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
 * **Versión actual**: `1.3.2` (Emotional Worlds Sensory Atmosphere & Accessibility Release v1.3.2).
-* **Última actualización**: 2026-09-09.
+* **Última actualización**: 2026-09-10.
 
 ---
 

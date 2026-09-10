@@ -20,6 +20,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Gobernanza PWA**:
   - Actualizado `CACHE_NAME` a `miratea-v1.3.2` en `public/sw.js`.
   - Incremento de versión canónica a `1.3.2` en `package.json`.
+- **Seguridad & Blindaje de Confidencialidad**:
+  - Blindaje estricto en `.gitignore` bloqueando el directorio `/internal/`, formatos ofimáticos confidenciales (`*.docx`, `*.pptx`, `*.xlsx`), PDFs de trabajo fuera de activos web públicos y registros privados de validación comercial.
+- **Higiene Git & Consistencia Multi-dispositivo**:
+  - Des-rastreo y eliminación de binarios de caché Python (`.pyc`) y resolución limpia de marcadores de merge en `.gitignore` y `PROJECT_CONTEXT.md`.
+  - Incorporación de `.gitattributes` para forzar normalización de saltos de línea LF y consistencia binaria multiplataforma entre ordenadores.
+  - Exclusión sistemática de carpetas de configuración de IDE (`.vscode/`, `.idea/`).
+- **Infraestructura CI/CD en GitHub Pages**:
+  - Concesión explícita de permisos `id-token: write` y `pages: write` a nivel de job en `.github/workflows/deploy.yml` para garantizar la autorización OIDC en el despliegue automático de GitHub Pages.
+- **Validación Regional e Institucional (Murcia)**:
+  - Ejecución y archivado de la campaña de validación y outreach institucional a 20 asociaciones clave de neurodivergencia en la Región de Murcia (`commercial-validation/OUTREACH_ASOCIACIONES_MURCIA.md` y `commercial-validation/outreach_log.json`).
 
 ---
 
