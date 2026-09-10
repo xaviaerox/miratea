@@ -37,7 +37,7 @@ export function LegalFooter() {
       </div>
 
       <div className="max-w-5xl mx-auto mt-6 pt-4 border-t border-stone-200/60 text-center text-stone-400">
-        © {new Date().getFullYear()} Solutech — Todos los derechos reservados. Versión 1.3.1 (Custom Domain & Production Architecture Release).
+        © {new Date().getFullYear()} Solutech — Todos los derechos reservados. Versión 1.3.2 (Emotional Worlds Sensory Atmosphere & Accessibility Release).
       </div>
     </footer>
   );
