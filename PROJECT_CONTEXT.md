@@ -528,6 +528,7 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Integración y ordenación de documentación interna, estratégica y comercial en el directorio protegido `/internal/`.
   - Blindaje completo en `.gitignore` bloqueando `/internal/` y formatos ofimáticos confidenciales.
   - Higiene Git multi-dispositivo: des-rastreo de binarios de caché Python (`.pyc`), resolución limpia de marcadores de merge en `.gitignore`, incorporación de `.gitattributes` para normalización LF y exclusión de configuraciones de IDE (`.vscode/`, `.idea/`).
+  - Despliegue continuo GitHub Pages: blindaje explícito de permisos `id-token: write` y `pages: write` a nivel de job en `.github/workflows/deploy.yml` para autorización OIDC de Pages.
 
 ---
 
