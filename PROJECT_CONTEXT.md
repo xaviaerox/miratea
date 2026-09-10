@@ -534,6 +534,12 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Documentación de la trilogía de videos de presentación generados con Google Omni y Veo bajo estética sensorial `#FAF9F7` y principios *Neurodiversity-First*: Video 1 (Rutinas visuales matutinas sin fricción), Video 2 (Desintegrador de metas con IA y Rincón de Calma a 432Hz) y Video 3 (Progreso acumulativo con Sparks ✦ y compañerismo inmutable con Lumi).
   - Gobernanza de copys, guiones, dirección de arte Veo/Omni y calendario editorial archivados en `commercial-validation/marketing/INSTAGRAM_STRATEGY.md`.
   - Enlace al perfil de Instagram integrado en el pie de página (`src/components/ui/LegalFooter.tsx`).
+* **Fase 11 (AI Step Decomposition & Reliability Release v1.3.3)**:
+  - Reparación integral del motor de descomposición de metas con IA (`/api/decompose`): incorporación de `reasoning_effort: 'low'` y aumento a 4.000 max_tokens para el modelo de razonamiento `openai/gpt-oss-20b` en Groq, eliminando la sobrecarga de miles de tokens de pensamiento interno y el error de validación JSON `400 json_validate_failed`. Rendimiento verificado en 1,4s para 21 pasos.
+  - Blindaje en `MicrotaskEngine`: normalización del schema JSON en el prompt y retorno de `null` en `parseDecompositionResponse` ante microtareas vacías para activar determinísticamente el generador de pasos de respaldo (`fallbackDecomposition`).
+  - Protección de vistas (`new/page.tsx` y `edit/page.tsx`): comprobación de pasos no vacíos antes de asignar en la revisión de objetivos y reactividad asíncrona de `childId` con `useEffect`.
+  - Actualización de fallbacks: actualización de Gemini a `gemini-2.0-flash` y soporte para Anthropic (`claude-3-haiku-20240307`).
+  - Gobernanza PWA y suite de tests: actualización de caché a `miratea-v1.3.3` en `public/sw.js` y 161/161 pruebas superadas (32 archivos).
 
 ---
 
@@ -555,4 +561,4 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
 
 # Resumen Ejecutivo
 
-**MIRATEA by Solutech** es una plataforma digital de autorregulación emocional y autonomía para menores en el Espectro Autista (TEA), TDAH y sus familias. Construida con **Next.js 16**, **TypeScript** y **Supabase PostgreSQL**, ofrece rutinas visuales amables, un Rincón de Calma con respiración guiada sonora (432Hz), descomposición de metas mediante IA con protección PII y exportación de informes clínicos en PDF. El proyecto cuenta con un estado de madurez de **Gold Release v1.0**, verificado con 0 errores de tipado, 0 advertencias de linter y 50/50 pruebas unitarias superadas.
+**MIRATEA by Solutech** es una plataforma digital de autorregulación emocional y autonomía para menores en el Espectro Autista (TEA), TDAH y sus familias. Construida con **Next.js 16**, **TypeScript** y **Supabase PostgreSQL**, ofrece rutinas visuales amables, un Rincón de Calma con respiración guiada sonora (432Hz), descomposición de metas mediante IA con protección PII y exportación de informes clínicos en PDF. El proyecto cuenta con un estado de madurez de **Production Release v1.3.3**, verificado con 0 errores de tipado, 0 advertencias de linter y 161/161 pruebas unitarias superadas.
