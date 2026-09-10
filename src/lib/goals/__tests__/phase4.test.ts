@@ -47,3 +47,40 @@ describe('StaticGoalsAdapter (Phase 4)', () => {
     });
   });
 });
+
+import { buildDecompositionPrompt, parseDecompositionResponse, fallbackDecomposition } from '../MicrotaskEngine';
+
+describe('MicrotaskEngine decomposition & parsing', () => {
+  it('buildDecompositionPrompt outputs valid schema without raw pipes in example', () => {
+    const prompt = buildDecompositionPrompt({ goalTitle: 'Aprender a nadar', numTasks: 5, sparkValue: 2 });
+    expect(prompt).toContain('Aprender a nadar');
+    expect(prompt).toContain('"effort_level": "easy"');
+    expect(prompt).not.toContain('"effort_level": "easy" | "medium"');
+  });
+
+  it('parseDecompositionResponse correctly returns null for empty microtasks', () => {
+    const res = parseDecompositionResponse('{"microtasks":[]}', 'test-model');
+    expect(res).toBeNull();
+  });
+
+  it('parseDecompositionResponse correctly parses valid microtasks', () => {
+    const json = JSON.stringify({
+      microtasks: [
+        { position: 1, title: 'Paso 1', effort_level: 'easy', spark_value: 2, value_dimensions: ['autonomy'] },
+        { position: 2, title: 'Paso 2', effort_level: 'medium', spark_value: 2, value_dimensions: ['courage'] },
+      ]
+    });
+    const res = parseDecompositionResponse(json, 'test-model');
+    expect(res).not.toBeNull();
+    expect(res?.microtasks.length).toBe(2);
+    expect(res?.microtasks[0].title).toBe('Paso 1');
+  });
+
+  it('fallbackDecomposition generates requested number of steps', () => {
+    const fallback = fallbackDecomposition('Limpiar mi cuarto', 3, 2);
+    expect(fallback.length).toBe(3);
+    expect(fallback[0].title).toBe('Día 1: Limpiar mi cuarto');
+    expect(fallback[0].spark_value).toBe(2);
+  });
+});
+

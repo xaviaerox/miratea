@@ -13,11 +13,11 @@
   2. **Niños y Menores**: Entorno lúdico y tranquilo con apoyo de la mascota inmutable *Lumi*.
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
   4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
-* **Estado del proyecto**: Producción / Emotional Worlds Sensory Atmosphere & Accessibility Release v1.3.2.
-* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 155/155 tests pasando (32 test files), Dominio canónico oficial `miratea.es` integrado con GitHub Pages, CNAME permanente y rutas raíz (`/`).
+* **Estado del proyecto**: Producción / AI Goal Decomposition & Multi-Channel Release v1.3.3.
+* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 161/161 tests pasando (32 test files), Dominio canónico oficial `miratea.es` integrado con GitHub Pages, CNAME permanente y rutas raíz (`/`).
 * **Dominio de Producción**: `https://miratea.es` (Apex y `www.miratea.es` sincronizados con DNS de IONOS).
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
-* **Versión actual**: `1.3.2` (Emotional Worlds Sensory Atmosphere & Accessibility Release v1.3.2).
+* **Versión actual**: `1.3.3` (AI Goal Decomposition & Multi-Channel Release v1.3.3).
 * **Última actualización**: 2026-09-10.
 
 ---
@@ -529,6 +529,11 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Blindaje completo en `.gitignore` bloqueando `/internal/` y formatos ofimáticos confidenciales.
   - Higiene Git multi-dispositivo: des-rastreo de binarios de caché Python (`.pyc`), resolución limpia de marcadores de merge en `.gitignore`, incorporación de `.gitattributes` para normalización LF y exclusión de configuraciones de IDE (`.vscode/`, `.idea/`).
   - Despliegue continuo GitHub Pages: blindaje explícito de permisos `id-token: write` y `pages: write` a nivel de job en `.github/workflows/deploy.yml` para autorización OIDC de Pages.
+* **Estrategia Audiovisual y Lanzamiento en Instagram (`@miratea.app`)**:
+  - Activación del canal oficial de difusión educativa y familiar `@miratea.app` con bio y enlace directo a la web oficial `https://miratea.es`.
+  - Documentación de la trilogía de videos de presentación generados con Google Omni y Veo bajo estética sensorial `#FAF9F7` y principios *Neurodiversity-First*: Video 1 (Rutinas visuales matutinas sin fricción), Video 2 (Desintegrador de metas con IA y Rincón de Calma a 432Hz) y Video 3 (Progreso acumulativo con Sparks ✦ y compañerismo inmutable con Lumi).
+  - Gobernanza de copys, guiones, dirección de arte Veo/Omni y calendario editorial archivados en `commercial-validation/marketing/INSTAGRAM_STRATEGY.md`.
+  - Enlace al perfil de Instagram integrado en el pie de página (`src/components/ui/LegalFooter.tsx`).
 
 ---
 

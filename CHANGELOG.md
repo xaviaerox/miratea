@@ -4,6 +4,31 @@ All notable changes to the **MIRATEA** project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.3] - 2026-09-10 (AI Step Decomposition & Reliability Fix Release)
+
+### Fixed & Improved
+- **Resolución de Agotamiento de Tokens y Validación JSON en Groq (`400 json_validate_failed`)**:
+  - Incorporado el parámetro `reasoning_effort: 'low'` en `src/app/api/decompose/route.ts` para el modelo `openai/gpt-oss-20b` (y modelos de razonamiento compatibles), mitigando la explosión de miles de tokens de razonamiento interno oculto.
+  - Incrementado `max_tokens` de 1.024 a 4.000 tokens en la ruta de descomposición, permitiendo la generación completa y sin truncamiento de hasta 21-30 micropasos detallados en formato JSON estructurado.
+  - Comprobación y verificación de rendimiento: generación completa de 21 tareas completada con éxito en 1,4 segundos (tiempo de respuesta API < 400ms).
+- **Protección contra Respuestas Vacías y Activación de Respaldo**:
+  - Modificado `parseDecompositionResponse` en `src/lib/goals/MicrotaskEngine.ts` para retornar `null` cuando la lista de microtareas recibida sea vacía (`[]`), activando de forma determinista la función de respaldo `fallbackDecomposition`.
+  - Blindadas las vistas de creación y edición (`src/app/dashboard/goals/new/page.tsx` y `src/app/dashboard/goals/edit/page.tsx`) verificando `result?.microtasks && result.microtasks.length > 0` antes de su asignación para evitar pantallas de revisión con 0 pasos.
+- **Sincronización Asíncrona de `childId` en la Creación de Objetivos**:
+  - Incorporado `useEffect` en `NewGoalPage` para sincronizar `childId` de forma reactiva en cuanto la lista de menores `children` termina de cargar desde `FamilyProvider`.
+- **Estandarización de Prompt y Compatibilidad Multillm**:
+  - Limpiada la sintaxis del esquema JSON en el prompt de descomposición eliminando caracteres de unión TypeScript (`|`), sustituyéndolos por JSON canónico estricto.
+  - Actualizado el endpoint de reserva a `gemini-2.0-flash` y añadido soporte para `ANTHROPIC_API_KEY` (`claude-3-haiku-20240307`).
+- **Canal de Instagram (@miratea.app) & Trilogía de Videos Google Omni / Veo**:
+  - Lanzamiento y documentación del canal oficial de difusión educativa y familiar `@miratea.app` con enlace a `https://miratea.es`.
+  - Documentación del plan audiovisual de 3 videos de presentación generados con Google Omni y Veo bajo estética sensorial `#FAF9F7` y principios sin punición (`commercial-validation/marketing/INSTAGRAM_STRATEGY.md`).
+  - Incorporación del enlace a Instagram en el pie de página institucional (`src/components/ui/LegalFooter.tsx`).
+- **Gobernanza PWA y Calidad**:
+  - Actualizado `CACHE_NAME` a `miratea-v1.3.3` en `public/sw.js`.
+  - Suite de tests unitarios e integración ampliada a 161/161 tests pasando (32 archivos).
+
+---
+
 ## [1.3.2] - 2026-09-09 (Emotional Worlds Sensory Atmosphere & Accessibility Release)
 
 ### Changed & Improved
@@ -30,6 +55,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Concesión explícita de permisos `id-token: write` y `pages: write` a nivel de job en `.github/workflows/deploy.yml` para garantizar la autorización OIDC en el despliegue automático de GitHub Pages.
 - **Validación Regional e Institucional (Murcia)**:
   - Ejecución y archivado de la campaña de validación y outreach institucional a 20 asociaciones clave de neurodivergencia en la Región de Murcia (`commercial-validation/OUTREACH_ASOCIACIONES_MURCIA.md` y `commercial-validation/outreach_log.json`).
+- **Canal de Instagram (@miratea.app) & Videos Google Omni / Veo**:
+  - Lanzamiento del canal oficial de difusión educativa y familiar `@miratea.app` con enlace a `https://miratea.es`.
+  - Documentación y archivado de la trilogía de videos de presentación generados con Google Omni y Veo, optimizados para Reels con estética sensorial `#FAF9F7` y principios sin punición (`commercial-validation/marketing/INSTAGRAM_STRATEGY.md`).
+  - Incorporación del enlace a Instagram en el pie de página institucional (`src/components/ui/LegalFooter.tsx`).
 
 ---
 

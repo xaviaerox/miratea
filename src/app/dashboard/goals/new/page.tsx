@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { useFamily } from '@/lib/family/FamilyProvider';
@@ -44,6 +44,12 @@ export default function NewGoalPage() {
   const [saving, setSaving]           = useState(false);
   const [error, setError]             = useState('');
 
+  useEffect(() => {
+    if (!childId && children.length > 0 && children[0]?.id) {
+      setChildId(children[0].id);
+    }
+  }, [children, childId]);
+
   const selectedChild = children.find(c => c.id === childId);
   const childAge = selectedChild?.birth_year
     ? new Date().getFullYear() - selectedChild.birth_year
@@ -74,7 +80,8 @@ export default function NewGoalPage() {
 
       if (textResponse) {
         const result = parseDecompositionResponse(textResponse, 'claude-sonnet-4-20250514');
-        setMicrotasks(result?.microtasks ?? fallbackDecomposition(title, numTasks, sparkValue));
+        const hasTasks = result?.microtasks && result.microtasks.length > 0;
+        setMicrotasks(hasTasks ? result.microtasks : fallbackDecomposition(title, numTasks, sparkValue));
       } else {
         setMicrotasks(fallbackDecomposition(title, numTasks, sparkValue));
       }

@@ -159,7 +159,8 @@ function EditGoalClient() {
 
       if (textResponse) {
         const result = parseDecompositionResponse(textResponse, 'claude-sonnet-4-20250514');
-        setMicrotasks(mapParsedToDrafts(result?.microtasks ?? fallbackDecomposition(title, numTasks, sparkValue)));
+        const hasTasks = result?.microtasks && result.microtasks.length > 0;
+        setMicrotasks(mapParsedToDrafts(hasTasks ? result.microtasks : fallbackDecomposition(title, numTasks, sparkValue)));
       } else {
         setMicrotasks(mapParsedToDrafts(fallbackDecomposition(title, numTasks, sparkValue)));
       }
