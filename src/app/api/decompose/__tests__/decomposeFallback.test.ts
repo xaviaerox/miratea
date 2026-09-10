@@ -36,11 +36,11 @@ describe('Goal Decomposition Endpoint (/api/decompose)', () => {
     process.env.GROQ_API_KEY = 'gsk_test_mock_key';
     process.env.GROQ_MODEL = 'openai/gpt-oss-20b';
 
-    let capturedBody: any = null;
+    let capturedBody: Record<string, unknown> | null = null;
     const originalFetch = global.fetch;
     global.fetch = async (url: RequestInfo | URL, init?: RequestInit) => {
       if (typeof url === 'string' && url.includes('api.groq.com')) {
-        capturedBody = JSON.parse(init?.body as string);
+        capturedBody = JSON.parse(init?.body as string) as Record<string, unknown>;
         return new Response(JSON.stringify({
           choices: [{ message: { content: '{"microtasks":[{"position":1,"title":"Paso 1"}]}' } }]
         }), { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -59,9 +59,10 @@ describe('Goal Decomposition Endpoint (/api/decompose)', () => {
       const data = await res.json();
       expect(data.text).toContain('Paso 1');
       expect(capturedBody).not.toBeNull();
-      expect(capturedBody?.reasoning_effort).toBe('low');
-      expect(capturedBody?.max_tokens).toBe(4000);
-      expect(capturedBody?.model).toBe('openai/gpt-oss-20b');
+      const body = capturedBody as unknown as Record<string, unknown>;
+      expect(body.reasoning_effort).toBe('low');
+      expect(body.max_tokens).toBe(4000);
+      expect(body.model).toBe('openai/gpt-oss-20b');
     } finally {
       global.fetch = originalFetch;
       delete process.env.GROQ_API_KEY;
