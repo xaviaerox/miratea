@@ -513,6 +513,7 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Migración limpia de `basePath` de `/miratea` a la raíz vacía `''` (`process.env.NEXT_PUBLIC_BASE_PATH || ''`) eliminando el subpath innecesario en producción.
   - Estandarización de metadatos SEO y OpenGraph (`https://miratea.es`), URLs de Twitter, Web App Manifest (`start_url: '/'`, `scope: '/'`), Service Worker (`/sw.js`, `miratea-v1.3.1`) y rutas relativas de activos institucionales y logos.
   - Actualización de redirecciones de autenticación parental y confirmación de PIN en la raíz del dominio.
+<<<<<<< Updated upstream
 * **Fase 10 (Emotional Worlds Sensory Atmosphere & Accessibility Release v1.3.2)**:
   - Eliminación de fondos oscuros accidentales (`dark:from-*-950`) en la pantalla de inicio infantil (`/home`) causados por la preferencia de modo oscuro a nivel de sistema.
   - Preservación inmutable del fondo base sensorial cálido `#FAF9F7` (`bg-stone-50`) con contraste tipográfico AAA.
@@ -522,6 +523,13 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
 * **Organización y Blindaje de Activos Confidenciales**:
   - Integración y ordenación de documentación interna, estratégica y comercial en el directorio protegido `/internal/`.
   - Blindaje completo en `.gitignore` bloqueando `/internal/` y formatos ofimáticos confidenciales.
+=======
+* **Fase 10 (Institutional Outreach & Regional Validation Campaign)**:
+  - Ejecución integral y automatizada de la campaña de outreach institucional a 20 asociaciones clave de neurodivergencia (TEA, TDAH, Altas Capacidades) de la Región de Murcia desde la cuenta corporativa oficial `xavi@miratea.es`.
+  - Aplicación estricta de guardarraíles operativos: deduplicación territorial y de buzones (fusión de sedes ASTEAMUR Lumbreras/Murcia, reserva de buzón secundario ADAHI), espaciado escalonado seguro (180 segundos por envío vía SMTP IONOS), verificación continua de bandeja de entrada IMAP y enlaces canónicos oficiales a `https://miratea.es`.
+  - Entrega exitosa de 15 envíos (93.75%), detección y catalogación de 1 rebote técnico de servidor (Lorca Activa TDAH), 1 contacto deduplicado en reserva y 2 solicitudes estructuradas preparadas para formulario web (FEAADAH y aMuACI).
+  - Trazabilidad y gobernanza archivadas en `commercial-validation/OUTREACH_ASOCIACIONES_MURCIA.md` y `commercial-validation/outreach_log.json`.
+>>>>>>> Stashed changes
 
 ---
 

@@ -613,7 +613,7 @@ https://miratea.es
 
 | id_contacto | nombre_asociacion | email | fecha_hora_envio | asunto_usado | estado | notas |
 |:---:|---|---|:---:|---|:---:|---|
-| 1 | Lorca Activa TDAH | `asociacion@lorcaactivatdah.es` | 2026-09-08 23:00:41 | MIRATEA: apoyo a la autonomía y autorregulación para familias con TDAH en Lorca | **enviado** | Prioridad 1 |
+| 1 | Lorca Activa TDAH | `asociacion@lorcaactivatdah.es` | 2026-09-08 23:00:41 | MIRATEA: apoyo a la autonomía y autorregulación para familias con TDAH en Lorca | **fallido_rebote** | Rebote mailer-daemon: buzon inactivo o no disponible |
 | 2 | Talentismo (Astrade) — Delegación Lorca | `atlorca@astrade.es` | 2026-09-08 23:03:42 | MIRATEA y el apoyo a familias en el espectro autista en Lorca | **enviado** | Prioridad 1 |
 | 3 | ASTEAMUR (Centro Puerto Lumbreras y Sede Central Murcia) | `info@asteamur.org` | 2026-09-08 23:06:44 | Una herramienta para familias TEA en la Región: saludo desde Lorca a ASTEAMUR | **enviado** | Prioridad 1 |
 | 11 | Teayuda (TEA Noroeste) | `teayudanoroeste@gmail.com` | 2026-09-08 23:09:46 | MIRATEA: autorregulación y rutinas para familias con TEA en el Noroeste | **enviado** | Prioridad 1 |
@@ -622,13 +622,13 @@ https://miratea.es
 | 7 | ABAMUR | `abamur@abamur.org` | 2026-09-08 23:18:52 | MIRATEA: estructuración visual y refuerzo positivo para el día a día en casa | **enviado** | Prioridad 2 |
 | 8 | Aspermur (Asociación Asperger Murcia) | `info@aspermur.org` | 2026-09-08 23:21:53 | MIRATEA: organización de rutinas y calma emocional para familias de Aspermur | **enviado** | Prioridad 2 |
 | 9 | Autismo Somos Todos | `info@autismosomostodos.org` | 2026-09-08 23:24:55 | MIRATEA: herramienta de autorregulación y rutinas para familias en Cartagena | **enviado** | Prioridad 2 |
-| 10 | Ingloba TEA | `info@inglobatea.es` | - | MIRATEA: tecnología accesible para el bienestar y la autonomía en TEA | **preparado** | Prioridad 2 |
-| 15 | ADAHI Murcia | `adahimurcia.gestion@hotmail.com` | - | MIRATEA: rutinas visuales y metas paso a paso para niños con TDAH en la Región | **preparado** | Prioridad 2 |
-| 16 | Águilas Vida Activa | `aguilasvidaactiva@hotmail.com` | - | MIRATEA: apoyo al día a día de familias con TDAH desde la comarca vecina | **preparado** | Prioridad 2 |
-| 18 | Talentos — Altas Capacidades Región de Murcia | `talentos@altascapacidadesmurcia.org` | - | MIRATEA: organización de metas complejas y gestión emocional para niños con Altas Capacidades | **preparado** | Prioridad 2 |
-| 12 | TEA Yecla | `teayecla@hotmail.es` | - | MIRATEA: una propuesta de apoyo para familias con TEA en Yecla | **preparado** | Prioridad 3 |
-| 13 | Fundación Estrella Azul | `info@fundacionestrellaazul.org` | - | MIRATEA: apoyo a la autorregulación y rutinas para familias con TEA | **preparado** | Prioridad 3 |
-| 14 | Crece con Dabadá | `crececondabada@crececondabada.org` | - | MIRATEA: autonomía cotidiana y autorregulación para jóvenes y familias TEA | **preparado** | Prioridad 3 |
+| 10 | Ingloba TEA | `info@inglobatea.es` | 2026-09-08 23:27:56 | MIRATEA: tecnología accesible para el bienestar y la autonomía en TEA | **enviado** | Prioridad 2 |
+| 15 | ADAHI Murcia | `adahimurcia.gestion@hotmail.com` | 2026-09-08 23:30:58 | MIRATEA: rutinas visuales y metas paso a paso para niños con TDAH en la Región | **enviado** | Prioridad 2 |
+| 16 | Águilas Vida Activa | `aguilasvidaactiva@hotmail.com` | 2026-09-08 23:33:59 | MIRATEA: apoyo al día a día de familias con TDAH desde la comarca vecina | **enviado** | Prioridad 2 |
+| 18 | Talentos — Altas Capacidades Región de Murcia | `talentos@altascapacidadesmurcia.org` | 2026-09-08 23:37:01 | MIRATEA: organización de metas complejas y gestión emocional para niños con Altas Capacidades | **enviado** | Prioridad 2 |
+| 12 | TEA Yecla | `teayecla@hotmail.es` | 2026-09-08 23:40:03 | MIRATEA: una propuesta de apoyo para familias con TEA en Yecla | **enviado** | Prioridad 3 |
+| 13 | Fundación Estrella Azul | `info@fundacionestrellaazul.org` | 2026-09-08 23:43:05 | MIRATEA: apoyo a la autorregulación y rutinas para familias con TEA | **enviado** | Prioridad 3 |
+| 14 | Crece con Dabadá | `crececondabada@crececondabada.org` | 2026-09-08 23:46:06 | MIRATEA: autonomía cotidiana y autorregulación para jóvenes y familias TEA | **enviado** | Prioridad 3 |
 | 17 | ADA+HI | `adahimurcia@hotmail.com` | - | - | **deduplicado** | Reserva para no saturar ID 15 |
 | 19 | FEAADAH | Formulario web | - | - | **manual_pendiente** | Web: `feaadah.org/es/contacto` |
 | 20 | aMuACI | Formulario web | - | - | **manual_pendiente** | Web: `amuaci.es/contacto` |
