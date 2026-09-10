@@ -46,7 +46,21 @@ next-env.d.ts
 # scratch/temporary scripts
 /scratch/
 
-<<<<<<< Updated upstream
+# python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# IDE / Editor
+.vscode/
+.idea/
+
 # internal, commercial & proprietary confidential assets (strict privacy boundary)
 /internal/
 *.docx
@@ -63,8 +77,3 @@ next-env.d.ts
 /commercial-validation/**/private/
 /commercial-validation/**/*_notes.md
 /commercial-validation/**/*_completed.md
-=======
-# python
-__pycache__/
-*.py[cod]
->>>>>>> Stashed changes
