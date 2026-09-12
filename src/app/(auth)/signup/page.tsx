@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth/AuthProvider';
@@ -19,6 +19,16 @@ export default function SignupPage() {
   const [consentGiven, setConsentGiven] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isEarlyAccess, setIsEarlyAccess] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('plan') === 'early_access') {
+        setIsEarlyAccess(true);
+      }
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -67,6 +77,18 @@ export default function SignupPage() {
           ? 'Empieza como padre o madre'
           : 'Ponle nombre a vuestra familia'}
       </p>
+
+      {isEarlyAccess && (
+        <div className="mb-5 p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 to-teal-50 border border-amber-200/80 text-stone-800 text-xs flex items-start gap-2.5 shadow-sm">
+          <span className="text-amber-600 font-bold text-sm">✦</span>
+          <div>
+            <p className="font-bold text-teal-900">Plaza Early Access Activada</p>
+            <p className="text-stone-600 mt-0.5 leading-snug">
+              Al completar el registro, tu familia disfrutará de todo el contenido Premium de MIRATEA de forma 100% gratuita y vitalicia.
+            </p>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {step === 'account' ? (

@@ -7,6 +7,7 @@ import { MiraLogo } from '@/components/ui/MiraLogo';
 import { LegalFooter } from '@/components/ui/LegalFooter';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { getSupabaseClient } from '@/lib/supabase';
+import { getApiUrl } from '@/lib/utils';
 import {
   Sparkles,
   CheckCircle2,
@@ -15,6 +16,7 @@ import {
   ChevronDown,
   ArrowRight,
   HelpCircle,
+  Users,
 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -23,6 +25,18 @@ export default function LandingPage() {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
   const [isEarlyModalOpen, setIsEarlyModalOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const [earlyStats, setEarlyStats] = useState<{
+    totalFamilies: number;
+    maxSpots: number;
+    remainingSpots: number;
+    isEarlyAccessAvailable: boolean;
+  }>({
+    totalFamilies: 7,
+    maxSpots: 20,
+    remainingSpots: 13,
+    isEarlyAccessAvailable: true,
+  });
 
   const [formData, setFormData] = useState({
     parentName: '',
@@ -35,6 +49,23 @@ export default function LandingPage() {
 
   useEffect(() => {
     trackEvent('pricing_viewed', { page: 'landing' });
+
+    // Fetch live count of early access families
+    fetch(getApiUrl('/api/early-access/count'))
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.ok) {
+          setEarlyStats({
+            totalFamilies: data.totalFamilies,
+            maxSpots: data.maxSpots,
+            remainingSpots: data.remainingSpots,
+            isEarlyAccessAvailable: data.isEarlyAccessAvailable,
+          });
+        }
+      })
+      .catch(err => {
+        console.warn('[LandingPage] Could not fetch early access count:', err);
+      });
   }, [trackEvent]);
 
   const handleSubmitEarlyFamily = async (e: React.FormEvent) => {
@@ -114,7 +145,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 border border-teal-200/80 text-teal-800 text-xs font-semibold tracking-wide">
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>Programa Early Families — Plazas Limitadas</span>
+            <span>Oferta Early Access: Todo Premium Gratis a las 20 Primeras Familias ({earlyStats.totalFamilies}/20 ocupadas)</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-display font-extrabold text-stone-900 tracking-tight leading-[1.15]">
@@ -136,12 +167,13 @@ export default function LandingPage() {
               <span>Entrar / Probar Demo 1-Clic</span>
               <ArrowRight className="w-5 h-5" />
             </button>
-            <button
-              onClick={() => setIsEarlyModalOpen(true)}
-              className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-white hover:bg-stone-100 text-stone-800 border border-stone-300 font-semibold text-base shadow-sm transition-all"
+            <Link
+              href="#pricing"
+              className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-base shadow-sm transition-all flex items-center justify-center gap-2"
             >
-              Oferta Early Family (30 días)
-            </button>
+              <Sparkles className="w-4 h-4 text-stone-950" />
+              <span>Oferta 20 Primeras Familias (0 €)</span>
+            </Link>
           </div>
 
           {/* BADGES OF CONFIDENCE */}
@@ -267,11 +299,15 @@ export default function LandingPage() {
       {/* PRICING & EARLY FAMILY OFFER */}
       <section className="py-20 px-4 max-w-5xl mx-auto" id="pricing">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100/80 border border-amber-300 text-amber-900 text-xs font-bold">
+            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <span>Oferta Especial de Lanzamiento</span>
+          </div>
           <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-stone-900">
-            Planes y Oferta Early Family
+            Planes y Oferta Early Access
           </h2>
           <p className="text-sm text-stone-600">
-            Paga solo si MIRATEA aporta valor real a vuestro día a día.
+            Todo lo Premium de MIRATEA gratis de por vida para las 20 primeras familias pioneras.
           </p>
 
           <div className="inline-flex items-center p-1 bg-stone-200/70 rounded-xl mt-4">
@@ -324,47 +360,132 @@ export default function LandingPage() {
             </button>
           </div>
 
-          {/* PLAN EARLY FAMILY */}
+          {/* PLAN EARLY ACCESS FUNDADOR / PREMIUM */}
           <div className="bg-teal-900 text-white p-8 rounded-3xl border-2 border-amber-300 shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden">
-            <div className="absolute top-4 right-4 bg-amber-400 text-stone-900 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-              Garantía Fundadora
+            <div className="absolute top-4 right-4 bg-amber-400 text-stone-900 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+              {earlyStats.isEarlyAccessAvailable ? 'Garantía Fundadora' : 'Plan Premium'}
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-teal-100">MIRATEA Early Family</h3>
-              <p className="text-xs text-teal-200">Experimento de Pricing Fundador</p>
-              <div className="flex items-baseline gap-2">
-                <p className="text-4xl font-extrabold text-white">
-                  {billingCycle === 'monthly' ? '4,99 €' : '3,99 €'}
+              <div>
+                <h3 className="text-2xl font-bold text-teal-100">MIRATEA Early Access</h3>
+                <p className="text-xs text-teal-200 mt-0.5">
+                  {earlyStats.isEarlyAccessAvailable
+                    ? 'Todo lo Premium gratuito para las 20 primeras familias'
+                    : 'Acceso Premium Completo para Familias'}
                 </p>
-                <span className="text-xs text-teal-200">/ mes</span>
               </div>
-              <ul className="space-y-2.5 text-xs text-teal-100 pt-4">
+
+              {/* PRECIO CON TACHADO LIGERO */}
+              {earlyStats.isEarlyAccessAvailable ? (
+                <div className="space-y-1">
+                  <div className="flex items-baseline gap-2">
+                    <span className="line-through text-teal-300/50 decoration-amber-300/80 decoration-1 text-2xl font-medium tracking-tight">
+                      {billingCycle === 'monthly' ? '4,99 €' : '3,99 €'}
+                    </span>
+                    <span className="text-4xl sm:text-5xl font-extrabold text-white">
+                      0 €
+                    </span>
+                    <span className="text-xs text-teal-200">/ mes</span>
+                  </div>
+                  <div className="inline-block bg-amber-400/20 border border-amber-300/40 text-amber-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
+                    ✦ Gratis de por vida (Pioneros)
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-extrabold text-white">
+                    {billingCycle === 'monthly' ? '4,99 €' : '3,99 €'}
+                  </span>
+                  <span className="text-xs text-teal-200">/ mes</span>
+                </div>
+              )}
+
+              {/* CONTADOR FUNCIONAL DE FAMILIAS CREADAS */}
+              <div className="rounded-2xl bg-teal-800/90 border border-teal-600/60 p-4 space-y-2.5 shadow-inner">
+                <div className="flex items-center justify-between text-xs font-semibold">
+                  <span className="text-teal-100 flex items-center gap-1.5">
+                    <Users className="w-4 h-4 text-amber-300" />
+                    <span>Familias Registradas</span>
+                  </span>
+                  <span className="font-mono text-amber-300 font-bold text-sm bg-teal-950/60 px-2.5 py-0.5 rounded-lg border border-teal-700/50">
+                    {earlyStats.totalFamilies} / {earlyStats.maxSpots}
+                  </span>
+                </div>
+
+                {/* Barra de progreso visual */}
+                <div className="w-full h-3 bg-teal-950/70 rounded-full overflow-hidden p-0.5 border border-teal-700/40">
+                  <div
+                    className="h-full bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 rounded-full transition-all duration-700 shadow-sm"
+                    style={{
+                      width: `${Math.min(100, Math.round((earlyStats.totalFamilies / earlyStats.maxSpots) * 100))}%`,
+                    }}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between text-[11px] text-teal-200">
+                  <span className="font-medium">
+                    {earlyStats.remainingSpots > 0
+                      ? `🔥 ¡Solo quedan ${earlyStats.remainingSpots} plazas gratuitas!`
+                      : '¡Todas las 20 plazas cubiertas!'}
+                  </span>
+                  <span className="text-amber-300 font-semibold">
+                    {Math.min(100, Math.round((earlyStats.totalFamilies / earlyStats.maxSpots) * 100))}% ocupado
+                  </span>
+                </div>
+              </div>
+
+              {/* VENTAJAS PREMIUM INCLUIDAS */}
+              <ul className="space-y-2.5 text-xs text-teal-100 pt-2">
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-amber-300" />
-                  <span>Todo lo de MIRATEA Core</span>
+                  <CheckCircle2 className="w-4 h-4 text-amber-300 flex-shrink-0" />
+                  <span>Todo lo de MIRATEA Core sin restricciones</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-amber-300" />
-                  <span>IA para desintegración de objetivos complejos</span>
+                  <CheckCircle2 className="w-4 h-4 text-amber-300 flex-shrink-0" />
+                  <span>IA para desintegración de objetivos complejos con Lumi</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-amber-300" />
-                  <span>Informes Terapéuticos en PDF exportables</span>
+                  <CheckCircle2 className="w-4 h-4 text-amber-300 flex-shrink-0" />
+                  <span>Informes Terapéuticos en PDF exportables para profesionales</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-amber-300" />
-                  <span>Cuentos e historias interactivas con Lumi</span>
+                  <CheckCircle2 className="w-4 h-4 text-amber-300 flex-shrink-0" />
+                  <span>Cuentos e historias interactivas de calma con Lumi</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-amber-300 flex-shrink-0" />
+                  <span>Economía afirmativa con Sparks ✦ y canje con PIN</span>
                 </li>
               </ul>
             </div>
 
-            <button
-              onClick={() => setIsEarlyModalOpen(true)}
-              className="w-full py-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-sm shadow-md transition-all"
-            >
-              Solicitar Plaza Early Family
-            </button>
+            <div className="space-y-2 pt-2">
+              {earlyStats.isEarlyAccessAvailable ? (
+                <>
+                  <Link
+                    href="/signup?plan=early_access"
+                    className="w-full py-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-extrabold text-sm shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-2"
+                  >
+                    <Sparkles className="w-4 h-4 text-stone-950" />
+                    <span>Reclamar Plaza Gratuita (Familia #{earlyStats.totalFamilies + 1})</span>
+                  </Link>
+                  <button
+                    onClick={() => setIsEarlyModalOpen(true)}
+                    className="text-xs text-teal-200 hover:text-white underline text-center w-full transition-colors pt-1 block"
+                  >
+                    ¿Prefieres contactarnos por email primero?
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/signup?plan=premium"
+                  className="w-full py-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-sm shadow-md transition-all text-center flex items-center justify-center gap-2"
+                >
+                  <span>Suscribirme a MIRATEA Familiar ({billingCycle === 'monthly' ? '4,99 €/mes' : '39,99 €/año'})</span>
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </section>

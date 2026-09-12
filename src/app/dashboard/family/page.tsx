@@ -10,7 +10,8 @@ import { ConfirmParentPinModal } from '@/components/dashboard/ConfirmParentPinMo
 import { getApiUrl } from '@/lib/utils';
 import { supabase } from '@/lib/supabase';
 import { isUseSupabase } from '@/lib/adapters';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, Sparkles, CreditCard, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { SubscriptionService, type FamilySubscription } from '@/lib/subscriptions/subscriptionService';
 
 export default function FamilySettingsPage() {
   const { family, createInvite, getActiveInvites, loading: familyLoading } = useFamily();
@@ -20,6 +21,11 @@ export default function FamilySettingsPage() {
 
   const [pinModalOpen, setPinModalOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+
+  // Subscription & Stripe State
+  const [subscription, setSubscription] = useState<FamilySubscription | null>(null);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [selectedCycle, setSelectedCycle] = useState<'monthly' | 'annual'>('monthly');
 
   // Custom PIN Setup State
   const [changePinModalOpen, setChangePinModalOpen] = useState(false);
@@ -117,8 +123,24 @@ export default function FamilySettingsPage() {
   useEffect(() => {
     if (family?.id) {
       Promise.resolve().then(() => fetchInvites());
+      SubscriptionService.getSubscription(family.id)
+        .then(sub => setSubscription(sub))
+        .catch(err => console.warn('[FamilySettings] Error fetching subscription:', err));
     }
   }, [family?.id, fetchInvites]);
+
+  const handleCheckout = async () => {
+    if (!family?.id) return;
+    setCheckoutLoading(true);
+    await SubscriptionService.startCheckout(selectedCycle, family.id);
+    setCheckoutLoading(false);
+  };
+
+  const handlePortal = async () => {
+    setCheckoutLoading(true);
+    await SubscriptionService.openCustomerPortal();
+    setCheckoutLoading(false);
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -234,6 +256,139 @@ export default function FamilySettingsPage() {
           Ver Guía de la A a la Z →
         </Link>
       </div>
+
+      {/* Plan & Subscription Card */}
+      <Card className="border-bloom-200 bg-white shadow-soft overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-stone-50 via-amber-50/40 to-teal-50/30 border-b border-stone-100 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
+                <Sparkles className="w-5 h-5 text-amber-600" />
+              </div>
+              <div>
+                <CardTitle className="text-base text-stone-900 font-display">Plan y Suscripción Familiar</CardTitle>
+                <p className="text-xs text-stone-500">Gestión de licencia y pasarela de pago segura</p>
+              </div>
+            </div>
+
+            {/* Badge según el estado del plan */}
+            <div>
+              {subscription?.plan === 'early_access' && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-bold shadow-xs">
+                  <span>✦</span>
+                  <span>Early Access Fundador (Gratis de por vida)</span>
+                </span>
+              )}
+              {(subscription?.plan === 'premium_monthly' || subscription?.plan === 'premium_annual') && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-100 border border-teal-300 text-teal-900 text-xs font-bold">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-teal-700" />
+                  <span>Suscripción Premium Activa</span>
+                </span>
+              )}
+              {subscription?.plan === 'free' && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 border border-stone-300 text-stone-700 text-xs font-semibold">
+                  <span>Plan Básico (Core)</span>
+                </span>
+              )}
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent className="p-6 space-y-5">
+          {subscription?.plan === 'early_access' ? (
+            <div className="space-y-4">
+              <div className="p-4 rounded-2xl bg-teal-50/60 border border-teal-200/80 text-teal-950 space-y-1.5">
+                <div className="flex items-center gap-2 font-bold text-xs text-teal-900">
+                  <ShieldCheck className="w-4 h-4 text-teal-700" />
+                  <span>Condición Especial de Familia Pionera Activada</span>
+                </div>
+                <p className="text-xs text-stone-600 leading-relaxed">
+                  Vuestra familia forma parte de la cohorte fundadora de las 20 primeras familias de MIRATEA. Cuentas con acceso ilimitado y gratuito a todas las herramientas avanzadas sin ningún coste ni caducidad.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-stone-700 pt-1">
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-stone-50 border border-stone-150">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Desintegración ilimitada de metas con IA</span>
+                </div>
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-stone-50 border border-stone-150">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Exportación de informes clínicos en PDF</span>
+                </div>
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-stone-50 border border-stone-150">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Cuentos e historias interactivas de calma</span>
+                </div>
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-stone-50 border border-stone-150">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Compañero Lumi y Sparks ✦ sin límites</span>
+                </div>
+              </div>
+            </div>
+          ) : (subscription?.plan === 'premium_monthly' || subscription?.plan === 'premium_annual') ? (
+            <div className="space-y-4">
+              <p className="text-xs text-stone-600 leading-relaxed">
+                Vuestra suscripción familiar se encuentra activa. Puedes consultar facturas, cambiar el método de pago o gestionar la renovación mediante el portal de Stripe.
+              </p>
+              <Button
+                onClick={handlePortal}
+                disabled={checkoutLoading}
+                className="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white font-semibold text-xs flex items-center gap-2"
+              >
+                <CreditCard className="w-4 h-4" />
+                <span>{checkoutLoading ? 'Abriendo portal seguro...' : 'Gestionar Facturación en Stripe'}</span>
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs text-stone-600 leading-relaxed">
+                  Actualmente dispones del plan gratuito MIRATEA Core. Actualiza al Plan Familiar Premium para desbloquear la desintegración de objetivos por IA, informes clínicos e historias personalizadas con Lumi.
+                </p>
+
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCycle('monthly')}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                      selectedCycle === 'monthly'
+                        ? 'bg-stone-900 text-white shadow-xs'
+                        : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                    }`}
+                  >
+                    Mensual (4,99 € / mes)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCycle('annual')}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                      selectedCycle === 'annual'
+                        ? 'bg-teal-800 text-white shadow-xs'
+                        : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                    }`}
+                  >
+                    Anual (39,99 € / año -20%)
+                  </button>
+                </div>
+              </div>
+
+              <Button
+                onClick={handleCheckout}
+                disabled={checkoutLoading}
+                className="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs shadow-sm hover:shadow flex items-center gap-2"
+              >
+                <CreditCard className="w-4 h-4 text-stone-950" />
+                <span>
+                  {checkoutLoading
+                    ? 'Conectando con Stripe...'
+                    : `Actualizar a Premium (${selectedCycle === 'monthly' ? '4,99 € / mes' : '39,99 € / año'})`}
+                </span>
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Members Section */}
       <div className="grid gap-6 sm:grid-cols-2">

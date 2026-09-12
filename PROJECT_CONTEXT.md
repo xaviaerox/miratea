@@ -13,12 +13,12 @@
   2. **Niños y Menores**: Entorno lúdico y tranquilo con apoyo de la mascota inmutable *Lumi*.
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
   4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
-* **Estado del proyecto**: Producción / Emotional Worlds Sensory Atmosphere & Accessibility Release v1.3.2.
-* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 155/155 tests pasando (32 test files), Dominio canónico oficial `miratea.es` integrado con GitHub Pages, CNAME permanente y rutas raíz (`/`).
+* **Estado del proyecto**: Producción / Stripe Subscriptions & Early Access 20-Families Live Counter Release v1.4.0.
+* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 158/158 tests pasando (33 test files), Dominio canónico oficial `miratea.es` integrado con GitHub Pages, CNAME permanente y rutas raíz (`/`).
 * **Dominio de Producción**: `https://miratea.es` (Apex y `www.miratea.es` sincronizados con DNS de IONOS).
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
-* **Versión actual**: `1.3.2` (Emotional Worlds Sensory Atmosphere & Accessibility Release v1.3.2).
-* **Última actualización**: 2026-09-09.
+* **Versión actual**: `1.4.0` (Stripe Subscriptions & Early Access 20-Families Live Counter Release v1.4.0).
+* **Última actualización**: 2026-09-12.
 
 ---
 
@@ -203,6 +203,14 @@ miratea-app/
   - `avatar_id`: Text.
 * **`routines`** / **`routine_tasks`**: Rutinas diarias y microtareas asociadas.
 * **`emotional_checkins`**: Histórico de registros emocionales y niveles de energía.
+* **`family_subscriptions`**: Estado de suscripción y licenciamiento de la familia.
+  - `family_id`: UUID (Primary Key, FK a families).
+  - `plan`: Enum (`free`, `early_access`, `premium_monthly`, `premium_annual`).
+  - `status`: Enum (`active`, `trialing`, `past_due`, `canceled`, `incomplete`).
+  - `stripe_customer_id`: Text (ID del cliente en Stripe).
+  - `stripe_subscription_id`: Text (ID de la suscripción en Stripe).
+  - `current_period_end`: Timestamp.
+  - `cancel_at_period_end`: Boolean.
 
 ---
 
@@ -210,10 +218,23 @@ miratea-app/
 
 ### Endpoints Internos (`/src/app/api/`)
 
-* **`POST /miratea/api/decompose`**:
+* **`POST /api/decompose`**:
   - **Función**: Descompone una meta en 3 micropasos sencillos.
   - **Seguridad**: Sanitización de prompt mediante `PiiSanitizer`.
   - **Respuesta**: `{ success: true, steps: [{ id, text, points }] }`.
+* **`GET /api/early-access/count`**:
+  - **Función**: Devuelve el número de familias creadas en tiempo real para el contador público de la landing.
+  - **Seguridad**: RPC PostgreSQL `get_family_count()` con `SECURITY DEFINER` y fallback en memoria.
+  - **Respuesta**: `{ ok: true, totalFamilies: number, maxSpots: 20, remainingSpots: number, isEarlyAccessAvailable: boolean }`.
+* **`POST /api/stripe/checkout`**:
+  - **Función**: Genera una sesión de pago Stripe Checkout para suscripción mensual (4,99 €) o anual (39,99 €).
+  - **Respuesta**: `{ ok: true, url: string, simulated?: boolean }`.
+* **`POST /api/stripe/portal`**:
+  - **Función**: Genera una sesión de Stripe Customer Portal para que los padres gestionen medios de pago o cancelen.
+  - **Respuesta**: `{ ok: true, url: string, simulated?: boolean }`.
+* **`POST /api/stripe/webhook`**:
+  - **Función**: Escucha y valida eventos asíncronos de Stripe (`checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_succeeded`).
+  - **Respuesta**: `{ received: true }`.
 
 ---
 
@@ -228,6 +249,11 @@ miratea-app/
 7. **Modales de Aventuras y Metas**: Los modales de propuesta de aventuras (`GoalProposalModal`) utilizan obligatoriamente el diseño cálido sensorial de MIRATEA (`#FAF9F7`, bordes suaves, sombras `shadow-2xl`, botones Warm Bloom), permitiendo la selección de 2..6 pasos, botón `+ Añadir otro paso` dinámico y desintegrador de IA con Lumi.
 8. **Organización Centralizada de Ajustes**: Los ajustes globales de accesibilidad (Fuente de Lectura Adaptada OpenDyslexic y Menos Efectos y Animaciones) residen de forma unificada en la Pestaña de Ajustes (`Tab 5 / profile`). La barra superior del header se mantiene limpia y libre de botones duplicados.
 9. **Deducción de Sparks Anti-Abuso (SQL Trigger)**: La deducción de Sparks al desmarcar o borrar un registro de rutina completada es una medida de seguridad anti-abuso deliberada ejecutada en base de datos (`on_routine_deletion()`), que revierte la transacción en el libro contable de la familia para evitar la generación ilimitada de moneda por marcado/desmarcado repetitivo.
+10. **Garantía Early Access Vitalicia (Primeras 20 Familias)**: Las primeras 20 familias creadas en la plataforma obtienen automáticamente y de por vida el plan `early_access` a coste 0 € con todas las funcionalidades Premium activadas (IA de metas ilimitada, informes clínicos e historias interactivas). Al alcanzar las 20 familias, las siguientes acceden con plan `free` (Core) y opción de suscripción de pago mediante Stripe.
+11. **Diferenciación Determinista de Puertas de Entrada (Access Flows)**:
+    - **Formulario Modal de la Landing (`early_family_leads`)**: Actúa como canal de captación y lista de espera para consultas previas. NO crea cuenta, NO crea registro en `families` ni inicia sesión (muestra confirmación de contacto en 24h).
+    - **Registro Formal (`/signup`)**: Flujo de onboarding legal en 2 fases con verificación explícita de patria potestad/tutela legal. Crea el usuario `auth.users`, la entidad `families`, el perfil `profiles` parental e inicializa la suscripción (asignando `early_access` si es de las primeras 20), redirigiendo inmediatamente a `/dashboard`.
+    - **Inicio de Sesión (`/login`)**: Autentica credenciales existentes con enrutamiento inteligente por rol, proporciona acceso instantáneo sin registro vía "Modo Demo 1-Clic" y enlace de bienvenida para códigos de invitación (`/join`).
 
 ---
 

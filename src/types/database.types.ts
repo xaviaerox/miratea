@@ -597,11 +597,59 @@ export type Database = {
         };
         Relationships: [];
       };
+      family_subscriptions: {
+        Row: {
+          family_id: string;
+          plan: 'free' | 'early_access' | 'premium_monthly' | 'premium_annual';
+          status: 'active' | 'trialing' | 'past_due' | 'canceled' | 'incomplete';
+          stripe_customer_id: string | null;
+          stripe_subscription_id: string | null;
+          current_period_end: string | null;
+          cancel_at_period_end: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          family_id: string;
+          plan?: 'free' | 'early_access' | 'premium_monthly' | 'premium_annual';
+          status?: 'active' | 'trialing' | 'past_due' | 'canceled' | 'incomplete';
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
+          current_period_end?: string | null;
+          cancel_at_period_end?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          family_id?: string;
+          plan?: 'free' | 'early_access' | 'premium_monthly' | 'premium_annual';
+          status?: 'active' | 'trialing' | 'past_due' | 'canceled' | 'incomplete';
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
+          current_period_end?: string | null;
+          cancel_at_period_end?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "family_subscriptions_family_id_fkey";
+            columns: ["family_id"];
+            isOneToOne: true;
+            referencedRelation: "families";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
+      get_family_count: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
       award_sparks: {
         Args: {
           p_child_id: string;
