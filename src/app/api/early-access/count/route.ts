@@ -5,8 +5,8 @@ import type { Database } from '@/types/database.types';
 export const dynamic = 'force-static';
 
 const EARLY_ACCESS_MAX_SPOTS = 20;
-// Baseline count for pilot / demo state if database is empty or in static mode
-const DEFAULT_FALLBACK_COUNT = 7;
+// Baseline count for real registration state: 0
+const DEFAULT_FALLBACK_COUNT = 0;
 
 export async function GET() {
   let totalFamilies = DEFAULT_FALLBACK_COUNT;
@@ -21,18 +21,27 @@ export async function GET() {
         auth: { persistSession: false },
       });
       
-      // Try calling RPC function get_family_count
+      // 1. Try calling RPC function get_family_count
       const { data, error } = await supabase.rpc('get_family_count');
       if (!error && typeof data === 'number') {
         totalFamilies = data;
       } else {
-        // Fallback: count from early_family_leads or default pilot baseline
-        const { count, error: countErr } = await supabase
-          .from('early_family_leads')
+        // 2. Fallback: real count from families table
+        const { count: famCount, error: famErr } = await supabase
+          .from('families')
           .select('*', { count: 'exact', head: true });
         
-        if (!countErr && typeof count === 'number') {
-          totalFamilies = Math.max(count, DEFAULT_FALLBACK_COUNT);
+        if (!famErr && typeof famCount === 'number') {
+          totalFamilies = famCount;
+        } else {
+          // 3. Fallback: count from early_family_leads
+          const { count: leadCount, error: leadErr } = await supabase
+            .from('early_family_leads')
+            .select('*', { count: 'exact', head: true });
+          
+          if (!leadErr && typeof leadCount === 'number') {
+            totalFamilies = leadCount;
+          }
         }
       }
     }

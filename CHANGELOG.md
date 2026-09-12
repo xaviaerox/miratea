@@ -33,6 +33,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Calidad de Código y Cumplimiento ESLint**:
   - Resuelto error `react-hooks/set-state-in-effect` en `/signup` encapsulando la lectura de parámetros en `useSearchParams()` con Suspense boundary.
   - Eliminados todos los tipos `any` en los servicios de Stripe y suscripciones, alcanzando 0 errores y 0 warnings en ESLint.
+- **Eliminación Total de Datos Simulados en el Contador de Familias Early Access**:
+  - Fijado el valor base real en 0 familias y 20 plazas reales en `src/app/landing/page.tsx` y `src/app/api/early-access/count/route.ts`, eliminando completamente el número simulado preliminar de 7 familias.
+  - Integrada consulta reactiva en vivo desde el navegador directamente contra Supabase (`get_family_count` RPC con fallback directo a `families`), sincronizando el contador público en tiempo real con la base de datos de producción.
 
 ---
 

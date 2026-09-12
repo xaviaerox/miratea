@@ -32,9 +32,9 @@ export default function LandingPage() {
     remainingSpots: number;
     isEarlyAccessAvailable: boolean;
   }>({
-    totalFamilies: 7,
+    totalFamilies: 0,
     maxSpots: 20,
-    remainingSpots: 13,
+    remainingSpots: 20,
     isEarlyAccessAvailable: true,
   });
 
@@ -50,22 +50,61 @@ export default function LandingPage() {
   useEffect(() => {
     trackEvent('pricing_viewed', { page: 'landing' });
 
-    // Fetch live count of early access families
-    fetch(getApiUrl('/api/early-access/count'))
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.ok) {
-          setEarlyStats({
-            totalFamilies: data.totalFamilies,
-            maxSpots: data.maxSpots,
-            remainingSpots: data.remainingSpots,
-            isEarlyAccessAvailable: data.isEarlyAccessAvailable,
-          });
+    async function loadLiveFamilyCount() {
+      const maxSpots = 20;
+      let count: number | null = null;
+
+      // 1. Try querying Supabase client directly in real-time from the browser
+      try {
+        const supabase = getSupabaseClient();
+        if (supabase) {
+          const { data, error } = await supabase.rpc('get_family_count');
+          if (!error && typeof data === 'number') {
+            count = data;
+          } else {
+            const { count: famCount, error: famErr } = await supabase
+              .from('families')
+              .select('*', { count: 'exact', head: true });
+            if (!famErr && typeof famCount === 'number') {
+              count = famCount;
+            } else {
+              const { count: leadCount, error: leadErr } = await supabase
+                .from('early_family_leads')
+                .select('*', { count: 'exact', head: true });
+              if (!leadErr && typeof leadCount === 'number') {
+                count = leadCount;
+              }
+            }
+          }
         }
-      })
-      .catch(err => {
-        console.warn('[LandingPage] Could not fetch early access count:', err);
+      } catch (err) {
+        console.warn('[LandingPage] Direct Supabase live count check:', err);
+      }
+
+      // 2. Fallback to API route if client-side Supabase returned no count
+      if (count === null) {
+        try {
+          const res = await fetch(getApiUrl('/api/early-access/count'));
+          const data = await res.json().catch(() => null);
+          if (data && data.ok && typeof data.totalFamilies === 'number') {
+            count = data.totalFamilies;
+          }
+        } catch (err) {
+          console.warn('[LandingPage] Could not fetch early access count:', err);
+        }
+      }
+
+      const totalFamilies = Math.max(0, count ?? 0);
+      const remainingSpots = Math.max(0, maxSpots - totalFamilies);
+      setEarlyStats({
+        totalFamilies,
+        maxSpots,
+        remainingSpots,
+        isEarlyAccessAvailable: remainingSpots > 0,
       });
+    }
+
+    loadLiveFamilyCount();
   }, [trackEvent]);
 
   const handleSubmitEarlyFamily = async (e: React.FormEvent) => {

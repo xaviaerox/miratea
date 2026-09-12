@@ -226,7 +226,7 @@ miratea-app/
   - **Respuesta**: `{ success: true, steps: [{ id, text, points }] }`.
 * **`GET /api/early-access/count`**:
   - **Función**: Devuelve el número de familias creadas en tiempo real para el contador público de la landing.
-  - **Seguridad**: RPC PostgreSQL `get_family_count()` con `SECURITY DEFINER` y fallback en memoria.
+  - **Seguridad**: RPC PostgreSQL `get_family_count()` con `SECURITY DEFINER`, lectura cliente directa en tiempo real y base de datos verídica (0 mocks).
   - **Respuesta**: `{ ok: true, totalFamilies: number, maxSpots: 20, remainingSpots: number, isEarlyAccessAvailable: boolean }`.
 * **`POST /api/stripe/checkout`**:
   - **Función**: Genera una sesión de pago Stripe Checkout para suscripción mensual (4,99 €) o anual (39,99 €).
