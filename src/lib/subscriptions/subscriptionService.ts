@@ -86,8 +86,9 @@ export const SubscriptionService = {
       }
 
       return { ok: false, error: 'No se recibió la URL de pago' };
-    } catch (err: any) {
-      return { ok: false, error: err.message || 'Error de red al procesar el pago' };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error de red al procesar el pago';
+      return { ok: false, error: message };
     }
   },
 
@@ -109,8 +110,9 @@ export const SubscriptionService = {
       }
 
       return { ok: false, error: 'No se recibió la URL del portal' };
-    } catch (err: any) {
-      return { ok: false, error: err.message || 'Error de red' };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error de red';
+      return { ok: false, error: message };
     }
   },
 };

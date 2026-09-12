@@ -14,7 +14,7 @@
   3. **Profesionales y Terapeutas**: Seguimiento clínico, análisis de evolución y exportación de informes.
   4. **Administración de Centros (Roadmap v2.0)**: Gobernanza, gestión de permisos y roles sociosanitarios en red.
 * **Estado del proyecto**: Producción / Stripe Subscriptions & Early Access 20-Families Live Counter Release v1.4.0.
-* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 158/158 tests pasando (33 test files), Dominio canónico oficial `miratea.es` integrado con GitHub Pages, CNAME permanente y rutas raíz (`/`).
+* **Nivel de madurez**: Alto (10/10) — 100% verificado sin errores TypeScript, 0 warnings ESLint, 164/164 tests pasando (33 test files), Dominio canónico oficial `miratea.es` integrado con GitHub Pages, CNAME permanente y rutas raíz (`/`).
 * **Dominio de Producción**: `https://miratea.es` (Apex y `www.miratea.es` sincronizados con DNS de IONOS).
 * **Repositorio**: `xaviaerox/miratea-app` (Ruta local: `c:\Users\Xaviaerox\Documents\GitHub\mira-app`).
 * **Versión actual**: `1.4.0` (Stripe Subscriptions & Early Access 20-Families Live Counter Release v1.4.0).
@@ -545,9 +545,27 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Nueva capa de ambientación sutil `WorldAtmosphere.tsx` con halo difuso superior (`auraGradient`) y partículas flotantes temáticas de baja opacidad (25%-40%) con `pointer-events-none`.
   - Integración con `silentMode` (Menos Efectos y Animaciones) y `prefers-reduced-motion` para desactivación instantánea de movimiento.
   - Píldoras de mundo y controles con contraste pulido. Actualización del Service Worker a `miratea-v1.3.2`.
-* **Organización y Blindaje de Activos Confidenciales**:
+* **Fase 10 (Institutional Outreach & Regional Validation Campaign)**:
+  - Ejecución integral y automatizada de la campaña de outreach institucional a 20 asociaciones clave de neurodivergencia (TEA, TDAH, Altas Capacidades) de la Región de Murcia desde la cuenta corporativa oficial `xavi@miratea.es`.
+  - Aplicación estricta de guardarraíles operativos: deduplicación territorial y de buzones (fusión de sedes ASTEAMUR Lumbreras/Murcia, reserva de buzón secundario ADAHI), espaciado escalonado seguro (180 segundos por envío vía SMTP IONOS), verificación continua de bandeja de entrada IMAP y enlaces canónicos oficiales a `https://miratea.es`.
+  - Entrega exitosa de 15 envíos (93.75%), detección y catalogación de 1 rebote técnico de servidor (Lorca Activa TDAH), 1 contacto deduplicado en reserva y 2 solicitudes estructuradas preparadas para formulario web (FEAADAH y aMuACI).
+  - Trazabilidad y gobernanza archivadas en `commercial-validation/OUTREACH_ASOCIACIONES_MURCIA.md` y `commercial-validation/outreach_log.json`.
+* **Organización y Blindaje de Activos Confidenciales y Multi-dispositivo**:
   - Integración y ordenación de documentación interna, estratégica y comercial en el directorio protegido `/internal/`.
   - Blindaje completo en `.gitignore` bloqueando `/internal/` y formatos ofimáticos confidenciales.
+  - Higiene Git multi-dispositivo: des-rastreo de binarios de caché Python (`.pyc`), resolución limpia de marcadores de merge en `.gitignore`, incorporación de `.gitattributes` para normalización LF y exclusión de configuraciones de IDE (`.vscode/`, `.idea/`).
+  - Despliegue continuo GitHub Pages: blindaje explícito de permisos `id-token: write` y `pages: write` a nivel de job en `.github/workflows/deploy.yml` para autorización OIDC de Pages.
+* **Estrategia Audiovisual y Lanzamiento en Instagram (`@miratea.app`)**:
+  - Activación del canal oficial de difusión educativa y familiar `@miratea.app` con bio y enlace directo a la web oficial `https://miratea.es`.
+  - Documentación de la trilogía de videos de presentación generados con Google Omni y Veo bajo estética sensorial `#FAF9F7` y principios *Neurodiversity-First*: Video 1 (Rutinas visuales matutinas sin fricción), Video 2 (Desintegrador de metas con IA y Rincón de Calma a 432Hz) y Video 3 (Progreso acumulativo con Sparks ✦ y compañerismo inmutable con Lumi).
+  - Gobernanza de copys, guiones, dirección de arte Veo/Omni y calendario editorial archivados en `commercial-validation/marketing/INSTAGRAM_STRATEGY.md`.
+  - Enlace al perfil de Instagram integrado en el pie de página (`src/components/ui/LegalFooter.tsx`).
+* **Fase 11 (AI Step Decomposition & Reliability Release v1.3.3)**:
+  - Reparación integral del motor de descomposición de metas con IA (`/api/decompose`): incorporación de `reasoning_effort: 'low'` y aumento a 4.000 max_tokens para el modelo de razonamiento `openai/gpt-oss-20b` en Groq, eliminando la sobrecarga de miles de tokens de pensamiento interno y el error de validación JSON `400 json_validate_failed`. Rendimiento verificado en 1,4s para 21 pasos.
+  - Blindaje en `MicrotaskEngine`: normalización del schema JSON en el prompt y retorno de `null` en `parseDecompositionResponse` ante microtareas vacías para activar determinísticamente el generador de pasos de respaldo (`fallbackDecomposition`).
+  - Protección de vistas (`new/page.tsx` y `edit/page.tsx`): comprobación de pasos no vacíos antes de asignar en la revisión de objetivos y reactividad asíncrona de `childId` con `useEffect`.
+  - Actualización de fallbacks: actualización de Gemini a `gemini-2.0-flash` y soporte para Anthropic (`claude-3-haiku-20240307`).
+  - Gobernanza PWA y suite de tests: actualización de caché a `miratea-v1.3.3` en `public/sw.js` y 161/161 pruebas superadas (32 archivos).
 
 ---
 
@@ -569,4 +587,4 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
 
 # Resumen Ejecutivo
 
-**MIRATEA by Solutech** es una plataforma digital de autorregulación emocional y autonomía para menores en el Espectro Autista (TEA), TDAH y sus familias. Construida con **Next.js 16**, **TypeScript** y **Supabase PostgreSQL**, ofrece rutinas visuales amables, un Rincón de Calma con respiración guiada sonora (432Hz), descomposición de metas mediante IA con protección PII y exportación de informes clínicos en PDF. El proyecto cuenta con un estado de madurez de **Gold Release v1.0**, verificado con 0 errores de tipado, 0 advertencias de linter y 50/50 pruebas unitarias superadas.
+**MIRATEA by Solutech** es una plataforma digital de autorregulación emocional y autonomía para menores en el Espectro Autista (TEA), TDAH y sus familias. Construida con **Next.js 16**, **TypeScript** y **Supabase PostgreSQL**, ofrece rutinas visuales amables, un Rincón de Calma con respiración guiada sonora (432Hz), descomposición de metas mediante IA con protección PII y exportación de informes clínicos en PDF. El proyecto cuenta con un estado de madurez de **Production Release v1.3.3**, verificado con 0 errores de tipado, 0 advertencias de linter y 161/161 pruebas unitarias superadas.

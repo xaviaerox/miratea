@@ -65,9 +65,11 @@ Crea exactamente ${count} microtareas concretas y secuenciales para lograr este 
 - Estar redactada en primera persona desde la perspectiva del niño (ej. "Preparo mi mochila", "Doy tres pedaleadas", "Respiro hondo").
 - Estar formulada en positivo (evita palabras como "no", "dejar de", "parar").
 - Ser amigable, alentadora y libre de presiones.
+- "effort_level" debe ser uno de: "easy", "medium" o "stretch".
+- "value_dimensions" puede contener una o más de: "autonomy", "empathy", "regulation", "curiosity", "courage", "connection".
 - Estar redactada completamente en ESPAÑOL.
 
-Responde ÚNICAMENTE con un objeto JSON válido, sin formato markdown, sin texto introductorio ni explicaciones.
+Responde ÚNICAMENTE con un objeto JSON válido, sin formato markdown, sin texto introductorio ni explicaciones:
 
 {
   "microtasks": [
@@ -75,9 +77,9 @@ Responde ÚNICAMENTE con un objeto JSON válido, sin formato markdown, sin texto
       "position": 1,
       "title": "string en español (máx 60 caracteres, lenguaje infantil y motivador)",
       "description": "string en español (opcional, 1 frase de contexto o consejo)",
-      "effort_level": "easy" | "medium" | "stretch",
+      "effort_level": "easy",
       "spark_value": ${reward},
-      "value_dimensions": ["autonomy" | "empathy" | "regulation" | "curiosity" | "courage" | "connection"]
+      "value_dimensions": ["autonomy"]
     }
   ]
 }`;
@@ -109,7 +111,7 @@ export function parseDecompositionResponse(
     const clean = raw.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean) as { microtasks: unknown[] };
 
-    if (!Array.isArray(parsed.microtasks)) return null;
+    if (!Array.isArray(parsed.microtasks) || parsed.microtasks.length === 0) return null;
 
     const microtasks: ParsedMicrotask[] = parsed.microtasks
       .filter(isValidMicrotask)
@@ -121,6 +123,8 @@ export function parseDecompositionResponse(
         spark_value: clampSparkValue(typeof t.spark_value === 'number' ? t.spark_value : 1),
         value_dimensions: validateDimensions(t.value_dimensions),
       }));
+
+    if (microtasks.length === 0) return null;
 
     return { microtasks, ai_generated: true, ai_model_version: modelVersion };
   } catch {

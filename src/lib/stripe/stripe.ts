@@ -15,10 +15,7 @@ let stripeInstance: Stripe | null = null;
 export function getStripe(): Stripe | null {
   if (!isStripeConfigured()) return null;
   if (!stripeInstance && stripeSecretKey) {
-    stripeInstance = new Stripe(stripeSecretKey, {
-      apiVersion: '2025-02-24.acacia' as any,
-      typescript: true,
-    });
+    stripeInstance = new Stripe(stripeSecretKey);
   }
   return stripeInstance;
 }

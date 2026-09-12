@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { signUpParent } = useAuth();
   const [step, setStep] = useState<'account' | 'family'>('account');
   const [email, setEmail] = useState('');
@@ -19,16 +20,7 @@ export default function SignupPage() {
   const [consentGiven, setConsentGiven] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isEarlyAccess, setIsEarlyAccess] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('plan') === 'early_access') {
-        setIsEarlyAccess(true);
-      }
-    }
-  }, []);
+  const isEarlyAccess = searchParams.get('plan') === 'early_access';
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -174,3 +166,12 @@ export default function SignupPage() {
     </Card>
   );
 }
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-6 h-6 border-2 border-stone-200 border-t-bloom-400 rounded-full animate-spin" /></div>}>
+      <SignupForm />
+    </Suspense>
+  );
+}
+

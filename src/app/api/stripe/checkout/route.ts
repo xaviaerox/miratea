@@ -48,8 +48,8 @@ export async function POST(req: NextRequest) {
     }
 
     const origin = req.nextUrl.origin || 'https://miratea.es';
-    const successUrl = `${origin}/dashboard/family?subscription=success&plan=${plan}`;
-    const cancelUrl = `${origin}/dashboard/family?subscription=cancel`;
+    const successUrl = returnUrl || `${origin}/dashboard/family?subscription=success&plan=${plan}`;
+    const cancelUrl = returnUrl || `${origin}/dashboard/family?subscription=cancel`;
 
     // 1. Live Stripe Mode
     if (isStripeConfigured()) {
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
     // 2. Demo / Simulated Fallback Mode
     return NextResponse.json({
       ok: true,
-      url: `${origin}/dashboard/family?subscription=simulated_success&plan=${plan}`,
+      url: returnUrl || `${origin}/dashboard/family?subscription=simulated_success&plan=${plan}`,
       simulated: true,
       message: 'Modo simulación de Stripe activado (entorno de pruebas local)',
     });

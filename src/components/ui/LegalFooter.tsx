@@ -33,11 +33,21 @@ export function LegalFooter() {
           <a href="mailto:xavi@miratea.es" className="hover:text-teal-700 transition-colors">
             Contacto
           </a>
+          <span className="text-stone-300">•</span>
+          <a
+            href="https://instagram.com/miratea.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-teal-700 transition-colors"
+            title="Instagram oficial de MIRATEA"
+          >
+            Instagram
+          </a>
         </div>
       </div>
 
       <div className="max-w-5xl mx-auto mt-6 pt-4 border-t border-stone-200/60 text-center text-stone-400">
-        © {new Date().getFullYear()} Solutech — Todos los derechos reservados. Versión 1.3.1 (Custom Domain & Production Architecture Release).
+        © {new Date().getFullYear()} Solutech — Todos los derechos reservados. Versión 1.4.0 (Stripe Subscriptions & Early Access 20-Families Live Counter Release).
       </div>
     </footer>
   );

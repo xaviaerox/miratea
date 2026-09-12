@@ -55,19 +55,28 @@ export async function POST(req: NextRequest) {
     const groqKey = process.env.GROQ_API_KEY;
     if (groqKey) {
       try {
+        const groqModel = process.env.GROQ_MODEL || 'openai/gpt-oss-20b';
+        const groqPayload: Record<string, unknown> = {
+          model: groqModel,
+          messages: [{ role: 'user', content: prompt }],
+          max_tokens: parseInt(process.env.GROQ_DECOMPOSE_MAX_TOKENS || '4000', 10),
+          temperature: 0.3,
+          response_format: { type: 'json_object' },
+        };
+
+        if (process.env.GROQ_REASONING_EFFORT) {
+          groqPayload.reasoning_effort = process.env.GROQ_REASONING_EFFORT;
+        } else if (groqModel.includes('gpt-oss') || groqModel.includes('o1') || groqModel.includes('o3')) {
+          groqPayload.reasoning_effort = 'low';
+        }
+
         const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${groqKey}`
           },
-          body: JSON.stringify({
-            model: process.env.GROQ_MODEL || 'openai/gpt-oss-20b',
-            messages: [{ role: 'user', content: prompt }],
-            max_tokens: 1024,
-            temperature: 0.3,
-            response_format: { type: 'json_object' }
-          }),
+          body: JSON.stringify(groqPayload),
         });
 
         if (res.ok) {
@@ -76,7 +85,7 @@ export async function POST(req: NextRequest) {
           const text = restorePii(rawText, piiReplacements);
           return NextResponse.json({ text });
         } else {
-          console.error('[decompose] Groq API error:', await res.text());
+          console.error('[decompose] Groq API error:', res.status, await res.text());
         }
       } catch (err) {
         console.error('[decompose] Groq fetch error:', err);
@@ -88,14 +97,14 @@ export async function POST(req: NextRequest) {
     if (geminiKey) {
       try {
         const res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               contents: [{ role: 'user', parts: [{ text: prompt }] }],
               generationConfig: {
-                maxOutputTokens: 1024,
+                maxOutputTokens: 4000,
                 temperature: 0.3,
                 responseMimeType: 'application/json'
               }
@@ -109,14 +118,45 @@ export async function POST(req: NextRequest) {
           const text = restorePii(rawText, piiReplacements);
           return NextResponse.json({ text });
         } else {
-          console.error('[decompose] Gemini API error:', await res.text());
+          console.error('[decompose] Gemini API error:', res.status, await res.text());
         }
       } catch (err) {
         console.error('[decompose] Gemini fetch error:', err);
       }
     }
 
-    // 6. Safe fallback JSON
+    // 6. Fallback to Anthropic
+    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    if (anthropicKey && anthropicKey !== 'tu-anthropic-key') {
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': anthropicKey,
+            'anthropic-version': '2023-06-01'
+          },
+          body: JSON.stringify({
+            model: 'claude-3-haiku-20240307',
+            max_tokens: 4000,
+            messages: [{ role: 'user', content: prompt }]
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json() as { content?: Array<{ text?: string }> };
+          const rawText = data.content?.[0]?.text || '';
+          const text = restorePii(rawText, piiReplacements);
+          return NextResponse.json({ text });
+        } else {
+          console.error('[decompose] Anthropic API error:', res.status, await res.text());
+        }
+      } catch (err) {
+        console.error('[decompose] Anthropic fetch error:', err);
+      }
+    }
+
+    // 7. Safe fallback JSON
     return NextResponse.json({ text: '{"microtasks":[]}' });
   } catch (err) {
     console.error('[decompose] General error:', err);

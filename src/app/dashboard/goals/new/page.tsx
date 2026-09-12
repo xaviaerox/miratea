@@ -31,18 +31,19 @@ export default function NewGoalPage() {
   const { profile } = useAuth();
   const { family, children } = useFamily();
 
-  const [step, setStep]               = useState<'form' | 'decompose' | 'review'>('form');
-  const [title, setTitle]             = useState('');
-  const [why, setWhy]                 = useState('');
-  const [childId, setChildId]         = useState(children[0]?.id ?? '');
-  const [coCreated, setCoCreated]     = useState(false);
-  const [numTasks, setNumTasks]       = useState(21);
-  const [sparkValue, setSparkValue]   = useState(1);
-  const [onePerDay, setOnePerDay]     = useState(true);
-  const [microtasks, setMicrotasks]   = useState<ParsedMicrotask[]>([]);
-  const [decomposing, setDecomposing] = useState(false);
-  const [saving, setSaving]           = useState(false);
-  const [error, setError]             = useState('');
+  const [step, setStep]                       = useState<'form' | 'decompose' | 'review'>('form');
+  const [title, setTitle]                     = useState('');
+  const [why, setWhy]                         = useState('');
+  const [selectedChildId, setSelectedChildId] = useState('');
+  const childId                               = selectedChildId || children[0]?.id || '';
+  const [coCreated, setCoCreated]             = useState(false);
+  const [numTasks, setNumTasks]               = useState(21);
+  const [sparkValue, setSparkValue]           = useState(1);
+  const [onePerDay, setOnePerDay]             = useState(true);
+  const [microtasks, setMicrotasks]           = useState<ParsedMicrotask[]>([]);
+  const [decomposing, setDecomposing]         = useState(false);
+  const [saving, setSaving]                   = useState(false);
+  const [error, setError]                     = useState('');
 
   const selectedChild = children.find(c => c.id === childId);
   const childAge = selectedChild?.birth_year
@@ -74,7 +75,8 @@ export default function NewGoalPage() {
 
       if (textResponse) {
         const result = parseDecompositionResponse(textResponse, 'claude-sonnet-4-20250514');
-        setMicrotasks(result?.microtasks ?? fallbackDecomposition(title, numTasks, sparkValue));
+        const hasTasks = result?.microtasks && result.microtasks.length > 0;
+        setMicrotasks(hasTasks ? result.microtasks : fallbackDecomposition(title, numTasks, sparkValue));
       } else {
         setMicrotasks(fallbackDecomposition(title, numTasks, sparkValue));
       }
@@ -143,7 +145,7 @@ export default function NewGoalPage() {
                   <label className="text-sm font-medium text-stone-700">Para quién</label>
                   <select
                     value={childId}
-                    onChange={e => setChildId(e.target.value)}
+                    onChange={e => setSelectedChildId(e.target.value)}
                     className="w-full px-4 py-3 rounded-2xl border border-stone-200 bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-bloom-300"
                   >
                     {children.map(c => (

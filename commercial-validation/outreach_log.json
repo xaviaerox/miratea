@@ -8,8 +8,8 @@
     "prioridad": 1,
     "fecha_hora_envio": "2026-09-08 23:00:41",
     "asunto_usado": "MIRATEA: apoyo a la autonomía y autorregulación para familias con TDAH en Lorca",
-    "estado": "enviado",
-    "notas": "Prioridad 1"
+    "estado": "fallido_rebote",
+    "notas": "Rebote mailer-daemon: buzon inactivo o no disponible"
   },
   {
     "id_contacto": 2,
@@ -106,5 +106,89 @@
     "asunto_usado": "MIRATEA: herramienta de autorregulación y rutinas para familias en Cartagena",
     "estado": "enviado",
     "notas": "Prioridad 2"
+  },
+  {
+    "id_contacto": 10,
+    "nombre_asociacion": "Ingloba TEA",
+    "email": "info@inglobatea.es",
+    "categoria": "TEA",
+    "ubicacion": "Región de Murcia",
+    "prioridad": 2,
+    "fecha_hora_envio": "2026-09-08 23:27:56",
+    "asunto_usado": "MIRATEA: tecnología accesible para el bienestar y la autonomía en TEA",
+    "estado": "enviado",
+    "notas": "Prioridad 2"
+  },
+  {
+    "id_contacto": 15,
+    "nombre_asociacion": "ADAHI Murcia",
+    "email": "adahimurcia.gestion@hotmail.com",
+    "categoria": "TDAH",
+    "ubicacion": "Espinardo / Cartagena",
+    "prioridad": 2,
+    "fecha_hora_envio": "2026-09-08 23:30:58",
+    "asunto_usado": "MIRATEA: rutinas visuales y metas paso a paso para niños con TDAH en la Región",
+    "estado": "enviado",
+    "notas": "Prioridad 2"
+  },
+  {
+    "id_contacto": 16,
+    "nombre_asociacion": "Águilas Vida Activa",
+    "email": "aguilasvidaactiva@hotmail.com",
+    "categoria": "TDAH",
+    "ubicacion": "Águilas",
+    "prioridad": 2,
+    "fecha_hora_envio": "2026-09-08 23:33:59",
+    "asunto_usado": "MIRATEA: apoyo al día a día de familias con TDAH desde la comarca vecina",
+    "estado": "enviado",
+    "notas": "Prioridad 2"
+  },
+  {
+    "id_contacto": 18,
+    "nombre_asociacion": "Talentos — Altas Capacidades Región de Murcia",
+    "email": "talentos@altascapacidadesmurcia.org",
+    "categoria": "Altas Capacidades",
+    "ubicacion": "Murcia",
+    "prioridad": 2,
+    "fecha_hora_envio": "2026-09-08 23:37:01",
+    "asunto_usado": "MIRATEA: organización de metas complejas y gestión emocional para niños con Altas Capacidades",
+    "estado": "enviado",
+    "notas": "Prioridad 2"
+  },
+  {
+    "id_contacto": 12,
+    "nombre_asociacion": "TEA Yecla",
+    "email": "teayecla@hotmail.es",
+    "categoria": "TEA",
+    "ubicacion": "Yecla",
+    "prioridad": 3,
+    "fecha_hora_envio": "2026-09-08 23:40:03",
+    "asunto_usado": "MIRATEA: una propuesta de apoyo para familias con TEA en Yecla",
+    "estado": "enviado",
+    "notas": "Prioridad 3"
+  },
+  {
+    "id_contacto": 13,
+    "nombre_asociacion": "Fundación Estrella Azul",
+    "email": "info@fundacionestrellaazul.org",
+    "categoria": "TEA",
+    "ubicacion": "Alcantarilla",
+    "prioridad": 3,
+    "fecha_hora_envio": "2026-09-08 23:43:05",
+    "asunto_usado": "MIRATEA: apoyo a la autorregulación y rutinas para familias con TEA",
+    "estado": "enviado",
+    "notas": "Prioridad 3"
+  },
+  {
+    "id_contacto": 14,
+    "nombre_asociacion": "Crece con Dabadá",
+    "email": "crececondabada@crececondabada.org",
+    "categoria": "TEA",
+    "ubicacion": "Churra, Murcia",
+    "prioridad": 3,
+    "fecha_hora_envio": "2026-09-08 23:46:06",
+    "asunto_usado": "MIRATEA: autonomía cotidiana y autorregulación para jóvenes y familias TEA",
+    "estado": "enviado",
+    "notas": "Prioridad 3"
   }
 ]

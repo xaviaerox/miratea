@@ -46,6 +46,21 @@ next-env.d.ts
 # scratch/temporary scripts
 /scratch/
 
+# python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# IDE / Editor
+.vscode/
+.idea/
+
 # internal, commercial & proprietary confidential assets (strict privacy boundary)
 /internal/
 *.docx

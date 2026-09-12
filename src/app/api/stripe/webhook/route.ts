@@ -1,6 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStripe } from '@/lib/stripe/stripe';
 import type Stripe from 'stripe';
+import type { Database } from '@/types/database.types';
+
+type SubscriptionStatus = Database['public']['Tables']['family_subscriptions']['Row']['status'];
+
+function toSubscriptionStatus(status: string): SubscriptionStatus {
+  switch (status) {
+    case 'active':
+    case 'trialing':
+    case 'past_due':
+    case 'incomplete':
+      return status;
+    default:
+      return 'canceled';
+  }
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -17,9 +32,10 @@ export async function POST(req: NextRequest) {
   if (stripe && webhookSecret && signature) {
     try {
       event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
-    } catch (err: any) {
-      console.error('[StripeWebhook] Error verificando firma:', err.message);
-      return NextResponse.json({ error: `Webhook error: ${err.message}` }, { status: 400 });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      console.error('[StripeWebhook] Error verificando firma:', message);
+      return NextResponse.json({ error: `Webhook error: ${message}` }, { status: 400 });
     }
   } else {
     // If testing without webhook secret or in development
@@ -60,14 +76,17 @@ export async function POST(req: NextRequest) {
 
       case 'customer.subscription.updated': {
         const sub = event.data.object as Stripe.Subscription;
-        const status = sub.status === 'active' ? 'active' : sub.status;
+        const subData = sub as unknown as { current_period_end?: number };
+        const status = toSubscriptionStatus(sub.status);
         const customerId = sub.customer as string;
 
         await supabase
           .from('family_subscriptions')
           .update({
-            status: status as any,
-            current_period_end: new Date((sub as any).current_period_end * 1000).toISOString(),
+            status,
+            current_period_end: subData.current_period_end
+              ? new Date(subData.current_period_end * 1000).toISOString()
+              : null,
             cancel_at_period_end: sub.cancel_at_period_end,
             updated_at: new Date().toISOString(),
           })
