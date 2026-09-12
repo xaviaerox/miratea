@@ -26,6 +26,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Gobernanza PWA**:
   - Actualizado `CACHE_NAME` a `miratea-v1.4.0` en `public/sw.js`.
 
+### Fixed & Improved
+- **Compatibilidad de Despliegue Estático en GitHub Pages (`STATIC_EXPORT`)**:
+  - Sustituido `force-dynamic` por `force-static` en las rutas de Stripe y Early Access (`/api/early-access/count`, `/api/stripe/checkout`, `/api/stripe/portal`, `/api/stripe/webhook`), permitiendo la generación limpia y sin fallos del artefacto estático para GitHub Pages.
+  - Refactorizado `/api/early-access/count` para utilizar directamente el cliente `@supabase/supabase-js` sin invocar `cookies()`, eliminando advertencias y bailouts de generación estática.
+- **Calidad de Código y Cumplimiento ESLint**:
+  - Resuelto error `react-hooks/set-state-in-effect` en `/signup` encapsulando la lectura de parámetros en `useSearchParams()` con Suspense boundary.
+  - Eliminados todos los tipos `any` en los servicios de Stripe y suscripciones, alcanzando 0 errores y 0 warnings en ESLint.
+
 ---
 
 ## [1.3.3] - 2026-09-10 (AI Step Decomposition & Reliability Fix Release)

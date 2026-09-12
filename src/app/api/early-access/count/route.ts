@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@/types/database.types';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 
 const EARLY_ACCESS_MAX_SPOTS = 20;
 // Baseline count for pilot / demo state if database is empty or in static mode
@@ -15,8 +17,9 @@ export async function GET() {
     const hasSupabaseCreds = !!url && !!key && !url.includes('placeholder') && key !== 'placeholder';
 
     if (hasSupabaseCreds) {
-      const { createServerSupabaseClient } = await import('@/lib/supabaseServer');
-      const supabase = await createServerSupabaseClient();
+      const supabase = createClient<Database>(url, key, {
+        auth: { persistSession: false },
+      });
       
       // Try calling RPC function get_family_count
       const { data, error } = await supabase.rpc('get_family_count');

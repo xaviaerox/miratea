@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getStripe, isStripeConfigured, PLAN_CONFIG } from '@/lib/stripe/stripe';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 
 const CheckoutSchema = z.object({
   plan: z.enum(['monthly', 'annual']),

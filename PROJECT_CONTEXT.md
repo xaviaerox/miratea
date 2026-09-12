@@ -218,6 +218,8 @@ miratea-app/
 
 ### Endpoints Internos (`/src/app/api/`)
 
+*Nota arquitectónica*: Todas las rutas API incorporan `export const dynamic = 'force-static'` para garantizar la compatibilidad determinista con la exportación estática de GitHub Pages (`output: 'export'`), implementando respaldos funcionales en tiempo de ejecución o modo cliente cuando aplique.
+
 * **`POST /api/decompose`**:
   - **Función**: Descompone una meta en 3 micropasos sencillos.
   - **Seguridad**: Sanitización de prompt mediante `PiiSanitizer`.

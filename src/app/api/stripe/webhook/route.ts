@@ -17,7 +17,7 @@ function toSubscriptionStatus(status: string): SubscriptionStatus {
   }
 }
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 
 export async function POST(req: NextRequest) {
   const stripe = getStripe();
