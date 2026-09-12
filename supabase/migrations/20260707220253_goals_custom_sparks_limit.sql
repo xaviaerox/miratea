@@ -1,7 +1,3 @@
--- ============================================================
--- MIRA — Migration: Goals Customizable Sparks & Daily Limit
--- ============================================================
-
 -- 1. Add one_per_day setting to goals
 ALTER TABLE goals ADD COLUMN IF NOT EXISTS one_per_day BOOLEAN NOT NULL DEFAULT TRUE;
 

@@ -36,6 +36,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Eliminación Total de Datos Simulados en el Contador de Familias Early Access**:
   - Fijado el valor base real en 0 familias y 20 plazas reales en `src/app/landing/page.tsx` y `src/app/api/early-access/count/route.ts`, eliminando completamente el número simulado preliminar de 7 familias.
   - Integrada consulta reactiva en vivo desde el navegador directamente contra Supabase (`get_family_count` RPC con fallback directo a `families`), sincronizando el contador público en tiempo real con la base de datos de producción.
+- **Sincronización Bidireccional de Migraciones Supabase (`Supabase Preview CI`)**:
+  - Resuelto fallo en el Check Run de la GitHub App de Supabase (`Remote migration versions not found in local migrations directory`) alineando las 6 migraciones del historial remoto de Supabase (`20260706181927`, `20260706181956`, `20260706182015`, `20260707220253`, `20260709165452`, `20260713140324`) con el directorio local `supabase/migrations/`.
+  - Verificado el estado de sincronización con `supabase migration list`, eliminando discrepancias y asegurando ejecuciones verdes en GitHub Actions.
 
 ---
 

@@ -575,6 +575,7 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Conexión y verificación directa con Stripe API verificada en EUR y sesión de Checkout generada con éxito.
   - Erradicación de datos simulados/mock: contador de plazas Early Access (límite 20 familias) conectado en tiempo real a Supabase PostgreSQL mediante la RPC `get_family_count()`.
   - Migración `family_subscriptions` aplicada y verificada en el proyecto `vrdurepiazvavuvmeoth`.
+  - Sincronización del historial de migraciones Supabase: alineadas las 6 migraciones remotas en `supabase/migrations/` resolviendo el error del check run de Supabase Preview en GitHub.
   - Gobernanza estricta de credenciales en `C:\Users\xavia\Documents\GitHub\.env` como Single Source of Truth para API keys y tokens.
   - Gobernanza PWA y suite de tests: 164/164 pruebas superadas en 33 archivos, build estático limpio y SW en `miratea-v1.4.0`.
 
