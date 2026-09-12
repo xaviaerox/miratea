@@ -256,6 +256,7 @@ miratea-app/
     - **Formulario Modal de la Landing (`early_family_leads`)**: Actúa como canal de captación y lista de espera para consultas previas. NO crea cuenta, NO crea registro en `families` ni inicia sesión (muestra confirmación de contacto en 24h).
     - **Registro Formal (`/signup`)**: Flujo de onboarding legal en 2 fases con verificación explícita de patria potestad/tutela legal. Crea el usuario `auth.users`, la entidad `families`, el perfil `profiles` parental e inicializa la suscripción (asignando `early_access` si es de las primeras 20), redirigiendo inmediatamente a `/dashboard`.
     - **Inicio de Sesión (`/login`)**: Autentica credenciales existentes con enrutamiento inteligente por rol, proporciona acceso instantáneo sin registro vía "Modo Demo 1-Clic" y enlace de bienvenida para códigos de invitación (`/join`).
+12. **Gestión Centralizada de Credenciales (.env Maestro)**: Todas las claves de API, tokens de acceso y credenciales compartidas con el agente deben ser almacenadas y mantenidas de forma inmediata y obligatoria en el archivo de entorno centralizado ubicado en `C:\Users\xavia\Documents\GitHub\.env`, asegurando su preservación fuera del repositorio de Git y su disponibilidad transversal para todos los proyectos.
 
 ---
 

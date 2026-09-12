@@ -21,4 +21,9 @@ This version of Next.js has breaking changes — APIs, conventions, and file str
 3. **Inviolabilidad de Historia**: La versión jamás debe retroceder durante el desarrollo normal.
 4. **Cadena Completa PWA & Cachés**: En cada release o cambio relevante de PWA, la versión de la app, el Service Worker (`public/sw.js`) y el identificador de caché (`CACHE_NAME`) deben actualizarse de forma determinista para forzar la invalidación limpia en los clientes instalados.
 5. **Verificación Obligatoria de Integridad (VERSION INTEGRITY CHECK)**: Toda tarea significativa debe finalizar verificando la consistencia entre `package.json`, `PROJECT_CONTEXT.md`, `CHANGELOG.md`, `public/sw.js` y el repositorio.
+
+## Gestión Centralizada de Credenciales (.env Maestro)
+1. **Repositorio Único de Claves**: El archivo `C:\Users\xavia\Documents\GitHub\.env` es el repositorio central canónico de credenciales, API keys y tokens para todos los proyectos personales y de Solutech.
+2. **Persistencia Automática Obligatoria**: Cada vez que el usuario comparta o intercambie una API Key, Token o secreto en cualquier conversación, el agente DEBE almacenarla y actualizarla de inmediato en `C:\Users\xavia\Documents\GitHub\.env` en su sección correspondiente.
+3. **Blindaje**: Dicho archivo `.env` maestro reside en la raíz de `GitHub\` fuera de cualquier repositorio y jamás debe comitearse a Git ni exponerse públicamente.
 <!-- END:nextjs-agent-rules -->
