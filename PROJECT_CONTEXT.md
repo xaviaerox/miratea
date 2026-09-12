@@ -569,6 +569,14 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
   - Protección de vistas (`new/page.tsx` y `edit/page.tsx`): comprobación de pasos no vacíos antes de asignar en la revisión de objetivos y reactividad asíncrona de `childId` con `useEffect`.
   - Actualización de fallbacks: actualización de Gemini a `gemini-2.0-flash` y soporte para Anthropic (`claude-3-haiku-20240307`).
   - Gobernanza PWA y suite de tests: actualización de caché a `miratea-v1.3.3` en `public/sw.js` y 161/161 pruebas superadas (32 archivos).
+* **Fase 12 (Stripe Subscriptions, Early Access 20-Families Live Counter & Credentials Governance v1.4.0)**:
+  - Integración de pasarela de pago Stripe (Checkout Sessions, Customer Portal y Webhooks `/api/stripe/*`).
+  - Modalidad Dual: Modo Simulado inteligente (Zero-Config para desarrollo offline y demo) y Modo Real con Stripe Test/Live API.
+  - Conexión y verificación directa con Stripe API verificada en EUR y sesión de Checkout generada con éxito.
+  - Erradicación de datos simulados/mock: contador de plazas Early Access (límite 20 familias) conectado en tiempo real a Supabase PostgreSQL mediante la RPC `get_family_count()`.
+  - Migración `family_subscriptions` aplicada y verificada en el proyecto `vrdurepiazvavuvmeoth`.
+  - Gobernanza estricta de credenciales en `C:\Users\xavia\Documents\GitHub\.env` como Single Source of Truth para API keys y tokens.
+  - Gobernanza PWA y suite de tests: 164/164 pruebas superadas en 33 archivos, build estático limpio y SW en `miratea-v1.4.0`.
 
 ---
 
@@ -590,4 +598,4 @@ NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
 
 # Resumen Ejecutivo
 
-**MIRATEA by Solutech** es una plataforma digital de autorregulación emocional y autonomía para menores en el Espectro Autista (TEA), TDAH y sus familias. Construida con **Next.js 16**, **TypeScript** y **Supabase PostgreSQL**, ofrece rutinas visuales amables, un Rincón de Calma con respiración guiada sonora (432Hz), descomposición de metas mediante IA con protección PII y exportación de informes clínicos en PDF. El proyecto cuenta con un estado de madurez de **Production Release v1.3.3**, verificado con 0 errores de tipado, 0 advertencias de linter y 161/161 pruebas unitarias superadas.
+**MIRATEA by Solutech** es una plataforma digital de autorregulación emocional y autonomía para menores en el Espectro Autista (TEA), TDAH y sus familias. Construida con **Next.js 16**, **TypeScript** y **Supabase PostgreSQL**, ofrece rutinas visuales amables, un Rincón de Calma con respiración guiada sonora (432Hz), descomposición de metas mediante IA con protección PII, suscripciones y pasarela Stripe con plazas Early Access reales y exportación de informes clínicos en PDF. El proyecto cuenta con un estado de madurez de **Production Release v1.4.0**, verificado con 0 errores de tipado, 0 advertencias de linter y 164/164 pruebas unitarias superadas.
